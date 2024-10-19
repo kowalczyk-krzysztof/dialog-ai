@@ -2,11 +2,11 @@
   position: fixed;
   width: 400px;
   height: 400px;
-  overflow: auto;
+  overflow-y: scroll;
   background-color: #1e1e1e;
   padding: 8px;
   padding-top: 24px;
-  border-radius: 4px;
+  border-radius: 8px;
   box-shadow:
     0 4px 10px rgba(255, 255, 255, 0.2),
     0 2px 4px rgba(255, 255, 255, 0.1);
@@ -19,16 +19,24 @@
 
 /* Each child has to be prepended with #popupai-content-container to avoid conflicts with other CSS rules. */
 
-#popupai-content-container .popupai-content-button {
+#popupai-content-container .popupai-quick-action-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
+}
+
+#popupai-content-container .popupai-quick-action-button {
   background-color: #0ea5e9;
   color: #1e1e1e;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 9999px;
   align-self: flex-center;
   border: none;
 }
 
-#popupai-content-container .popupai-content-button:disabled {
+#popupai-content-container .popupai-quick-action-button:disabled {
   background-color: #bbbbbb;
   color: #d4d4d4;
   pointer-events: none;
@@ -45,7 +53,7 @@
   border: none;
 }
 
-#popupai-content-container .popupai-chat-container {
+#popupai-content-container .popupai-response-container {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -55,4 +63,17 @@
   color: #d4d4d4;
   margin-top: 8px;
   padding: 8px;
+}
+
+#popupai-content-container .popupai-user-input-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100px;
+  width: 384px;
+  background-color: #4a4a4a;
+  color: #d4d4d4;
+  margin-top: 8px;
+  padding: 8px;
+  resize: none;
 }

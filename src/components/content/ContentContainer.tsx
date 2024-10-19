@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { ChatWindow } from './ChatWindow'
-import { ExplainButton } from './ExplainButton'
+import { ChatWindow } from './chat/ChatWindow'
 import { debounce } from '../../utils/debounce'
 import { CloseButton } from './CloseButton'
+import { QuickActionContainer } from './quick-action/QuickActionContainer'
+import { UserInputContainer } from './chat/UserInputContainer'
 
 export const contentContainerId = 'popupai-content-container'
 
@@ -11,6 +12,8 @@ export const ContentContainer = () => {
   const [highlightedText, setHighlightedText] = useState('')
   const [rect, setRect] = useState<DOMRect>()
   const [response, setResponse] = useState('')
+  // TODO: Handle multiple responses
+  // TODO: Handle multiple user inputs
 
   const clearState = () => {
     setHighlightedText('')
@@ -32,7 +35,7 @@ export const ContentContainer = () => {
           setRect(rect)
           setHighlightedText(text)
 
-          if (text && rect) {
+          if (text.length && rect) {
             setShowContent(true)
           }
         }
@@ -54,9 +57,9 @@ export const ContentContainer = () => {
       }}
     >
       <CloseButton clearState={clearState} />
-      {highlightedText}
-      <ExplainButton setResponse={setResponse} promptText={highlightedText} />
-      <ChatWindow response={response} />
+      <UserInputContainer text={highlightedText} setText={setHighlightedText} />
+      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} />
+      <ChatWindow text={response} />
     </div>
   )
 }

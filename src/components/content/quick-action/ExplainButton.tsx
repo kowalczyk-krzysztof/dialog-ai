@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { getPromptStreamingResponse } from '../../utils/ai'
+import { getPromptStreamingResponse } from '../../../utils/ai'
+import language from '../../../lib/language'
+import { QuickActionButton } from './QuickActionButton'
 
 interface Props {
   promptText: string
@@ -16,8 +18,8 @@ export const ExplainButton = ({ setResponse, promptText }: Props) => {
   }
 
   return (
-    <button disabled={isLoading} className='popupai-content-button' onClick={handleGetResponse}>
-      Explain
-    </button>
+    <QuickActionButton disabled={isLoading} onClick={handleGetResponse}>
+      {language.en.buttons.explain}
+    </QuickActionButton>
   )
 }
