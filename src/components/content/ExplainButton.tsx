@@ -16,10 +16,7 @@ export const ExplainButton = ({ setResponse, promptText }: Props) => {
   }
 
   return (
-    <button
-      disabled={isLoading}
-      className="popupai-content-button"
-      onClick={handleGetResponse}>
+    <button disabled={isLoading} className='popupai-content-button' onClick={handleGetResponse}>
       Explain
     </button>
   )

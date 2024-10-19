@@ -1,0 +1,15 @@
+# Ignore artifacts:
+dist
+node_modules
+
+# Ignore all HTML files:
+**/*.html
+
+# Ignore misc
+**/*.md
+*.md
+**/*.yml
+*.yml
+**/*.yaml
+*.yaml
+**/*.package-lock.json

@@ -5,12 +5,8 @@
   "description": "Highlight text and chat with Chrome AI.",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "src/content.tsx"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["src/content.tsx"],
       "run_at": "document_start"
     }
   ],
@@ -18,7 +14,5 @@
     "default_popup": "index.html",
     "default_title": "Open Popup AI"
   },
-  "permissions": [
-    "activeTab"
-  ]
+  "permissions": ["activeTab"]
 }

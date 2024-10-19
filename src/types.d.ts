@@ -17,7 +17,11 @@ declare global {
   interface Window {
     ai: {
       languageModel: {
-        create: (options: { temperature?: number; topK?: number; systemPrompt: string }) => Promise<LanguageModelSession>
+        create: (options: {
+          temperature?: number
+          topK?: number
+          systemPrompt: string
+        }) => Promise<LanguageModelSession>
       }
     }
   }

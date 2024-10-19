@@ -47,17 +47,15 @@ export const ContentContainer = () => {
   if (!showContent || !rect) return null
   return (
     <div
-      id="popupai-content-container"
+      id='popupai-content-container'
       style={{
         top: `${rect.top - 50}px`,
         left: `${rect.left}px`,
-      }}>
+      }}
+    >
       <CloseButton clearState={clearState} />
       {highlightedText}
-      <ExplainButton
-        setResponse={setResponse}
-        promptText={highlightedText}
-      />
+      <ExplainButton setResponse={setResponse} promptText={highlightedText} />
       <ChatWindow response={response} />
     </div>
   )

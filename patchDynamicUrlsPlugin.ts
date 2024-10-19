@@ -10,7 +10,7 @@ export const patchDynamicUrlsPlugin = {
     const manifestContent: ManifestV3 = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
 
     if (manifestContent.web_accessible_resources) {
-      manifestContent.web_accessible_resources = manifestContent.web_accessible_resources.map((resource) => ({
+      manifestContent.web_accessible_resources = manifestContent.web_accessible_resources.map(resource => ({
         ...resource,
         use_dynamic_url: false,
       }))
