@@ -1,0 +1,56 @@
+#popupai-content-container {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  overflow: auto;
+  background-color: #1e1e1e;
+  padding: 8px;
+  padding-top: 24px;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2), 0 2px 4px rgba(255, 255, 255, 0.1);
+  z-index: 9999;
+  color: #d4d4d4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Each child has to be prepended with #popupai-content-container to avoid conflicts with other CSS rules. */
+
+#popupai-content-container .popupai-content-button {
+  background-color: #0ea5e9;
+  color: #1e1e1e;
+  padding: 8px;
+  border-radius: 4px;
+  align-self: flex-center;
+  border: none;
+}
+
+#popupai-content-container .popupai-content-button:disabled {
+  background-color: #bbbbbb;
+  color: #d4d4d4;
+  pointer-events: none;
+}
+
+#popupai-content-container .popupai-close-button {
+  position: absolute;
+  color: #d4d4d4;
+  padding: 4px;
+  top: 0;
+  right: 0;
+  background: none;
+  font-size: 12px;
+  border: none;
+}
+
+#popupai-content-container .popupai-chat-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 200px;
+  width: 384px;
+  background-color: #4a4a4a;
+  color: #d4d4d4;
+  margin-top: 8px;
+  padding: 8px;
+}
