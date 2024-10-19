@@ -29,6 +29,12 @@ declare global {
           systemPrompt: string
         }) => Promise<LanguageModelSession>
       }
+      summarizer: {
+        create: () => Promise<{
+          summarize: (text: string) => Promise<string>
+          destroy: () => Promise<void>
+        }>
+      }
     }
   }
 }

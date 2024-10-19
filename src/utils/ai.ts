@@ -28,3 +28,13 @@ export const getTranslation = async (text: string, setResponse: Dispatch<SetStat
 
   setResponse(translation)
 }
+
+export const getSummary = async (text: string, setResponse: Dispatch<SetStateAction<string>>) => {
+  const summarizer = await window.ai.summarizer.create()
+
+  const summary = await summarizer.summarize(text)
+
+  setResponse(summary)
+
+  await summarizer.destroy()
+}

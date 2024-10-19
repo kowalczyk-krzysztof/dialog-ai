@@ -12,6 +12,6 @@ export const QuickActionContainer = ({ promptText, setResponse }: Props) => (
   <div className='popupai-quick-action-container'>
     <ExplainButton promptText={promptText} setResponse={setResponse} />
     <TranslateButton promptText={promptText} setResponse={setResponse} />
-    <SummarizeButton />
+    <SummarizeButton promptText={promptText} setResponse={setResponse} />
   </div>
 )
