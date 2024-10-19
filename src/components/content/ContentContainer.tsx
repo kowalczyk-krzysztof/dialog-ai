@@ -12,8 +12,6 @@ export const ContentContainer = () => {
   const [highlightedText, setHighlightedText] = useState('')
   const [rect, setRect] = useState<DOMRect>()
   const [response, setResponse] = useState('')
-  // TODO: Handle multiple responses
-  // TODO: Handle multiple user inputs
 
   const clearState = () => {
     setHighlightedText('')
@@ -22,38 +20,66 @@ export const ContentContainer = () => {
     setShowContent(false)
   }
 
-  useEffect(() => {
-    document.addEventListener(
-      'keydown',
-      debounce(async (e: KeyboardEvent) => {
-        const selection = window.getSelection()
-        // TODO: Fix selection logic
-        if (e.ctrlKey && selection && selection.rangeCount > 0) {
-          const text = selection.toString()
-          const range = selection.getRangeAt(0)
-          const rect = range.getBoundingClientRect()
-          setRect(rect)
-          setHighlightedText(text)
+  const adjustPositionWithinBounds = (rect: DOMRect): { top: number; left: number } => {
+    const padding = 10 // Padding from edges of the viewport
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
 
-          if (text.length && rect) {
-            setShowContent(true)
-          }
+    let top = rect.top - 50 // Adjust for vertical offset
+    let left = rect.left
+
+    // Adjust if going out of viewport bounds
+    if (rect.left + rect.width > viewportWidth - padding) {
+      left = viewportWidth - rect.width - padding
+    }
+    if (rect.left < padding) {
+      left = padding
+    }
+
+    if (rect.top + rect.height > viewportHeight - padding) {
+      top = viewportHeight - rect.height - padding
+    }
+    if (rect.top < padding) {
+      top = padding
+    }
+
+    return { top, left }
+  }
+
+  useEffect(() => {
+    const handleKeydown = debounce(async (e: KeyboardEvent) => {
+      const selection = window.getSelection()
+      if (e.ctrlKey && selection && selection.rangeCount > 0) {
+        const text = selection.toString()
+        const range = selection.getRangeAt(0)
+        const rect = range.getBoundingClientRect()
+        setRect(rect)
+        setHighlightedText(text)
+
+        if (text.length && rect) {
+          setShowContent(true)
         }
-      }, 300)
-    )
+      }
+    }, 300)
+
+    document.addEventListener('keydown', handleKeydown)
 
     return () => {
-      document.removeEventListener('keydown', () => {})
+      document.removeEventListener('keydown', handleKeydown)
     }
   }, [])
 
   if (!showContent || !rect) return null
+
+  const { top, left } = adjustPositionWithinBounds(rect)
+
   return (
     <div
       id='popupai-content-container'
       style={{
-        top: `${rect.top - 50}px`,
-        left: `${rect.left}px`,
+        position: 'absolute',
+        top: `${top}px`,
+        left: `${left}px`,
       }}
     >
       <CloseButton clearState={clearState} />
