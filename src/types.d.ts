@@ -15,6 +15,12 @@ declare global {
     [Symbol.asyncIterator](): AsyncIterableIterator<R>
   }
   interface Window {
+    translation: {
+      createTranslator: (languagePair: {
+        sourceLanguage: string
+        targetLanguage: string
+      }) => Promise<{ translate: (text: string) => Promise<string> }>
+    }
     ai: {
       languageModel: {
         create: (options: {

@@ -14,3 +14,17 @@ export const getPromptStreamingResponse = async (text: string, setResponse: Disp
   }
   await session.destroy()
 }
+
+// TODO: Add multi-language support
+// TODO: Add ready checks
+export const getTranslation = async (text: string, setResponse: Dispatch<SetStateAction<string>>) => {
+  const languagePair = {
+    sourceLanguage: 'en', // Or detect the source language with the Language Detection API
+    targetLanguage: 'es',
+  }
+
+  const translator = await window.translation.createTranslator(languagePair)
+  const translation = await translator.translate(text)
+
+  setResponse(translation)
+}
