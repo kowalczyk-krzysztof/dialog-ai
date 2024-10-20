@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const QuickActionContainer = ({ availability, userInput, setUserInput, setConversation }: Props) => (
-  <div className='popupai-quick-action-container'>
+  <div className='popoverai-quick-action-container'>
     <TranslateButton
       userInput={userInput}
       setUserInput={setUserInput}

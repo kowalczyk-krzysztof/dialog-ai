@@ -11,7 +11,11 @@ interface Props {
 
 export const UserInputContainer = ({ userInput, disabled, setUserInput, setConversation }: Props) => (
   <div>
-    <textarea className='popupai-user-input-container' value={userInput} onChange={e => setUserInput(e.target.value)} />
+    <textarea
+      className='popoverai-user-input-container'
+      value={userInput}
+      onChange={e => setUserInput(e.target.value)}
+    />
     <SendPromptButton
       userInput={userInput}
       setUserInput={setUserInput}

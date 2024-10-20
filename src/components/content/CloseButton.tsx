@@ -8,7 +8,7 @@ export const CloseButton = ({ clearState }: Props) => {
   }
 
   return (
-    <button className='popupai-close-button' onClick={handleClose}>
+    <button className='popover-close-button' onClick={handleClose}>
       X
     </button>
   )

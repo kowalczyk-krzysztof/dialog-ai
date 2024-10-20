@@ -27,7 +27,7 @@ export const SendPromptButton = ({ userInput, disabled, setConversation, setUser
   const isDisabled = !userInput || isLoading || disabled
 
   return (
-    <button disabled={isDisabled} onClick={handleGetResponse} className='popupai-quick-action-button'>
+    <button disabled={isDisabled} onClick={handleGetResponse} className='popoverai-quick-action-button'>
       Send Prompt
     </button>
   )

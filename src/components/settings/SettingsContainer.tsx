@@ -1,1 +1,1 @@
-export const SettingsContainer = () => <div>Popup AI</div>
+export const SettingsContainer = () => <div>Popover AI</div>

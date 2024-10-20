@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const ChatWindow = ({ text, isUser }: Props) => (
-  <Markdown className='popupai-response-container' data-isuser={isUser} options={{ disableParsingRawHTML: true }}>
+  <Markdown className='popoverai-response-container' data-isuser={isUser} options={{ disableParsingRawHTML: true }}>
     {text}
   </Markdown>
 )

@@ -82,7 +82,7 @@ export const ContentContainer = () => {
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
-    <dialog id='popupai-content-container' ref={containerRef}>
+    <dialog id='popoverai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
       <div
         style={{
