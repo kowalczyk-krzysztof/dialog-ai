@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { v4 } from 'uuid'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
@@ -8,13 +9,15 @@ import { CloseButton } from './CloseButton'
 import { debounce } from '../../utils/debounce'
 
 import { checkAvailability } from '../../utils/ai'
-import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
+import { type Conversation, type AIAvailability } from '../../types/types'
 
 export const ContentContainer = () => {
+  const conversationId = v4()
   const containerRef = useRef<HTMLDialogElement>(null)
+
   const [conversation, setConversation] = useState<Conversation>({
-    id: '',
-    messages: [{ id: '', text: '', role: MessageRole.SYSTEM }],
+    id: conversationId,
+    messages: [],
   })
   const [currentUserInput, setCurrentUserInput] = useState('')
   const [quickActions, setQuickActions] = useState<AIAvailability>({
@@ -50,6 +53,11 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     const handleKeydown = debounce(async (e: KeyboardEvent) => {
+      const container = containerRef.current
+      if (container?.open) {
+        return
+      }
+
       const selection = window.getSelection()
       if (e.ctrlKey && selection && selection.rangeCount > 0) {
         const text = selection.toString()
@@ -57,8 +65,7 @@ export const ContentContainer = () => {
         const { top, left } = range.getBoundingClientRect()
         setCurrentUserInput(text)
 
-        // TODO: Fix - currently when there is text selected already and you press CTRL, the dialog will open with the previous selection. You need to clear the selection first.
-        if (text.length && containerRef.current) {
+        if (text.length && container) {
           const dialogHeight = containerRef.current.getBoundingClientRect().height
           containerRef.current.style.top = `${top + window.scrollY - dialogHeight - 10}px`
           containerRef.current.style.left = `${left + window.scrollX}px`
@@ -74,20 +81,36 @@ export const ContentContainer = () => {
     }
   }, [])
 
+  // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
     <dialog id='popupai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
-      {conversation.messages.map(m => {
-        return <ChatWindow text={m.text} />
-      })}
-      <QuickActionContainer
-        conversation={conversation}
-        setConversation={setConversation}
-        quickActions={quickActions}
-        currentUserInput={currentUserInput}
-        setCurrentUserInput={setCurrentUserInput}
-      />
-      <UserInputContainer text={currentUserInput} setText={setCurrentUserInput} />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          height: '300px',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          width: '364px',
+          boxSizing: 'border-box',
+        }}
+      >
+        {conversation.messages.map(({ role, id, text }) => {
+          const isUser = role === 'user'
+          return <ChatWindow text={text} isUser={isUser} key={id} />
+        })}
+      </div>
+      <div>
+        <QuickActionContainer
+          setConversation={setConversation}
+          quickActions={quickActions}
+          currentUserInput={currentUserInput}
+          setCurrentUserInput={setCurrentUserInput}
+        />
+        <UserInputContainer currentUserInput={currentUserInput} setCurrentUserInput={setCurrentUserInput} />
+      </div>
     </dialog>
   )
 }

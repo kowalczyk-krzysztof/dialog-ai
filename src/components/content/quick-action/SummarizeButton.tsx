@@ -6,27 +6,20 @@ import type { Conversation } from '../../../types/types'
 
 interface Props {
   promptText: string
-  conversation: Conversation
   setConversation: Dispatch<SetStateAction<Conversation>>
   disabled: boolean
   setCurrentUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const SummarizeButton = ({
-  setConversation,
-  promptText,
-  disabled,
-  conversation,
-  setCurrentUserInput,
-}: Props) => {
+export const SummarizeButton = ({ setConversation, promptText, disabled, setCurrentUserInput }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
     setIsLoading(true)
     setCurrentUserInput('')
-    const session = await getSummary(promptText, setConversation, conversation)
+    const session = await getSummary(promptText, setConversation)
     setIsLoading(false)
-
+    // TODO: Continue session
     await session.destroy()
   }
 

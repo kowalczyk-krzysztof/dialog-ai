@@ -1,10 +1,14 @@
 import type { Dispatch, SetStateAction } from 'react'
 
 interface Props {
-  text: string
-  setText: Dispatch<SetStateAction<string>>
+  currentUserInput: string
+  setCurrentUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const UserInputContainer = ({ text, setText }: Props) => (
-  <textarea className='popupai-user-input-container' value={text} onChange={e => setText(e.target.value)} />
+export const UserInputContainer = ({ currentUserInput, setCurrentUserInput }: Props) => (
+  <textarea
+    className='popupai-user-input-container'
+    value={currentUserInput}
+    onChange={e => setCurrentUserInput(e.target.value)}
+  />
 )

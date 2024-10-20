@@ -8,6 +8,7 @@ import {
   AIAvailabilityString,
   MessageRole,
 } from '../types/types'
+import { v4 } from 'uuid'
 
 // TODO: Add error handling
 // class AIResponseError implements Error {
@@ -22,9 +23,6 @@ import {
 //     this.message = message
 //   }
 // }
-
-// TODO: Fix the isFirst logic
-const isFirstMessage = (conversation: Conversation) => conversation.messages.length === 1
 
 const isPromptAvailable = async () => {
   if (window?.ai?.languageModel) {
@@ -65,9 +63,13 @@ export const checkAvailability = async (): Promise<AIAvailability> => {
 // TODO: Add unsupported language handling
 export const getPromptStreamingResponse = async (
   text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  conversation: Conversation
+  setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<LanguageModelSession> => {
+  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  setConversation(c => ({
+    ...c,
+    messages: [...c.messages, userMessage],
+  }))
   const session = await window.ai.languageModel.create({
     systemPrompt: language.en.ai.explainSystemPrompt,
   })
@@ -77,25 +79,34 @@ export const getPromptStreamingResponse = async (
   //     // throw new AIResponseError(AIType.PROMPT, language.en.errors.ai.promptTooLong)
   //   }
 
+  const messageId = v4()
+
+  const response = { id: messageId, text: '', role: MessageRole.SYSTEM }
+  setConversation(conversation => ({
+    ...conversation,
+    messages: [...conversation.messages, response],
+  }))
+
   const stream = await session.promptStreaming(text)
   for await (const chunk of stream) {
-    const isFirst = isFirstMessage(conversation)
-    const response = { id: 'system', text: chunk.trim(), role: MessageRole.SYSTEM }
-    setConversation({
+    setConversation(conversation => ({
       ...conversation,
-      messages: isFirst ? [response] : [...conversation.messages, response],
-    })
+      messages: conversation.messages.map(message =>
+        message.id === messageId ? { ...message, text: chunk.trim() } : message
+      ),
+    }))
   }
 
   return session
 }
 
 // TODO: Add multi-language support
-export const getTranslation = async (
-  text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  conversation: Conversation
-) => {
+export const getTranslation = async (text: string, setConversation: Dispatch<SetStateAction<Conversation>>) => {
+  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  setConversation(c => ({
+    ...c,
+    messages: [...c.messages, userMessage],
+  }))
   const languagePair = {
     sourceLanguage: 'en', // Or detect the source language with the Language Detection API
     targetLanguage: 'es',
@@ -104,30 +115,37 @@ export const getTranslation = async (
   const translator = await window.translation.createTranslator(languagePair)
   const translation = await translator.translate(text)
 
-  const isFirst = isFirstMessage(conversation)
-  const response = { id: 'system', text: translation, role: MessageRole.SYSTEM }
+  const messageId = v4()
 
-  setConversation({
+  const response = { id: messageId, text: translation, role: MessageRole.SYSTEM }
+
+  setConversation(conversation => ({
     ...conversation,
-    messages: isFirst ? [response] : [...conversation.messages, response],
-  })
+    messages: [...conversation.messages, response],
+  }))
 }
 
 export const getSummary = async (
   text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  conversation: Conversation
+  setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<SummarizeModelSession> => {
+  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  setConversation(c => ({
+    ...c,
+    messages: [...c.messages, userMessage],
+  }))
   const summarizer = await window.ai.summarizer.create()
 
   const summary = await summarizer.summarize(text)
-  const isFirst = isFirstMessage(conversation)
-  const response = { id: 'system', text: summary, role: MessageRole.SYSTEM }
 
-  setConversation({
+  const messageId = v4()
+
+  const response = { id: messageId, text: summary, role: MessageRole.SYSTEM }
+
+  setConversation(conversation => ({
     ...conversation,
-    messages: isFirst ? [response] : [...conversation.messages, response],
-  })
+    messages: [...conversation.messages, response],
+  }))
 
   return summarizer
 }

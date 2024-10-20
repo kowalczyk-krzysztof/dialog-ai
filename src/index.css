@@ -1,9 +1,9 @@
 /* Applies styles only when dialog is open. Without this rule, the dialog would be visible even when it's closed. */
+
 #popupai-content-container[open] {
   position: absolute;
   width: 400px;
   height: 400px;
-  /* TODO: Proper overflow - simple overflow: scroll breaks the container */
   background-color: #1e1e1e;
   padding: 8px;
   padding-top: 24px;
@@ -57,13 +57,15 @@
 #popupai-content-container .popupai-response-container {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  height: 200px;
   width: 384px;
-  background-color: #4a4a4a;
   color: #d4d4d4;
   margin-top: 8px;
   padding: 8px;
+  background-color: #4a4a4a;
+}
+
+#popupai-content-container .popupai-response-container[data-isuser="true"] {
+  background-color: #707070;
 }
 
 #popupai-content-container .popupai-user-input-container {
@@ -72,7 +74,7 @@
   overflow-y: scroll;
   height: 100px;
   width: 384px;
-  background-color: #4a4a4a;
+  background-color: #707070;
   color: #d4d4d4;
   margin-top: 8px;
   padding: 8px;
