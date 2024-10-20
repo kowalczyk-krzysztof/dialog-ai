@@ -18,7 +18,7 @@ export const ContentContainer = () => {
     id: conversationId,
     messages: [],
   })
-  const [currentUserInput, setCurrentUserInput] = useState('')
+  const [userInput, setUserInput] = useState('')
   const [quickActions, setQuickActions] = useState<AIAvailability>({
     prompt: {
       available: false,
@@ -62,7 +62,7 @@ export const ContentContainer = () => {
         const text = selection.toString()
         const range = selection.getRangeAt(0)
         const { top, left } = range.getBoundingClientRect()
-        setCurrentUserInput(text)
+        setUserInput(text)
 
         if (text.length && container) {
           const dialogHeight = containerRef.current.getBoundingClientRect().height
@@ -105,14 +105,14 @@ export const ContentContainer = () => {
         <QuickActionContainer
           setConversation={setConversation}
           quickActions={quickActions}
-          currentUserInput={currentUserInput}
-          setCurrentUserInput={setCurrentUserInput}
+          userInput={userInput}
+          setUserInput={setUserInput}
         />
         <UserInputContainer
-          currentUserInput={currentUserInput}
-          setCurrentUserInput={setCurrentUserInput}
           setConversation={setConversation}
           disabled={!quickActions.prompt.available}
+          userInput={userInput}
+          setUserInput={setUserInput}
         />
       </div>
     </dialog>

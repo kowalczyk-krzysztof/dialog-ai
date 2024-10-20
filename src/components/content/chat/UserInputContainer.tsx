@@ -3,22 +3,18 @@ import type { Conversation } from '../../../types/types'
 import { SendPromptButton } from './SendPromptButton'
 
 interface Props {
-  currentUserInput: string
+  userInput: string
+  setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   disabled: boolean
-  setCurrentUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const UserInputContainer = ({ currentUserInput, setCurrentUserInput, disabled, setConversation }: Props) => (
+export const UserInputContainer = ({ userInput, setUserInput, disabled, setConversation }: Props) => (
   <div>
-    <textarea
-      className='popupai-user-input-container'
-      value={currentUserInput}
-      onChange={e => setCurrentUserInput(e.target.value)}
-    />
+    <textarea className='popupai-user-input-container' value={userInput} onChange={e => setUserInput(e.target.value)} />
     <SendPromptButton
-      promptText={currentUserInput}
-      setCurrentUserInput={setCurrentUserInput}
+      userInput={userInput}
+      setUserInput={setUserInput}
       disabled={disabled}
       setConversation={setConversation}
     />

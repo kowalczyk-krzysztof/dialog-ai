@@ -3,20 +3,20 @@ import type { LanguageModelSession, Conversation } from '../../../types/types'
 import { getPromptStreamingResponse } from '../../../utils/ai'
 
 interface Props {
-  promptText: string
+  userInput: string
+  setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   disabled: boolean
-  setCurrentUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const SendPromptButton = ({ setConversation, promptText, disabled, setCurrentUserInput }: Props) => {
+export const SendPromptButton = ({ setConversation, userInput, disabled, setUserInput }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [session, setSession] = useState<LanguageModelSession | undefined>()
 
   const handleGetResponse = async () => {
     setIsLoading(true)
-    setCurrentUserInput('')
-    const aiSession = await getPromptStreamingResponse(promptText, setConversation)
+    setUserInput('')
+    const aiSession = await getPromptStreamingResponse(userInput, setConversation)
     setSession(aiSession)
     setIsLoading(false)
     // TODO: Continue session
@@ -24,7 +24,7 @@ export const SendPromptButton = ({ setConversation, promptText, disabled, setCur
     console.log(session)
   }
 
-  const isDisabled = !promptText || isLoading || disabled
+  const isDisabled = !userInput || isLoading || disabled
 
   return (
     <button disabled={isDisabled} onClick={handleGetResponse} className='popupai-quick-action-button'>

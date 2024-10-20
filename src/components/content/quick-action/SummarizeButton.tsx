@@ -5,25 +5,25 @@ import language from '../../../lib/language'
 import type { Conversation } from '../../../types/types'
 
 interface Props {
-  promptText: string
+  userInput: string
+  setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   disabled: boolean
-  setCurrentUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const SummarizeButton = ({ setConversation, promptText, disabled, setCurrentUserInput }: Props) => {
+export const SummarizeButton = ({ setConversation, userInput, disabled, setUserInput }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
     setIsLoading(true)
-    setCurrentUserInput('')
-    const session = await getSummary(promptText, setConversation)
+    setUserInput('')
+    const session = await getSummary(userInput, setConversation)
     setIsLoading(false)
     // TODO: Continue session
     await session.destroy()
   }
 
-  const isDisabled = !promptText || isLoading || disabled
+  const isDisabled = !userInput || isLoading || disabled
 
   return (
     <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
