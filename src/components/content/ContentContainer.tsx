@@ -1,49 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChatWindow } from './chat/ChatWindow'
 import { debounce } from '../../utils/debounce'
 import { CloseButton } from './CloseButton'
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
 
-export const contentContainerId = 'popupai-content-container'
-
 export const ContentContainer = () => {
-  const [showContent, setShowContent] = useState(false)
   const [highlightedText, setHighlightedText] = useState('')
-  const [rect, setRect] = useState<DOMRect>()
   const [response, setResponse] = useState('')
+  const containerRef = useRef<HTMLDialogElement>(null)
 
   const clearState = () => {
+    if (containerRef.current) {
+      console.log('TODO: Fix closing dialog')
+      containerRef.current.close()
+    }
     setHighlightedText('')
-    setRect(undefined)
     setResponse('')
-    setShowContent(false)
-  }
-
-  const adjustPositionWithinBounds = (rect: DOMRect): { top: number; left: number } => {
-    const padding = 10 // Padding from edges of the viewport
-    const viewportWidth = window.innerWidth
-    const viewportHeight = window.innerHeight
-
-    let top = rect.top - 50 // Adjust for vertical offset
-    let left = rect.left
-
-    // Adjust if going out of viewport bounds
-    if (rect.left + rect.width > viewportWidth - padding) {
-      left = viewportWidth - rect.width - padding
-    }
-    if (rect.left < padding) {
-      left = padding
-    }
-
-    if (rect.top + rect.height > viewportHeight - padding) {
-      top = viewportHeight - rect.height - padding
-    }
-    if (rect.top < padding) {
-      top = padding
-    }
-
-    return { top, left }
   }
 
   useEffect(() => {
@@ -52,12 +25,14 @@ export const ContentContainer = () => {
       if (e.ctrlKey && selection && selection.rangeCount > 0) {
         const text = selection.toString()
         const range = selection.getRangeAt(0)
-        const rect = range.getBoundingClientRect()
-        setRect(rect)
+        const { top, left } = range.getBoundingClientRect()
         setHighlightedText(text)
 
-        if (text.length && rect) {
-          setShowContent(true)
+        if (text.length && containerRef.current) {
+          const dialogHeight = containerRef.current.getBoundingClientRect().height
+          containerRef.current.style.top = `${top + window.scrollY - dialogHeight - 10}px`
+          containerRef.current.style.left = `${left + window.scrollX}px`
+          containerRef.current.show()
         }
       }
     }, 300)
@@ -69,23 +44,12 @@ export const ContentContainer = () => {
     }
   }, [])
 
-  if (!showContent || !rect) return null
-
-  const { top, left } = adjustPositionWithinBounds(rect)
-
   return (
-    <div
-      id='popupai-content-container'
-      style={{
-        position: 'absolute',
-        top: `${top}px`,
-        left: `${left}px`,
-      }}
-    >
+    <dialog id='popupai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
-      <UserInputContainer text={highlightedText} setText={setHighlightedText} />
-      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} />
       <ChatWindow text={response} />
-    </div>
+      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} />
+      <UserInputContainer text={highlightedText} setText={setHighlightedText} />
+    </dialog>
   )
 }
