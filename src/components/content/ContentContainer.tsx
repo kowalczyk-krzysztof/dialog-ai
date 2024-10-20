@@ -8,7 +8,7 @@ import { CloseButton } from './CloseButton'
 import { debounce } from '../../utils/debounce'
 
 import { checkAvailability } from '../../utils/ai'
-import { type Conversation, type AIAvailability } from '../../types/types'
+import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
 
 export const ContentContainer = () => {
   const conversationId = window.crypto.randomUUID()
@@ -97,7 +97,7 @@ export const ContentContainer = () => {
         }}
       >
         {conversation.messages.map(({ role, id, text }) => {
-          const isUser = role === 'user'
+          const isUser = role === MessageRole.USER
           return <ChatWindow text={text} isUser={isUser} key={id} />
         })}
       </div>
@@ -108,7 +108,12 @@ export const ContentContainer = () => {
           currentUserInput={currentUserInput}
           setCurrentUserInput={setCurrentUserInput}
         />
-        <UserInputContainer currentUserInput={currentUserInput} setCurrentUserInput={setCurrentUserInput} />
+        <UserInputContainer
+          currentUserInput={currentUserInput}
+          setCurrentUserInput={setCurrentUserInput}
+          setConversation={setConversation}
+          disabled={!quickActions.prompt.available}
+        />
       </div>
     </dialog>
   )

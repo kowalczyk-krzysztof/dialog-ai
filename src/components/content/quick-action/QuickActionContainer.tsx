@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
 import type { AIAvailability, Conversation } from '../../../types/types'
-import { ExplainButton } from './ExplainButton'
 import { TranslateButton } from './TranslateButton'
 import { SummarizeButton } from './SummarizeButton'
 
@@ -18,12 +17,6 @@ export const QuickActionContainer = ({
   setCurrentUserInput,
 }: Props) => (
   <div className='popupai-quick-action-container'>
-    <ExplainButton
-      promptText={currentUserInput}
-      setConversation={setConversation}
-      disabled={!quickActions.prompt.available}
-      setCurrentUserInput={setCurrentUserInput}
-    />
     <TranslateButton
       promptText={currentUserInput}
       setConversation={setConversation}

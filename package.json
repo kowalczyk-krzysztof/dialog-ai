@@ -1,11 +1,14 @@
 {
   "name": "popup-ai",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "license": "MIT",
   "description": "Highlight text and chat with Chrome AI.",
   "author": "Krzysztof Kowalczyk <kowalczykkrzysztof893@gmail.com> (https://github.com/kowalczyk-krzysztof)",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -14,6 +17,7 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "markdown-to-jsx": "^7.5.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

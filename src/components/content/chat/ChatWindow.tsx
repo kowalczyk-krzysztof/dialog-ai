@@ -1,10 +1,12 @@
+import Markdown from 'markdown-to-jsx'
+
 interface Props {
   text: string
   isUser: boolean
 }
 
 export const ChatWindow = ({ text, isUser }: Props) => (
-  <div className='popupai-response-container' data-isuser={isUser}>
+  <Markdown className='popupai-response-container' data-isuser={isUser} options={{ disableParsingRawHTML: true }}>
     {text}
-  </div>
+  </Markdown>
 )

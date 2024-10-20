@@ -20,10 +20,10 @@ declare global {
     }
     ai: {
       languageModel: {
-        create: (options: {
+        create: (options?: {
           temperature?: number
           topK?: number
-          systemPrompt: string
+          systemPrompt?: string
         }) => Promise<LanguageModelSession>
         capabilities: () => Promise<PromptCapabilities>
       }

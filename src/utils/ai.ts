@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from 'react'
-import language from '../lib/language'
 import {
   type AIAvailability,
   type Conversation,
@@ -64,14 +63,12 @@ export const getPromptStreamingResponse = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<LanguageModelSession> => {
-  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  const userMessage = { id: window.crypto.randomUUID(), text, role: MessageRole.USER }
   setConversation(c => ({
     ...c,
     messages: [...c.messages, userMessage],
   }))
-  const session = await window.ai.languageModel.create({
-    systemPrompt: language.en.ai.explainSystemPrompt,
-  })
+  const session = await window.ai.languageModel.create()
 
   //   const promptTokens = await session.countPromptTokens(text)
   //   if (promptTokens > session.tokensLeft) {
@@ -101,7 +98,7 @@ export const getPromptStreamingResponse = async (
 
 // TODO: Add multi-language support
 export const getTranslation = async (text: string, setConversation: Dispatch<SetStateAction<Conversation>>) => {
-  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  const userMessage = { id: window.crypto.randomUUID(), text, role: MessageRole.USER }
   setConversation(c => ({
     ...c,
     messages: [...c.messages, userMessage],
@@ -128,7 +125,7 @@ export const getSummary = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<SummarizeModelSession> => {
-  const userMessage = { id: 'user', text, role: MessageRole.USER }
+  const userMessage = { id: window.crypto.randomUUID(), text, role: MessageRole.USER }
   setConversation(c => ({
     ...c,
     messages: [...c.messages, userMessage],

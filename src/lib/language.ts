@@ -12,8 +12,5 @@ export default {
         promptTooLong: 'The text is too long. Please provide a shorter text.',
       },
     },
-    ai: {
-      explainSystemPrompt: 'You are a helpful assistant. Explain the text you are given in a short an concise manner.',
-    },
   },
 }
