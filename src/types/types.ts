@@ -53,8 +53,8 @@ export interface SummarizeModelSession {
 }
 
 export interface TranslationLanguagePair {
-  sourceLanguage: string
-  targetLanguage: string
+  sourceLanguage: SupportedLanguages
+  targetLanguage: SupportedLanguages
 }
 
 export enum MessageRole {
@@ -71,4 +71,26 @@ export interface Message {
 export interface Conversation {
   id: string
   messages: Message[]
+}
+
+export enum SupportedLanguages {
+  ARABIC = 'ar',
+  BENGALI = 'bn',
+  HINDI = 'hi',
+  ENGLISH = 'en',
+  GERMAN = 'de',
+  SPANISH = 'es',
+  FRENCH = 'fr',
+  ITALIAN = 'it',
+  DUTCH = 'nl',
+  POLISH = 'pl',
+  PORTUGUESE = 'pt',
+  RUSSIAN = 'ru',
+  JAPANESE = 'ja',
+  KOREAN = 'ko',
+  THAI = 'th',
+  TURKISH = 'tr',
+  VIETNAMESE = 'vi',
+  CHINESE_SIMPLIFIED = 'zh',
+  CHINESE_TRADITIONAL = 'zh-Hant',
 }

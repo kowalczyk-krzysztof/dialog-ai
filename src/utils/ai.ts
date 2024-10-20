@@ -6,7 +6,10 @@ import {
   type SummarizeModelSession,
   AIAvailabilityString,
   MessageRole,
+  type TranslationLanguagePair,
+  SupportedLanguages,
 } from '../types/types'
+import language from '../lib/language'
 
 // TODO: Add error handling
 // class AIResponseError implements Error {
@@ -21,6 +24,22 @@ import {
 //     this.message = message
 //   }
 // }
+
+const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
+  lang => lang !== SupportedLanguages.ENGLISH
+) as Array<SupportedLanguages>
+
+const isValidTranslationLanguagePair = (languagePair: TranslationLanguagePair) => {
+  const { sourceLanguage, targetLanguage } = languagePair
+
+  if (sourceLanguage === targetLanguage) return false
+  if (sourceLanguage === SupportedLanguages.ENGLISH) {
+    return nonEnglishLanguages.includes(targetLanguage)
+  }
+  if (targetLanguage === SupportedLanguages.ENGLISH) {
+    return nonEnglishLanguages.includes(sourceLanguage)
+  }
+}
 
 const isPromptAvailable = async () => {
   if (window?.ai?.languageModel) {
@@ -96,19 +115,32 @@ export const getPromptStreamingResponse = async (
   return session
 }
 
-// TODO: Add multi-language support
-export const getTranslation = async (text: string, setConversation: Dispatch<SetStateAction<Conversation>>) => {
+export const getTranslation = async (
+  text: string,
+  setConversation: Dispatch<SetStateAction<Conversation>>,
+  languagePair: TranslationLanguagePair
+) => {
   const userMessage = { id: window.crypto.randomUUID(), text, role: MessageRole.USER }
   setConversation(c => ({
     ...c,
     messages: [...c.messages, userMessage],
   }))
-  const languagePair = {
-    sourceLanguage: 'en', // Or detect the source language with the Language Detection API
-    targetLanguage: 'es',
+
+  const isValidPair = isValidTranslationLanguagePair(languagePair)
+  const canTranslate = await window.translation.canTranslate(languagePair)
+  if (!isValidPair || canTranslate !== AIAvailabilityString.READILY) {
+    setConversation(conversation => ({
+      ...conversation,
+      messages: [
+        ...conversation.messages,
+        { id: messageId, text: language.en.errors.ai.invalidLanguagePair, role: MessageRole.SYSTEM },
+      ],
+    }))
+    return
   }
 
   const translator = await window.translation.createTranslator(languagePair)
+
   const translation = await translator.translate(text)
 
   const messageId = window.crypto.randomUUID()
