@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { ContentContainer } from './components/content/ContentContainer'
 import './index.css'
 
-function injectReactApp() {
+const injectReactApp = () => {
   const root = document.createElement('div')
   root.id = 'popupai-content-root'
   document.body.appendChild(root)
@@ -15,9 +15,17 @@ function injectReactApp() {
   )
 }
 
-// Ensure the DOM is fully loaded before appending the element
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', injectReactApp)
-} else {
-  injectReactApp()
+const load = () => {
+  if (document.readyState === 'loading') {
+    const domContentLoadedHandler = () => {
+      injectReactApp()
+      document.removeEventListener('DOMContentLoaded', domContentLoadedHandler)
+    }
+
+    document.addEventListener('DOMContentLoaded', domContentLoadedHandler)
+  } else {
+    injectReactApp()
+  }
 }
+
+load()
