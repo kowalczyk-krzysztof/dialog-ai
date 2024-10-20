@@ -8,12 +8,15 @@ import { CloseButton } from './CloseButton'
 import { debounce } from '../../utils/debounce'
 
 import { checkAvailability } from '../../utils/ai'
-import type { AIAvailability } from '../../types/types'
+import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
 
 export const ContentContainer = () => {
   const containerRef = useRef<HTMLDialogElement>(null)
-  const [highlightedText, setHighlightedText] = useState('')
-  const [response, setResponse] = useState('')
+  const [conversation, setConversation] = useState<Conversation>({
+    id: '',
+    messages: [{ id: '', text: '', role: MessageRole.SYSTEM }],
+  })
+  const [currentUserInput, setCurrentUserInput] = useState('')
   const [quickActions, setQuickActions] = useState<AIAvailability>({
     prompt: {
       available: false,
@@ -28,8 +31,10 @@ export const ContentContainer = () => {
 
   const clearState = () => {
     if (containerRef.current) {
-      setHighlightedText('')
-      setResponse('')
+      setConversation({
+        id: '',
+        messages: [],
+      })
       containerRef.current.close()
     }
   }
@@ -50,7 +55,7 @@ export const ContentContainer = () => {
         const text = selection.toString()
         const range = selection.getRangeAt(0)
         const { top, left } = range.getBoundingClientRect()
-        setHighlightedText(text)
+        setCurrentUserInput(text)
 
         // TODO: Fix - currently when there is text selected already and you press CTRL, the dialog will open with the previous selection. You need to clear the selection first.
         if (text.length && containerRef.current) {
@@ -72,9 +77,17 @@ export const ContentContainer = () => {
   return (
     <dialog id='popupai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
-      <ChatWindow text={response} />
-      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} quickActions={quickActions} />
-      <UserInputContainer text={highlightedText} setText={setHighlightedText} />
+      {conversation.messages.map(m => {
+        return <ChatWindow text={m.text} />
+      })}
+      <QuickActionContainer
+        conversation={conversation}
+        setConversation={setConversation}
+        quickActions={quickActions}
+        currentUserInput={currentUserInput}
+        setCurrentUserInput={setCurrentUserInput}
+      />
+      <UserInputContainer text={currentUserInput} setText={setCurrentUserInput} />
     </dialog>
   )
 }

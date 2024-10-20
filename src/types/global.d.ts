@@ -28,10 +28,7 @@ declare global {
         capabilities: () => Promise<PromptCapabilities>
       }
       summarizer: {
-        create: () => Promise<{
-          summarize: (text: string) => Promise<string>
-          destroy: () => Promise<void>
-        }>
+        create: () => Promise<SummarizeModelSession>
         capabilities: () => Promise<BaseCapabilities>
       }
     }

@@ -47,7 +47,28 @@ export interface LanguageModelSession {
   countPromptTokens: (prompt: string) => Promise<number>
 }
 
+export interface SummarizeModelSession {
+  summarize: (text: string) => Promise<string>
+  destroy: () => Promise<void>
+}
+
 export interface TranslationLanguagePair {
   sourceLanguage: string
   targetLanguage: string
+}
+
+export enum MessageRole {
+  USER = 'user',
+  SYSTEM = 'system',
+}
+
+export interface Message {
+  id: string
+  text: string
+  role: MessageRole
+}
+
+export interface Conversation {
+  id: string
+  messages: Message[]
 }
