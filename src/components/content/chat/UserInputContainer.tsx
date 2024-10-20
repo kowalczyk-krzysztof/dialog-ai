@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
+import type { Conversation } from '../../../types/types'
 import { SendPromptButton } from './SendPromptButton'
-import { Conversation } from '../../../types/types'
 
 interface Props {
   currentUserInput: string

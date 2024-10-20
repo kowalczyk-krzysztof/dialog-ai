@@ -1,5 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
-import { LanguageModelSession, type Conversation } from '../../../types/types'
+import type { LanguageModelSession, Conversation } from '../../../types/types'
 import { getPromptStreamingResponse } from '../../../utils/ai'
 
 interface Props {
