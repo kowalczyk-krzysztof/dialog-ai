@@ -19,7 +19,7 @@ export const ContentContainer = () => {
     messages: [],
   })
   const [userInput, setUserInput] = useState('')
-  const [quickActions, setQuickActions] = useState<AIAvailability>({
+  const [availability, setAvailability] = useState<AIAvailability>({
     prompt: {
       available: false,
     },
@@ -44,7 +44,7 @@ export const ContentContainer = () => {
   useEffect(() => {
     const getAvailability = async () => {
       const response = await checkAvailability()
-      setQuickActions(response)
+      setAvailability(response)
     }
 
     getAvailability()
@@ -104,13 +104,13 @@ export const ContentContainer = () => {
       <div>
         <QuickActionContainer
           setConversation={setConversation}
-          quickActions={quickActions}
+          availability={availability}
           userInput={userInput}
           setUserInput={setUserInput}
         />
         <UserInputContainer
           setConversation={setConversation}
-          disabled={!quickActions.prompt.available}
+          disabled={!availability.prompt.available}
           userInput={userInput}
           setUserInput={setUserInput}
         />

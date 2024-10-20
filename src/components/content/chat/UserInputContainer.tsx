@@ -4,12 +4,12 @@ import { SendPromptButton } from './SendPromptButton'
 
 interface Props {
   userInput: string
+  disabled: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
-  disabled: boolean
 }
 
-export const UserInputContainer = ({ userInput, setUserInput, disabled, setConversation }: Props) => (
+export const UserInputContainer = ({ userInput, disabled, setUserInput, setConversation }: Props) => (
   <div>
     <textarea className='popupai-user-input-container' value={userInput} onChange={e => setUserInput(e.target.value)} />
     <SendPromptButton

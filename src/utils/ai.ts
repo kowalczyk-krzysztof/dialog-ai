@@ -100,8 +100,8 @@ export const getPromptStreamingResponse = async (
 
 export const getTranslation = async (
   text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  languagePair: TranslationLanguagePair
+  languagePair: TranslationLanguagePair,
+  setConversation: Dispatch<SetStateAction<Conversation>>
 ) => {
   const reponseId = window.crypto.randomUUID()
   const userMessageId = window.crypto.randomUUID()

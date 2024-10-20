@@ -6,12 +6,12 @@ import { SupportedLanguages, type Conversation } from '../../../types/types'
 
 interface Props {
   userInput: string
+  disabled: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
-  disabled: boolean
 }
 
-export const TranslateButton = ({ setConversation, userInput, disabled, setUserInput }: Props) => {
+export const TranslateButton = ({ userInput, disabled, setUserInput, setConversation }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [sourceLanguage, setSourceLanguage] = useState(SupportedLanguages.ENGLISH)
   const [targetLanguage, setTargetLanguage] = useState(SupportedLanguages.SPANISH)
@@ -19,7 +19,7 @@ export const TranslateButton = ({ setConversation, userInput, disabled, setUserI
   const handleGetResponse = async () => {
     setUserInput('')
     setIsLoading(true)
-    await getTranslation(userInput, setConversation, { sourceLanguage, targetLanguage })
+    await getTranslation(userInput, { sourceLanguage, targetLanguage }, setConversation)
     setIsLoading(false)
   }
 

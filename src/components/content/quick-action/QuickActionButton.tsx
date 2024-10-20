@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react'
 
 interface Props extends PropsWithChildren {
-  onClick: () => void
   disabled?: boolean
+  onClick: () => void
 }
 
 export const QuickActionButton = ({ children, disabled, onClick }: Props) => (

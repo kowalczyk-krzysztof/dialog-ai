@@ -4,25 +4,25 @@ import { TranslateButton } from './TranslateButton'
 import { SummarizeButton } from './SummarizeButton'
 
 interface Props {
-  quickActions: AIAvailability
+  availability: AIAvailability
   userInput: string
   setConversation: Dispatch<SetStateAction<Conversation>>
   setUserInput: Dispatch<SetStateAction<string>>
 }
 
-export const QuickActionContainer = ({ setConversation, quickActions, userInput, setUserInput }: Props) => (
+export const QuickActionContainer = ({ availability, userInput, setUserInput, setConversation }: Props) => (
   <div className='popupai-quick-action-container'>
     <TranslateButton
       userInput={userInput}
       setUserInput={setUserInput}
       setConversation={setConversation}
-      disabled={!quickActions.translation.available}
+      disabled={!availability.translation.available}
     />
     <SummarizeButton
       userInput={userInput}
       setUserInput={setUserInput}
       setConversation={setConversation}
-      disabled={!quickActions.summarization.available}
+      disabled={!availability.summarization.available}
     />
   </div>
 )

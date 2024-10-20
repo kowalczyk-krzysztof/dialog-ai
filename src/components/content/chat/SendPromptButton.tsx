@@ -4,12 +4,12 @@ import { getPromptStreamingResponse } from '../../../utils/ai'
 
 interface Props {
   userInput: string
+  disabled: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
-  disabled: boolean
 }
 
-export const SendPromptButton = ({ setConversation, userInput, disabled, setUserInput }: Props) => {
+export const SendPromptButton = ({ userInput, disabled, setConversation, setUserInput }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [session, setSession] = useState<LanguageModelSession | undefined>()
 
@@ -21,7 +21,7 @@ export const SendPromptButton = ({ setConversation, userInput, disabled, setUser
     setIsLoading(false)
     // TODO: Continue session
     await aiSession.destroy()
-    console.log(session)
+    return session
   }
 
   const isDisabled = !userInput || isLoading || disabled
