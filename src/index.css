@@ -1,4 +1,5 @@
-#popupai-content-container {
+/* Applies styles only when dialog is open. Without this rule, the dialog would be visible even when it's closed. */
+#popupai-content-container[open] {
   position: absolute;
   width: 400px;
   height: 400px;

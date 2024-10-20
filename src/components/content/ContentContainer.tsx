@@ -12,11 +12,10 @@ export const ContentContainer = () => {
 
   const clearState = () => {
     if (containerRef.current) {
-      console.log('TODO: Fix closing dialog')
+      setHighlightedText('')
+      setResponse('')
       containerRef.current.close()
     }
-    setHighlightedText('')
-    setResponse('')
   }
 
   useEffect(() => {
@@ -28,6 +27,7 @@ export const ContentContainer = () => {
         const { top, left } = range.getBoundingClientRect()
         setHighlightedText(text)
 
+        // TODO: Fix - currently when there is text selected already and you press CTRL, the dialog will open with the previous selection. You need to clear the selection first.
         if (text.length && containerRef.current) {
           const dialogHeight = containerRef.current.getBoundingClientRect().height
           containerRef.current.style.top = `${top + window.scrollY - dialogHeight - 10}px`
