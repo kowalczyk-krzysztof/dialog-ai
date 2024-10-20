@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { v4 } from 'uuid'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
@@ -12,7 +11,7 @@ import { checkAvailability } from '../../utils/ai'
 import { type Conversation, type AIAvailability } from '../../types/types'
 
 export const ContentContainer = () => {
-  const conversationId = v4()
+  const conversationId = window.crypto.randomUUID()
   const containerRef = useRef<HTMLDialogElement>(null)
 
   const [conversation, setConversation] = useState<Conversation>({

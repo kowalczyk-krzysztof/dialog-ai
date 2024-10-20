@@ -8,7 +8,6 @@ import {
   AIAvailabilityString,
   MessageRole,
 } from '../types/types'
-import { v4 } from 'uuid'
 
 // TODO: Add error handling
 // class AIResponseError implements Error {
@@ -79,7 +78,7 @@ export const getPromptStreamingResponse = async (
   //     // throw new AIResponseError(AIType.PROMPT, language.en.errors.ai.promptTooLong)
   //   }
 
-  const messageId = v4()
+  const messageId = window.crypto.randomUUID()
 
   const response = { id: messageId, text: '', role: MessageRole.SYSTEM }
   setConversation(conversation => ({
@@ -115,7 +114,7 @@ export const getTranslation = async (text: string, setConversation: Dispatch<Set
   const translator = await window.translation.createTranslator(languagePair)
   const translation = await translator.translate(text)
 
-  const messageId = v4()
+  const messageId = window.crypto.randomUUID()
 
   const response = { id: messageId, text: translation, role: MessageRole.SYSTEM }
 
@@ -138,7 +137,7 @@ export const getSummary = async (
 
   const summary = await summarizer.summarize(text)
 
-  const messageId = v4()
+  const messageId = window.crypto.randomUUID()
 
   const response = { id: messageId, text: summary, role: MessageRole.SYSTEM }
 
