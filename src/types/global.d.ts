@@ -1,9 +1,14 @@
 import type {
   AIAvailabilityString,
+  AISessionOptions,
   BaseCapabilities,
+  LanguageDetectorSession,
   LanguageModelSession,
   PromptCapabilities,
   TranslationLanguagePair,
+  TranslationModelSession,
+  SummarizationModelSession,
+  PromptSessionOptions,
 } from './types'
 
 declare global {
@@ -11,24 +16,24 @@ declare global {
     [Symbol.asyncIterator](): AsyncIterableIterator<R>
   }
   interface Window {
+    // https://github.com/WICG/translation-api (WIP)
+    languageDetector: {
+      capabilities: () => Promise<BaseCapabilities>
+      create: (options?: AISessionOptions) => Promise<LanguageDetectorSession>
+    }
+    // https://github.com/WICG/translation-api (WIP)
     translation: {
-      createTranslator: (languagePair: {
-        sourceLanguage: string
-        targetLanguage: string
-      }) => Promise<{ translate: (text: string) => Promise<string> }>
+      createTranslator: (languagePair: TranslationLanguagePair) => Promise<TranslationModelSession>
       canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIAvailabilityString>
     }
+    // https://github.com/explainers-by-googlers/prompt-api (WIP)
     ai: {
       languageModel: {
-        create: (options?: {
-          temperature?: number
-          topK?: number
-          systemPrompt?: string
-        }) => Promise<LanguageModelSession>
+        create: (options?: PromptSessionOptions) => Promise<LanguageModelSession>
         capabilities: () => Promise<PromptCapabilities>
       }
       summarizer: {
-        create: () => Promise<SummarizeModelSession>
+        create: (options?: AISessionOptions) => Promise<SummarizationModelSession>
         capabilities: () => Promise<BaseCapabilities>
       }
     }

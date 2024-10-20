@@ -4,12 +4,6 @@ export enum AIAvailabilityString {
   NO = 'no',
 }
 
-export enum AIType {
-  PROMPT = 'prompt',
-  SUMMARIZATION = 'summarization',
-  TRANSLATION = 'translation',
-}
-
 export interface AIAvailability {
   prompt: {
     available: boolean
@@ -25,13 +19,36 @@ export interface AIAvailability {
   }
 }
 
+export enum InitialPromptRole {
+  USER = 'user',
+  SYSTEM = 'system',
+  ASSISTANT = 'assistant',
+}
+export interface InitialPrompt {
+  role: InitialPromptRole
+  content: string
+}
+
+export interface AISessionOptions {
+  signal: AbortSignal
+}
+
+export interface PromptSessionOptions extends AISessionOptions {
+  temperature?: number
+  topK?: number
+  systemPrompt?: string
+  initialPrompts?: InitialPrompt[]
+}
+
 export interface BaseCapabilities {
   available: AIAvailabilityString
 }
+
 export interface PromptCapabilities extends BaseCapabilities {
   defaultTemperature: number
   defaultTopK: number
   maxTopK: number
+  maxTemperature: number
 }
 
 export interface LanguageModelSession {
@@ -40,14 +57,24 @@ export interface LanguageModelSession {
   tokensLeft: number
   tokensSoFar: number
   topK: number
-  prompt: (prompt: string) => Promise<string>
-  promptStreaming: (prompt: string) => Promise<ReadableStream<string>>
+  prompt: (prompt: string, options?: AISessionOptions) => Promise<string>
+  promptStreaming: (prompt: string, options?: AISessionOptions) => Promise<ReadableStream<string>>
   destroy: () => Promise<void>
-  clone: () => Promise<LanguageModelSession>
+  clone: (options?: AISessionOptions) => Promise<LanguageModelSession>
   countPromptTokens: (prompt: string) => Promise<number>
 }
 
-export interface SummarizeModelSession {
+export interface TranslationModelSession {
+  translate: (text: string, options?: AISessionOptions) => Promise<string>
+  translateStreaming: (prompt: string, options?: AISessionOptions) => Promise<ReadableStream<string>>
+  destroy: () => Promise<void>
+}
+
+export interface LanguageDetectorSession {
+  detect: (text: string) => Promise<string>
+}
+
+export interface SummarizationModelSession {
   summarize: (text: string) => Promise<string>
   destroy: () => Promise<void>
 }
