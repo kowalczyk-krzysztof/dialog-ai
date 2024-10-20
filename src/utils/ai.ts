@@ -120,6 +120,7 @@ export const getTranslation = async (
   setConversation: Dispatch<SetStateAction<Conversation>>,
   languagePair: TranslationLanguagePair
 ) => {
+  const messageId = window.crypto.randomUUID()
   const userMessage = { id: window.crypto.randomUUID(), text, role: MessageRole.USER }
   setConversation(c => ({
     ...c,
@@ -128,6 +129,7 @@ export const getTranslation = async (
 
   const isValidPair = isValidTranslationLanguagePair(languagePair)
   const canTranslate = await window.translation.canTranslate(languagePair)
+
   if (!isValidPair || canTranslate !== AIAvailabilityString.READILY) {
     setConversation(conversation => ({
       ...conversation,
@@ -142,8 +144,6 @@ export const getTranslation = async (
   const translator = await window.translation.createTranslator(languagePair)
 
   const translation = await translator.translate(text)
-
-  const messageId = window.crypto.randomUUID()
 
   const response = { id: messageId, text: translation, role: MessageRole.SYSTEM }
 
