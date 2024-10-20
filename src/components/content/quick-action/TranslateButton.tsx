@@ -1,14 +1,15 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import language from '../../../lib/language'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { QuickActionButton } from './QuickActionButton'
 import { getTranslation } from '../../../utils/ai'
+import language from '../../../lib/language'
 
 interface Props {
   promptText: string
   setResponse: Dispatch<SetStateAction<string>>
+  disabled: boolean
 }
 
-export const TranslateButton = ({ setResponse, promptText }: Props) => {
+export const TranslateButton = ({ setResponse, promptText, disabled }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
@@ -16,8 +17,11 @@ export const TranslateButton = ({ setResponse, promptText }: Props) => {
     await getTranslation(promptText, setResponse)
     setIsLoading(false)
   }
+
+  const isDisabled = !promptText || isLoading || disabled
+
   return (
-    <QuickActionButton disabled={isLoading} onClick={handleGetResponse}>
+    <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
       {language.en.buttons.translate}
     </QuickActionButton>
   )

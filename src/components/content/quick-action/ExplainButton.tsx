@@ -1,14 +1,15 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import { QuickActionButton } from './QuickActionButton'
 import { getPromptStreamingResponse } from '../../../utils/ai'
 import language from '../../../lib/language'
-import { QuickActionButton } from './QuickActionButton'
 
 interface Props {
   promptText: string
   setResponse: Dispatch<SetStateAction<string>>
+  disabled: boolean
 }
 
-export const ExplainButton = ({ setResponse, promptText }: Props) => {
+export const ExplainButton = ({ setResponse, promptText, disabled }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
@@ -17,8 +18,10 @@ export const ExplainButton = ({ setResponse, promptText }: Props) => {
     setIsLoading(false)
   }
 
+  const isDisabled = !promptText || isLoading || disabled
+
   return (
-    <QuickActionButton disabled={isLoading} onClick={handleGetResponse}>
+    <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
       {language.en.buttons.explain}
     </QuickActionButton>
   )

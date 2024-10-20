@@ -1,14 +1,15 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import language from '../../../lib/language'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { QuickActionButton } from './QuickActionButton'
 import { getSummary } from '../../../utils/ai'
+import language from '../../../lib/language'
 
 interface Props {
   promptText: string
   setResponse: Dispatch<SetStateAction<string>>
+  disabled: boolean
 }
 
-export const SummarizeButton = ({ setResponse, promptText }: Props) => {
+export const SummarizeButton = ({ setResponse, promptText, disabled }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
@@ -16,8 +17,11 @@ export const SummarizeButton = ({ setResponse, promptText }: Props) => {
     await getSummary(promptText, setResponse)
     setIsLoading(false)
   }
+
+  const isDisabled = !promptText || isLoading || disabled
+
   return (
-    <QuickActionButton disabled={isLoading} onClick={handleGetResponse}>
+    <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
       {language.en.buttons.summarize}
     </QuickActionButton>
   )

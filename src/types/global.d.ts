@@ -1,14 +1,10 @@
-type LanguageModelSession = {
-  maxTokens: number
-  temperature: number
-  tokensLeft: number
-  tokensSoFar: number
-  topK: number
-  prompt: (prompt: string) => Promise<string>
-  promptStreaming: (prompt: string) => Promise<ReadableStream<string>>
-  destroy: () => Promise<void>
-  clone: () => Promise<LanguageModelSession>
-}
+import {
+  AIAvailabilityString,
+  BaseCapabilities,
+  LanguageModelSession,
+  PromptCapabilities,
+  TranslationLanguagePair,
+} from './types'
 
 declare global {
   interface ReadableStream<R = unknown> {
@@ -20,6 +16,7 @@ declare global {
         sourceLanguage: string
         targetLanguage: string
       }) => Promise<{ translate: (text: string) => Promise<string> }>
+      canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIAvailabilityString>
     }
     ai: {
       languageModel: {
@@ -28,12 +25,14 @@ declare global {
           topK?: number
           systemPrompt: string
         }) => Promise<LanguageModelSession>
+        capabilities: () => Promise<PromptCapabilities>
       }
       summarizer: {
         create: () => Promise<{
           summarize: (text: string) => Promise<string>
           destroy: () => Promise<void>
         }>
+        capabilities: () => Promise<BaseCapabilities>
       }
     }
   }

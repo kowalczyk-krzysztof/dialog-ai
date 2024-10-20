@@ -1,14 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChatWindow } from './chat/ChatWindow'
-import { debounce } from '../../utils/debounce'
-import { CloseButton } from './CloseButton'
+
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
+import { ChatWindow } from './chat/ChatWindow'
+import { CloseButton } from './CloseButton'
+
+import { debounce } from '../../utils/debounce'
+
+import { checkAvailability } from '../../utils/ai'
+import type { AIAvailability } from '../../types/types'
 
 export const ContentContainer = () => {
+  const containerRef = useRef<HTMLDialogElement>(null)
   const [highlightedText, setHighlightedText] = useState('')
   const [response, setResponse] = useState('')
-  const containerRef = useRef<HTMLDialogElement>(null)
+  const [quickActions, setQuickActions] = useState<AIAvailability>({
+    prompt: {
+      available: false,
+    },
+    summarization: {
+      available: false,
+    },
+    translation: {
+      available: false,
+    },
+  })
 
   const clearState = () => {
     if (containerRef.current) {
@@ -17,6 +33,15 @@ export const ContentContainer = () => {
       containerRef.current.close()
     }
   }
+
+  useEffect(() => {
+    const getAvailability = async () => {
+      const response = await checkAvailability()
+      setQuickActions(response)
+    }
+
+    getAvailability()
+  }, [])
 
   useEffect(() => {
     const handleKeydown = debounce(async (e: KeyboardEvent) => {
@@ -48,7 +73,7 @@ export const ContentContainer = () => {
     <dialog id='popupai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
       <ChatWindow text={response} />
-      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} />
+      <QuickActionContainer promptText={highlightedText} setResponse={setResponse} quickActions={quickActions} />
       <UserInputContainer text={highlightedText} setText={setHighlightedText} />
     </dialog>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
 import { ContentContainer } from './components/content/ContentContainer'
+import './index.css'
 
 function injectReactApp() {
   const root = document.createElement('div')
