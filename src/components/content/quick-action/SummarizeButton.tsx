@@ -1,8 +1,8 @@
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { QuickActionButton } from './QuickActionButton'
 import { getSummary } from '../../../utils/ai'
-import language from '../../../lib/language'
 import type { Conversation } from '../../../types/types'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   userInput: string
@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const SummarizeButton = ({ userInput, disabled, setUserInput, setConversation }: Props) => {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGetResponse = async () => {
@@ -27,7 +28,7 @@ export const SummarizeButton = ({ userInput, disabled, setUserInput, setConversa
 
   return (
     <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
-      {language.en.buttons.summarize}
+      {t('buttons.summarize')}
     </QuickActionButton>
   )
 }

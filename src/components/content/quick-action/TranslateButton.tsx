@@ -1,8 +1,8 @@
 import { ChangeEvent, type Dispatch, type SetStateAction, useState } from 'react'
 import { QuickActionButton } from './QuickActionButton'
 import { getTranslation } from '../../../utils/ai'
-import language from '../../../lib/language'
 import { SupportedLanguages, type Conversation } from '../../../types/types'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   userInput: string
@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const TranslateButton = ({ userInput, disabled, setUserInput, setConversation }: Props) => {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [sourceLanguage, setSourceLanguage] = useState(SupportedLanguages.ENGLISH)
   const [targetLanguage, setTargetLanguage] = useState(SupportedLanguages.SPANISH)
@@ -36,7 +37,7 @@ export const TranslateButton = ({ userInput, disabled, setUserInput, setConversa
   return (
     <div>
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
-        {language.en.buttons.translate}
+        {t('buttons.translate')}
       </QuickActionButton>
       <label htmlFor='source'>Source:</label>
       <select name='source' id='source' onChange={handleSelectSourceLanguage} className='w-6'>

@@ -9,7 +9,7 @@ import {
   MessageRole,
   SupportedLanguages,
 } from '../types/types'
-import language from '../lib/language'
+import i18n from '../i118n'
 
 const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
   language => language !== SupportedLanguages.ENGLISH
@@ -120,7 +120,7 @@ export const getTranslation = async (
       ...conversation,
       messages: [
         ...conversation.messages,
-        { id: reponseId, text: language.en.errors.ai.invalidLanguagePair, role: MessageRole.SYSTEM },
+        { id: reponseId, text: i18n.t('errors.ai.invalidLanguagePair'), role: MessageRole.SYSTEM },
       ],
     }))
     return
