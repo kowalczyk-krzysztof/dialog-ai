@@ -78,7 +78,7 @@ export const ContentContainer = () => {
     setUserInput(selectionText)
     setDialogPosition(dialog, selection?.bounds)
 
-    dialog.showModal()
+    dialog.show()
   }, [selection])
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
