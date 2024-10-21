@@ -56,15 +56,21 @@ export const ContentContainer = () => {
   useEffect(() => {
     const dialog = containerRef.current
 
-    const handleSelectionKey = (e: KeyboardEvent) => {
-      setIsSelectionKeyHeldDown(e.shiftKey && Boolean(!dialog?.open))
+    const handleKeyboardEvent = (e: KeyboardEvent) => {
+      const isDialogOpen = dialog?.open
+      const isEsc = e.key === 'Escape'
+      if (isEsc) {
+        clearState()
+        return
+      }
+      setIsSelectionKeyHeldDown(e.shiftKey && !isDialogOpen) // Only trigger selection when dialog is closed
     }
 
-    document.addEventListener('keydown', handleSelectionKey)
-    document.addEventListener('keyup', handleSelectionKey)
+    document.addEventListener('keydown', handleKeyboardEvent)
+    document.addEventListener('keyup', handleKeyboardEvent)
     return () => {
-      document.removeEventListener('keydown', handleSelectionKey)
-      document.removeEventListener('keyup', handleSelectionKey)
+      document.removeEventListener('keydown', handleKeyboardEvent)
+      document.removeEventListener('keyup', handleKeyboardEvent)
     }
   }, [])
 
@@ -83,7 +89,7 @@ export const ContentContainer = () => {
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
-    <dialog id='dialogai-content-container' ref={containerRef}>
+    <dialog id='dialogai-content-container' ref={containerRef} role=''>
       <CloseButton clearState={clearState} />
       <div
         style={{
