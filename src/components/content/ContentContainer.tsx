@@ -54,8 +54,10 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
+    const popover = containerRef.current
+
     const handleSelectionKey = (e: KeyboardEvent) => {
-      setIsSelectionKeyHeldDown(e.shiftKey)
+      setIsSelectionKeyHeldDown(e.shiftKey && Boolean(!popover?.open))
     }
 
     document.addEventListener('keydown', handleSelectionKey)
