@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { forwardRef, Ref, type Dispatch, type SetStateAction } from 'react'
 import type { Conversation } from '../../../types/types'
 import { SendPromptButton } from './SendPromptButton'
 
@@ -9,18 +9,22 @@ interface Props {
   setConversation: Dispatch<SetStateAction<Conversation>>
 }
 
-export const UserInputContainer = ({ userInput, disabled, setUserInput, setConversation }: Props) => (
-  <div>
-    <textarea
-      className='dialogai-user-input-container'
-      value={userInput}
-      onChange={e => setUserInput(e.target.value)}
-    />
-    <SendPromptButton
-      userInput={userInput}
-      setUserInput={setUserInput}
-      disabled={disabled}
-      setConversation={setConversation}
-    />
-  </div>
+export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
+  ({ userInput, disabled, setUserInput, setConversation }, ref: Ref<HTMLTextAreaElement>) => (
+    <div>
+      <textarea
+        ref={ref}
+        className='dialogai-user-input-container'
+        value={userInput}
+        onChange={e => setUserInput(e.target.value)}
+        disabled={disabled}
+      />
+      <SendPromptButton
+        userInput={userInput}
+        setUserInput={setUserInput}
+        disabled={disabled}
+        setConversation={setConversation}
+      />
+    </div>
+  )
 )

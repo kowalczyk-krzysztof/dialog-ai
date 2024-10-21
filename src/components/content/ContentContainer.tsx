@@ -13,6 +13,7 @@ import { type Conversation, type AIAvailability, MessageRole } from '../../types
 
 export const ContentContainer = () => {
   const containerRef = useRef<HTMLDialogElement>(null)
+  const userInputRef = useRef<HTMLTextAreaElement>(null)
   const conversationId = window.crypto.randomUUID()
   const [conversation, setConversation] = useState<Conversation>({
     id: conversationId,
@@ -85,6 +86,9 @@ export const ContentContainer = () => {
     setDialogPosition(dialog, selection?.bounds)
 
     dialog.show()
+    if (userInputRef.current) {
+      userInputRef.current.focus()
+    }
   }, [selection])
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
@@ -116,6 +120,7 @@ export const ContentContainer = () => {
           setUserInput={setUserInput}
         />
         <UserInputContainer
+          ref={userInputRef}
           setConversation={setConversation}
           disabled={!availability.prompt.available}
           userInput={userInput}
