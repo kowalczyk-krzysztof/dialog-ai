@@ -42,6 +42,7 @@ export const ContentContainer = () => {
         id: '',
         messages: [],
       })
+      setUserInput('')
       containerRef.current.close()
     }
   }
@@ -93,20 +94,9 @@ export const ContentContainer = () => {
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
-    <dialog id='dialogai-content-container' ref={containerRef} role=''>
+    <dialog ref={containerRef}>
       <CloseButton clearState={clearState} />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          height: '300px',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          width: '364px',
-          boxSizing: 'border-box',
-        }}
-      >
+      <div className='flex flex-col gap-2 h-[300px] overflow-y-auto overflow-x-hidden w-[364px] box-border'>
         {conversation.messages.map(({ role, id, text }) => {
           const isUser = role === MessageRole.USER
           return <ChatWindow text={text} isUser={isUser} key={id} />

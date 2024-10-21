@@ -39,7 +39,7 @@ export const TranslateButton = ({ userInput, disabled, setUserInput, setConversa
         {language.en.buttons.translate}
       </QuickActionButton>
       <label htmlFor='source'>Source:</label>
-      <select name='source' id='source' onChange={handleSelectSourceLanguage} style={{ width: '50px' }}>
+      <select name='source' id='source' onChange={handleSelectSourceLanguage} className='w-6'>
         {Object.values(SupportedLanguages).map(language => (
           <option key={language} value={language}>
             {language}
@@ -47,7 +47,7 @@ export const TranslateButton = ({ userInput, disabled, setUserInput, setConversa
         ))}
       </select>
       <label htmlFor='target'>Target:</label>
-      <select name='target' id='target' onChange={handleSelectTargetLanguage} style={{ width: '50px' }}>
+      <select name='target' id='target' onChange={handleSelectTargetLanguage} className='w-6'>
         {Object.values(SupportedLanguages).map(language => (
           <option key={language} value={language}>
             {language}
