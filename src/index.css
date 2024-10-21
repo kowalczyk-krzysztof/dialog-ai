@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 dialog[open] {
-  @apply absolute w-[400px] h-[400px] bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] z-[9999] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg;
+  @apply fixed w-[400px] h-[400px] bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] z-[9999] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg;
 }
