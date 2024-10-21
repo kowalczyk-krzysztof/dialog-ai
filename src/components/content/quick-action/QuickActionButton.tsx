@@ -6,7 +6,7 @@ interface Props extends PropsWithChildren {
 }
 
 export const QuickActionButton = ({ children, disabled, onClick }: Props) => (
-  <button className='popoverai-quick-action-button' disabled={disabled} onClick={onClick}>
+  <button className='dialogai-quick-action-button' disabled={disabled} onClick={onClick}>
     {children}
   </button>
 )

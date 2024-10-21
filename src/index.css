@@ -1,6 +1,6 @@
 /* Applies styles only when dialog is open. Without this rule, the dialog would be visible even when it's closed. */
 
-#popoverai-content-container[open] {
+#dialogai-content-container[open] {
   position: absolute;
   width: 400px;
   height: 400px;
@@ -18,9 +18,9 @@
   align-items: center;
 }
 
-/* Each child has to be prepended with #popoverai-content-container to avoid conflicts with other CSS rules. */
+/* Each child has to be prepended with #dialogai-content-container to avoid conflicts with other CSS rules. */
 
-#popoverai-content-container .popoverai-quick-action-container {
+#dialogai-content-container .dialogai-quick-action-container {
   display: flex;
   gap: 8px;
   margin-top: 8px;
@@ -28,7 +28,7 @@
   padding: 8px;
 }
 
-#popoverai-content-container .popoverai-quick-action-button {
+#dialogai-content-container .dialogai-quick-action-button {
   background-color: #0ea5e9;
   color: #1e1e1e;
   padding: 8px;
@@ -37,13 +37,13 @@
   border: none;
 }
 
-#popoverai-content-container .popoverai-quick-action-button:disabled {
+#dialogai-content-container .dialogai-quick-action-button:disabled {
   background-color: #bbbbbb;
   color: #d4d4d4;
   pointer-events: none;
 }
 
-#popoverai-content-container .popoverai-close-button {
+#dialogai-content-container .dialogai-close-button {
   position: absolute;
   color: #d4d4d4;
   padding: 4px;
@@ -54,7 +54,7 @@
   border: none;
 }
 
-#popoverai-content-container .popoverai-response-container {
+#dialogai-content-container .dialogai-response-container {
   display: flex;
   flex-direction: column;
   width: 384px;
@@ -64,11 +64,11 @@
   background-color: #4a4a4a;
 }
 
-#popoverai-content-container .popoverai-response-container[data-isuser="true"] {
+#dialogai-content-container .dialogai-response-container[data-isuser="true"] {
   background-color: #707070;
 }
 
-#popoverai-content-container .popoverai-user-input-container {
+#dialogai-content-container .dialogai-user-input-container {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

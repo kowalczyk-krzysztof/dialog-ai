@@ -1,4 +1,4 @@
-# Popover AI
+# Dialog AI
 
 ## Test the extension
 

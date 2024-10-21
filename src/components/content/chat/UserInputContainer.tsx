@@ -12,7 +12,7 @@ interface Props {
 export const UserInputContainer = ({ userInput, disabled, setUserInput, setConversation }: Props) => (
   <div>
     <textarea
-      className='popoverai-user-input-container'
+      className='dialogai-user-input-container'
       value={userInput}
       onChange={e => setUserInput(e.target.value)}
     />

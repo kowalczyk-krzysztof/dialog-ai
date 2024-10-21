@@ -6,7 +6,7 @@ import { ChatWindow } from './chat/ChatWindow'
 import { CloseButton } from './CloseButton'
 
 import { checkAvailability } from '../../utils/ai'
-import { setPopoverPosition } from '../../utils/content'
+import { setDialogPosition } from '../../utils/content'
 import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
@@ -54,10 +54,10 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const popover = containerRef.current
+    const dialog = containerRef.current
 
     const handleSelectionKey = (e: KeyboardEvent) => {
-      setIsSelectionKeyHeldDown(e.shiftKey && Boolean(!popover?.open))
+      setIsSelectionKeyHeldDown(e.shiftKey && Boolean(!dialog?.open))
     }
 
     document.addEventListener('keydown', handleSelectionKey)
@@ -69,21 +69,21 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const popover = containerRef.current
-    if (!popover || popover.open) return
+    const dialog = containerRef.current
+    if (!dialog || dialog.open) return
 
     const selectionText = selection?.text || ''
     if (!selectionText) return
 
     setUserInput(selectionText)
-    setPopoverPosition(popover, selection?.bounds)
+    setDialogPosition(dialog, selection?.bounds)
 
-    popover.showModal()
+    dialog.showModal()
   }, [selection])
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
-    <dialog id='popoverai-content-container' ref={containerRef}>
+    <dialog id='dialogai-content-container' ref={containerRef}>
       <CloseButton clearState={clearState} />
       <div
         style={{

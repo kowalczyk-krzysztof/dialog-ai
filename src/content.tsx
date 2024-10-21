@@ -5,7 +5,7 @@ import './index.css'
 
 const injectReactApp = () => {
   const root = document.createElement('div')
-  root.id = 'popover-content-root'
+  root.id = 'dialog-content-root'
   document.body.appendChild(root)
 
   ReactDOM.createRoot(root).render(
