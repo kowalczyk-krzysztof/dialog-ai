@@ -6,9 +6,10 @@ import './index.css'
 const injectReactApp = () => {
   const root = document.createElement('div')
   root.id = 'dialog-content-root'
+  const shadowRoot = root.attachShadow({ mode: 'open' })
   document.body.appendChild(root)
 
-  ReactDOM.createRoot(root).render(
+  ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <ContentContainer />
     </React.StrictMode>
