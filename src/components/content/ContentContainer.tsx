@@ -5,19 +5,23 @@ import { UserInputContainer } from './chat/UserInputContainer'
 import { ChatWindow } from './chat/ChatWindow'
 import { CloseButton } from './CloseButton'
 
-import { debounce } from '../../utils/debounce'
-
 import { checkAvailability } from '../../utils/ai'
+import { setPopoverPosition } from '../../utils/content'
+import { useTextSelection } from '../../hooks/useTextSelection'
+
 import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
 
 export const ContentContainer = () => {
-  const conversationId = window.crypto.randomUUID()
   const containerRef = useRef<HTMLDialogElement>(null)
-
+  const conversationId = window.crypto.randomUUID()
   const [conversation, setConversation] = useState<Conversation>({
     id: conversationId,
     messages: [],
   })
+
+  const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
+  const selection = useTextSelection(isSelectionKeyHeldDown)
+
   const [userInput, setUserInput] = useState('')
   const [availability, setAvailability] = useState<AIAvailability>({
     prompt: {
@@ -46,39 +50,34 @@ export const ContentContainer = () => {
       const response = await checkAvailability()
       setAvailability(response)
     }
-
     getAvailability()
   }, [])
 
   useEffect(() => {
-    const handleKeydown = debounce(async (e: KeyboardEvent) => {
-      const container = containerRef.current
-      if (container?.open) {
-        return
-      }
+    const handleSelectionKey = (e: KeyboardEvent) => {
+      setIsSelectionKeyHeldDown(e.shiftKey)
+    }
 
-      const selection = window.getSelection()
-      if (e.ctrlKey && selection && selection.rangeCount > 0) {
-        const text = selection.toString()
-        const range = selection.getRangeAt(0)
-        const { top, left } = range.getBoundingClientRect()
-        setUserInput(text)
-
-        if (text.length && container) {
-          const dialogHeight = containerRef.current.getBoundingClientRect().height
-          containerRef.current.style.top = `${top + window.scrollY - dialogHeight - 10}px`
-          containerRef.current.style.left = `${left + window.scrollX}px`
-          containerRef.current.show()
-        }
-      }
-    }, 300)
-
-    document.addEventListener('keydown', handleKeydown)
-
+    document.addEventListener('keydown', handleSelectionKey)
+    document.addEventListener('keyup', handleSelectionKey)
     return () => {
-      document.removeEventListener('keydown', handleKeydown)
+      document.removeEventListener('keydown', handleSelectionKey)
+      document.removeEventListener('keyup', handleSelectionKey)
     }
   }, [])
+
+  useEffect(() => {
+    const popover = containerRef.current
+    if (!popover || popover.open) return
+
+    const selectionText = selection?.text || ''
+    if (!selectionText) return
+
+    setUserInput(selectionText)
+    setPopoverPosition(popover, selection?.bounds)
+
+    popover.showModal()
+  }, [selection])
 
   // TODO: Auto scroll, styling, keep sessions open and add send button
   return (

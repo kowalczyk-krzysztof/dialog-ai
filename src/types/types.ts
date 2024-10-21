@@ -121,3 +121,8 @@ export enum SupportedLanguages {
   CHINESE_SIMPLIFIED = 'zh',
   CHINESE_TRADITIONAL = 'zh-Hant',
 }
+
+export interface TextSelection {
+  text: string
+  bounds: DOMRect
+}
