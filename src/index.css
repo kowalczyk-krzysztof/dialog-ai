@@ -1,5 +1,9 @@
-/* Applies styles only when dialog is open. Without this rule, the dialog would be visible even when it's closed. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Applies styles only when dialog is open. Without this rule, the dialog would be visible even when it's closed.
+TODO: Tailwind this */
 #dialogai-content-container[open] {
   position: absolute;
   width: 400px;
@@ -16,67 +20,4 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* Each child has to be prepended with #dialogai-content-container to avoid conflicts with other CSS rules. */
-
-#dialogai-content-container .dialogai-quick-action-container {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  padding: 8px;
-}
-
-#dialogai-content-container .dialogai-quick-action-button {
-  background-color: #0ea5e9;
-  color: #1e1e1e;
-  padding: 8px;
-  border-radius: 9999px;
-  align-self: flex-center;
-  border: none;
-}
-
-#dialogai-content-container .dialogai-quick-action-button:disabled {
-  background-color: #bbbbbb;
-  color: #d4d4d4;
-  pointer-events: none;
-}
-
-#dialogai-content-container .dialogai-close-button {
-  position: absolute;
-  color: #d4d4d4;
-  padding: 4px;
-  top: 0;
-  right: 0;
-  background: none;
-  font-size: 12px;
-  border: none;
-}
-
-#dialogai-content-container .dialogai-response-container {
-  display: flex;
-  flex-direction: column;
-  width: 384px;
-  color: #d4d4d4;
-  margin-top: 8px;
-  padding: 8px;
-  background-color: #4a4a4a;
-}
-
-#dialogai-content-container .dialogai-response-container[data-isuser="true"] {
-  background-color: #707070;
-}
-
-#dialogai-content-container .dialogai-user-input-container {
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  height: 100px;
-  width: 384px;
-  background-color: #707070;
-  color: #d4d4d4;
-  margin-top: 8px;
-  padding: 8px;
-  resize: none;
 }
