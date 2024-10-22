@@ -10,13 +10,14 @@ import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIAvailability } from '../../types/types'
 import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
-import { getDialogPosition } from '../../utils/content'
+import { dragHTMLElement, getDialogPosition } from '../../utils/content'
 import { ConversationContainer } from './chat/ConversationContainer'
 
 export const ContentContainer = () => {
   const root = document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
   const conversationId = window.crypto.randomUUID()
   const userInputRef = useRef<HTMLTextAreaElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
 
   const [open, setOpen] = useState(false)
   const [conversation, setConversation] = useState<Conversation>({
@@ -93,6 +94,7 @@ export const ContentContainer = () => {
       {/* The container needs to be set to shadow DOM container or it won't work */}
       <Dialog.Portal container={root}>
         <Dialog.Content
+          ref={dialogRef}
           className='fixed bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg'
           style={{
             top: position.top,
@@ -106,6 +108,9 @@ export const ContentContainer = () => {
           onOpenAutoFocus={handleInitialFocus}
           onPointerDownOutside={e => {
             e.preventDefault()
+          }}
+          onMouseDown={e => {
+            dragHTMLElement(e, dialogRef)
           }}
         >
           <Dialog.Title>Dialog AI</Dialog.Title>
