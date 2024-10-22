@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { TextSelection } from '../types/types'
 import { debounce } from '../utils/debounce'
-
-const SELECTION_DELAY_MS = 500
+import { SELECTION_DELAY_MS } from '../../constants'
 
 export const useTextSelection = (isSelectionKeyPressed: boolean) => {
   const [selection, setSelection] = useState<TextSelection | undefined>(undefined)

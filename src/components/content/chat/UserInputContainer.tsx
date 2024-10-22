@@ -12,13 +12,7 @@ interface Props {
 export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
   ({ userInput, disabled, setUserInput, setConversation }, ref: Ref<HTMLTextAreaElement>) => (
     <div>
-      <textarea
-        ref={ref}
-        className='dialogai-user-input-container'
-        value={userInput}
-        onChange={e => setUserInput(e.target.value)}
-        disabled={disabled}
-      />
+      <textarea ref={ref} value={userInput} onChange={e => setUserInput(e.target.value)} disabled={disabled} />
       <SendPromptButton
         userInput={userInput}
         setUserInput={setUserInput}

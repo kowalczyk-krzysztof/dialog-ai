@@ -5,8 +5,4 @@ interface Props {
   isUser: boolean
 }
 
-export const ChatWindow = ({ text, isUser }: Props) => (
-  <Markdown className='dialogai-response-container' data-isuser={isUser} options={{ disableParsingRawHTML: true }}>
-    {text}
-  </Markdown>
-)
+export const ChatWindow = ({ text }: Props) => <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>

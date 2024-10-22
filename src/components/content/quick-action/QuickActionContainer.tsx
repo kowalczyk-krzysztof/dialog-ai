@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const QuickActionContainer = ({ availability, userInput, setUserInput, setConversation }: Props) => (
-  <div className='dialogai-quick-action-container'>
+  <div>
     <TranslateButton
       userInput={userInput}
       setUserInput={setUserInput}

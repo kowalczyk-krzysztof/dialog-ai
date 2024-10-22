@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ContentContainer } from './components/content/ContentContainer'
-import { CONTENT_ROOT_ID, CSS_STYLESHEET } from '../constants'
+import { CONTENT_ROOT_ID, CSS_STYLESHEET, DIALOG_Z_INDEX } from '../constants'
 import './index.css'
 
 /*
@@ -39,6 +39,7 @@ import './index.css'
 const injectReactApp = () => {
   const root = document.createElement('div')
   root.id = CONTENT_ROOT_ID
+  root.style.zIndex = DIALOG_Z_INDEX.toString()
   const shadowRoot = root.attachShadow({ mode: 'open' })
   document.body.appendChild(root)
 
