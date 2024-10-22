@@ -8,8 +8,8 @@ export const getDialogPosition = (textBounds: DOMRect) => {
   const dialogTop = top + height / 2 - DIALOG_HEIGHT - DIALOG_POSITION_PADDING
 
   return {
-    top: `${dialogTop}px`,
-    left: `${dialogLeft}px`,
+    top: `${dialogTop <= 0 ? 0 : dialogTop}px`,
+    left: `${dialogLeft <= 0 ? 0 : dialogLeft}px`,
   }
 }
 
@@ -32,8 +32,10 @@ export const dragHTMLElement = (e: ReactMouseEvent, containerRef: RefObject<HTML
 
     // Update the element's position
     if (containerRef.current) {
-      containerRef.current.style.top = containerRef.current.offsetTop - deltaY + 'px'
-      containerRef.current.style.left = containerRef.current.offsetLeft - deltaX + 'px'
+      const top = containerRef.current.offsetTop - deltaY
+      const left = containerRef.current.offsetLeft - deltaX
+      containerRef.current.style.top = `${top <= 0 ? 0 : top}px`
+      containerRef.current.style.left = `${left <= 0 ? 0 : left}px`
     }
   }
 
