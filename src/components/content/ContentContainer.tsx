@@ -81,7 +81,7 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    if (selection) {
+    if (selection && selection.text.length > 0) {
       setPosition(getDialogPosition(selection.bounds))
       setUserInput(selection.text)
       setOpen(true)
@@ -104,6 +104,9 @@ export const ContentContainer = () => {
           forceMount
           onEscapeKeyDown={clearState}
           onOpenAutoFocus={handleInitialFocus}
+          onPointerDownOutside={e => {
+            e.preventDefault()
+          }}
         >
           <Dialog.Title>Dialog AI</Dialog.Title>
           <Dialog.Close className='absolute top-2 right-2'>

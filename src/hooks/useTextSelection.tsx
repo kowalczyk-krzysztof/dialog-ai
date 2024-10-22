@@ -8,7 +8,7 @@ export const useTextSelection = (isSelectionKeyPressed: boolean) => {
 
   const handleSelection = debounce(() => {
     const selection = window.getSelection()
-    if (!selection) return
+    if (!selection || selection.rangeCount === 0) return
 
     const text = selection.toString().trim()
     const range = selection.getRangeAt(0)
