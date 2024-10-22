@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const QuickActionContainer = ({ availability, userInput, setUserInput, setConversation }: Props) => (
-  <div>
+  <div className='flex gap-2'>
     <TranslateButton
       userInput={userInput}
       setUserInput={setUserInput}

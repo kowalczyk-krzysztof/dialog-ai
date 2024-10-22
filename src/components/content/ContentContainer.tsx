@@ -3,15 +3,15 @@ import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
-import { ChatWindow } from './chat/ChatWindow'
 import X from '../icons/x.svg?react'
 
 import { checkAvailability } from '../../utils/ai'
 import { useTextSelection } from '../../hooks/useTextSelection'
 
-import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
-import { CONTENT_ROOT_ID, DIALOG_Z_INDEX } from '../../../constants'
+import { type Conversation, type AIAvailability } from '../../types/types'
+import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
 import { getDialogPosition } from '../../utils/content'
+import { ConversationContainer } from './chat/ConversationContainer'
 
 export const ContentContainer = () => {
   const root = document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
@@ -93,8 +93,14 @@ export const ContentContainer = () => {
       {/* The container needs to be set to shadow DOM container or it won't work */}
       <Dialog.Portal container={root}>
         <Dialog.Content
-          className='fixed w-[400px] h-[400px] bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg'
-          style={{ top: position.top, left: position.left, zIndex: DIALOG_Z_INDEX }}
+          className='fixed bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg'
+          style={{
+            top: position.top,
+            left: position.left,
+            zIndex: DIALOG_Z_INDEX,
+            width: DIALOG_WIDTH,
+            height: DIALOG_HEIGHT,
+          }}
           forceMount
           onEscapeKeyDown={clearState}
           onOpenAutoFocus={handleInitialFocus}
@@ -103,12 +109,7 @@ export const ContentContainer = () => {
           <Dialog.Close className='absolute top-2 right-2'>
             <X height={14} width={14} fill='#FAFAFA' />
           </Dialog.Close>
-          <div className='flex flex-col gap-2 h-[300px] overflow-y-auto overflow-x-hidden w-[364px] box-border'>
-            {conversation.messages.map(({ role, id, text }) => {
-              const isUser = role === MessageRole.USER
-              return <ChatWindow text={text} isUser={isUser} key={id} />
-            })}
-          </div>
+          <ConversationContainer conversation={conversation} />
           <div>
             <QuickActionContainer
               setConversation={setConversation}
