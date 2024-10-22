@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
+import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
 import { ChatWindow } from './chat/ChatWindow'
-import { CloseButton } from './CloseButton'
 
 import { checkAvailability } from '../../utils/ai'
-import { setDialogPosition } from '../../utils/content'
 import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
 
 export const ContentContainer = () => {
-  const containerRef = useRef<HTMLDialogElement>(null)
-  const userInputRef = useRef<HTMLTextAreaElement>(null)
+  const root = document.getElementById('dialog-content-root')?.shadowRoot || document.body
+
   const conversationId = window.crypto.randomUUID()
+  const [open, setOpen] = useState(false)
   const [conversation, setConversation] = useState<Conversation>({
     id: conversationId,
     messages: [],
   })
+  const userInputRef = useRef<HTMLTextAreaElement>(null)
+  const [position, setPosition] = useState({ top: '0', left: '0' })
 
   const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
   const selection = useTextSelection(isSelectionKeyHeldDown)
@@ -37,14 +39,12 @@ export const ContentContainer = () => {
   })
 
   const clearState = () => {
-    if (containerRef.current) {
-      setConversation({
-        id: '',
-        messages: [],
-      })
-      setUserInput('')
-      containerRef.current.close()
-    }
+    setConversation({
+      id: '',
+      messages: [],
+    })
+    setUserInput('')
+    setOpen(false)
   }
 
   useEffect(() => {
@@ -56,16 +56,13 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const dialog = containerRef.current
-
     const handleKeyboardEvent = (e: KeyboardEvent) => {
-      const isDialogOpen = dialog?.open
       const isEsc = e.key === 'Escape'
       if (isEsc) {
         clearState()
         return
       }
-      setIsSelectionKeyHeldDown(e.shiftKey && !isDialogOpen) // Only trigger selection when dialog is closed
+      setIsSelectionKeyHeldDown(e.shiftKey && !open) // Only trigger selection when dialog is closed
     }
 
     document.addEventListener('keydown', handleKeyboardEvent)
@@ -77,46 +74,60 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const dialog = containerRef.current
-    if (!dialog || dialog.open) return
+    const padding = 10
+    const dialogHeight = 400
 
-    const selectionText = selection?.text || ''
-    if (!selectionText) return
-
-    setUserInput(selectionText)
-    setDialogPosition(dialog, selection?.bounds)
-
-    dialog.show()
-    if (userInputRef.current) {
-      userInputRef.current.focus()
+    if (selection) {
+      const { top, left } = selection.bounds
+      // FIXME: Fix the dialog position
+      setPosition({
+        top: `${top + window.scrollY - dialogHeight - padding}px`,
+        left: `${left + window.scrollX}px`,
+      })
+      setUserInput(selection.text)
+      setOpen(true)
+      // FIXME: Fix focus on the input field
+      if (userInputRef.current) {
+        userInputRef.current.focus()
+      }
     }
   }, [selection])
 
-  // TODO: Auto scroll, styling, keep sessions open and add send button
   return (
-    <dialog ref={containerRef}>
-      <CloseButton clearState={clearState} />
-      <div className='flex flex-col gap-2 h-[300px] overflow-y-auto overflow-x-hidden w-[364px] box-border'>
-        {conversation.messages.map(({ role, id, text }) => {
-          const isUser = role === MessageRole.USER
-          return <ChatWindow text={text} isUser={isUser} key={id} />
-        })}
-      </div>
-      <div>
-        <QuickActionContainer
-          setConversation={setConversation}
-          availability={availability}
-          userInput={userInput}
-          setUserInput={setUserInput}
-        />
-        <UserInputContainer
-          ref={userInputRef}
-          setConversation={setConversation}
-          disabled={!availability.prompt.available}
-          userInput={userInput}
-          setUserInput={setUserInput}
-        />
-      </div>
-    </dialog>
+    <Dialog.Root modal={false} open={open} onOpenChange={setOpen}>
+      {/* The container needs to be set to shadow DOM container or it won't work */}
+      <Dialog.Portal container={root}>
+        <Dialog.Content
+          className='fixed w-[400px] h-[400px] bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] z-[9999] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg'
+          style={{ top: position.top, left: position.left }}
+          forceMount
+        >
+          <div className='flex flex-col gap-2 h-[300px] overflow-y-auto overflow-x-hidden w-[364px] box-border'>
+            {conversation.messages.map(({ role, id, text }) => {
+              const isUser = role === MessageRole.USER
+              return <ChatWindow text={text} isUser={isUser} key={id} />
+            })}
+          </div>
+          <div>
+            <QuickActionContainer
+              setConversation={setConversation}
+              availability={availability}
+              userInput={userInput}
+              setUserInput={setUserInput}
+            />
+            <UserInputContainer
+              ref={userInputRef}
+              setConversation={setConversation}
+              disabled={!availability.prompt.available}
+              userInput={userInput}
+              setUserInput={setUserInput}
+            />
+          </div>
+          <Dialog.Title>Dialog AI</Dialog.Title>
+          <Dialog.Description />
+          <Dialog.Close />
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }
