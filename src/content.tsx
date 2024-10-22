@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ContentContainer } from './components/content/ContentContainer'
+import { CONTENT_ROOT_ID, CSS_STYLESHEET } from '../constants'
 import './index.css'
 
 /*
@@ -37,13 +38,13 @@ import './index.css'
 */
 const injectReactApp = () => {
   const root = document.createElement('div')
-  root.id = 'dialog-content-root'
+  root.id = CONTENT_ROOT_ID
   const shadowRoot = root.attachShadow({ mode: 'open' })
   document.body.appendChild(root)
 
   const stylesheet = document.createElement('link')
   stylesheet.rel = 'stylesheet'
-  stylesheet.href = chrome.runtime.getURL('index.css')
+  stylesheet.href = chrome.runtime.getURL(CSS_STYLESHEET)
   shadowRoot.appendChild(stylesheet)
 
   ReactDOM.createRoot(shadowRoot).render(
