@@ -11,6 +11,7 @@ import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIAvailability, MessageRole } from '../../types/types'
 import { CONTENT_ROOT_ID, DIALOG_Z_INDEX } from '../../../constants'
+import { getDialogPosition } from '../../utils/content'
 
 export const ContentContainer = () => {
   const root = document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
@@ -23,7 +24,7 @@ export const ContentContainer = () => {
     messages: [],
   })
 
-  const [position, setPosition] = useState({ top: '0', left: '0' })
+  const [position, setPosition] = useState({ top: '0px', left: '0px' })
 
   const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
   const selection = useTextSelection(isSelectionKeyHeldDown)
@@ -77,16 +78,8 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const padding = 10
-    const dialogHeight = 400
-
     if (selection) {
-      const { top, left } = selection.bounds
-      // FIXME: Fix the dialog position
-      setPosition({
-        top: `${top + window.scrollY - dialogHeight - padding}px`,
-        left: `${left + window.scrollX}px`,
-      })
+      setPosition(getDialogPosition(selection.bounds))
       setUserInput(selection.text)
       setOpen(true)
     }
