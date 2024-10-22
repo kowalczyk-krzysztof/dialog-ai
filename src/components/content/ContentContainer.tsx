@@ -4,6 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
 import { ChatWindow } from './chat/ChatWindow'
+import X from '../icons/x.svg?react'
 
 import { checkAvailability } from '../../utils/ai'
 import { useTextSelection } from '../../hooks/useTextSelection'
@@ -49,6 +50,11 @@ export const ContentContainer = () => {
     setOpen(false)
   }
 
+  const handleInitialFocus = (e: Event) => {
+    e.preventDefault()
+    userInputRef.current?.focus()
+  }
+
   useEffect(() => {
     const getAvailability = async () => {
       const response = await checkAvailability()
@@ -83,10 +89,6 @@ export const ContentContainer = () => {
       })
       setUserInput(selection.text)
       setOpen(true)
-      // FIXME: Fix focus on the input field
-      if (userInputRef.current) {
-        userInputRef.current.focus()
-      }
     }
   }, [selection])
 
@@ -99,9 +101,12 @@ export const ContentContainer = () => {
           style={{ top: position.top, left: position.left, zIndex: DIALOG_Z_INDEX }}
           forceMount
           onEscapeKeyDown={clearState}
+          onOpenAutoFocus={handleInitialFocus}
         >
           <Dialog.Title>Dialog AI</Dialog.Title>
-          <Dialog.Close className='absolute top-2 right-2'>CLOSE</Dialog.Close>
+          <Dialog.Close className='absolute top-2 right-2'>
+            <X height={14} width={14} fill='#FAFAFA' />
+          </Dialog.Close>
           <div className='flex flex-col gap-2 h-[300px] overflow-y-auto overflow-x-hidden w-[364px] box-border'>
             {conversation.messages.map(({ role, id, text }) => {
               const isUser = role === MessageRole.USER
