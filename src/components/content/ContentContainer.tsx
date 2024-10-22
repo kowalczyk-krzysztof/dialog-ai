@@ -66,7 +66,10 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
-      setIsSelectionKeyHeldDown(e.shiftKey && !open) // Only trigger selection when dialog is closed
+      // Only set the selection key state if the target is the body
+      if (e.target instanceof HTMLBodyElement) {
+        setIsSelectionKeyHeldDown(e.shiftKey)
+      }
     }
 
     document.addEventListener('keydown', handleKeyboardEvent)
