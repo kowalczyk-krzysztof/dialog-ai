@@ -12,15 +12,15 @@ interface Props {
 
 export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
   ({ userInput, disabled, setUserInput, setConversation }, ref: Ref<HTMLTextAreaElement>) => (
-    <div className='flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 w-[420px] mt-2'>
+    <div className='mt-2 flex w-[420px] items-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700'>
       <ScrollArea.Root>
-        <ScrollArea.Viewport className='self-start flex-grow block'>
+        <ScrollArea.Viewport className='block grow self-start'>
           <textarea
             ref={ref}
             value={userInput}
             onChange={e => setUserInput(e.target.value)}
             disabled={disabled}
-            className='w-[380px] mx-4 p-2.5 text-sm text-white bg-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            className='mx-4 w-[380px] rounded-lg border border-gray-300 bg-slate-400 p-2.5 text-sm text-white focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
           />
         </ScrollArea.Viewport>
         <ScrollArea.Scrollbar orientation='vertical'>

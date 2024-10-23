@@ -19,6 +19,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.0",
+    "eslint-plugin-tailwindcss": "^3.17.5",
     "i18next": "^23.16.2",
     "markdown-to-jsx": "^7.5.0",
     "react": "^18.0.0",

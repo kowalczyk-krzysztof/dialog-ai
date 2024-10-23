@@ -19,7 +19,7 @@ export const ConversationContainer = ({ conversation }: Props) => {
   return (
     <ScrollArea.Root>
       <ScrollArea.Viewport ref={scrollableAreaRef}>
-        <div className='flex flex-col gap-2 h-[300px]'>
+        <div className='flex h-[300px] flex-col gap-2'>
           {conversation.messages.map(({ role, id, text }) => {
             const isUser = role === MessageRole.USER
             return <MessageContainer text={text} isUser={isUser} key={id} />

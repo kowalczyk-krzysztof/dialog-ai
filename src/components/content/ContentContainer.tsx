@@ -95,7 +95,7 @@ export const ContentContainer = () => {
       <Dialog.Portal container={root}>
         <Dialog.Content
           ref={dialogRef}
-          className='fixed bg-[#1e1e1e] shadow-[0_4px_10px_rgba(255,255,255,0.2),0_2px_4px_rgba(255,255,255,0.1)] text-neutral-300 flex flex-col items-center pt-6 p-2 rounded-lg'
+          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-2 pt-6 text-neutral-300'
           style={{
             top: position.top,
             left: position.left,
@@ -114,7 +114,7 @@ export const ContentContainer = () => {
           }}
         >
           <Dialog.Title>Dialog AI</Dialog.Title>
-          <Dialog.Close className='absolute top-2 right-2'>
+          <Dialog.Close className='absolute right-2 top-2'>
             <X height={14} width={14} fill='#FAFAFA' />
           </Dialog.Close>
           <ConversationContainer conversation={conversation} />
