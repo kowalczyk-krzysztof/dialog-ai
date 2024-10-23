@@ -1,7 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { LanguageModelSession, Conversation } from '../../../types/types'
 import { getPromptStreamingResponse } from '../../../utils/ai'
-import Play from '../../icons/play.svg?react'
+import Send from '../../icons/send.svg?react'
 
 interface Props {
   userInput: string
@@ -33,7 +33,7 @@ export const SendPromptButton = ({ userInput, disabled, setConversation, setUser
       onClick={handleGetResponse}
       className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
     >
-      <Play className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+      <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
       <span className='sr-only'>Send message</span>
     </button>
   )

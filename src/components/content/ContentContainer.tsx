@@ -3,7 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
-import X from '../icons/x.svg?react'
+import Close from '../icons/close.svg?react'
 
 import { checkAIApiAvailability, defaultAIApiAvailability } from '../../utils/ai'
 import { useTextSelection } from '../../hooks/useTextSelection'
@@ -122,7 +122,7 @@ export const ContentContainer = () => {
             Dialog AI
           </Dialog.Title>
           <Dialog.Close className='absolute right-1 top-1'>
-            <X height={14} width={14} className='fill-slate-200 hover:fill-slate-400' />
+            <Close height={14} width={14} className='fill-slate-200 hover:fill-slate-400' />
           </Dialog.Close>
           <ConversationContainer conversation={conversation} />
           <QuickActionContainer
