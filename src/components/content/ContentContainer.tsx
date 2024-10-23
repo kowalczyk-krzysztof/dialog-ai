@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { type ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
@@ -116,14 +116,15 @@ export const ContentContainer = () => {
           onPointerDownOutside={handleClickOutside}
         >
           <Dialog.Title
-            className='w-[calc(100%+2rem)] cursor-grab select-none rounded-t-lg bg-gray-700 text-center active:cursor-grabbing'
+            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center rounded-t-lg bg-gray-700 p-1 text-center active:cursor-grabbing'
             onMouseDown={handleGrab}
           >
-            Dialog AI
+            <p className='grow'>Dialog AI</p>
+            <Dialog.Close>
+              <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
+            </Dialog.Close>
           </Dialog.Title>
-          <Dialog.Close className='absolute right-1.5 top-1.5'>
-            <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
-          </Dialog.Close>
+
           <ConversationContainer conversation={conversation} />
           <QuickActionContainer
             setConversation={setConversation}
