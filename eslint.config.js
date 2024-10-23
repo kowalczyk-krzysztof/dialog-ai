@@ -1,12 +1,20 @@
 import tseslint from 'typescript-eslint'
 import eslint from '@eslint/js'
 import tailwind from 'eslint-plugin-tailwindcss'
+import react from 'eslint-plugin-react'
 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...tailwind.configs['flat/recommended'],
+  react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
   {
+    settings: {
+      react: {
+        version: '18.0.0',
+      },
+    },
     plugins: {
       '@typescript-eslint': tseslint.plugin,
     },

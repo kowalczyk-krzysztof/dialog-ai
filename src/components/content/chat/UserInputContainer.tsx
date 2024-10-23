@@ -38,3 +38,5 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
     </div>
   )
 )
+
+UserInputContainer.displayName = 'UserInputContainer'
