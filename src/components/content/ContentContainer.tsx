@@ -121,8 +121,8 @@ export const ContentContainer = () => {
           >
             Dialog AI
           </Dialog.Title>
-          <Dialog.Close className='absolute right-1 top-1'>
-            <Close height={14} width={14} className='fill-slate-200 hover:fill-slate-400' />
+          <Dialog.Close className='absolute right-1.5 top-1.5'>
+            <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
           </Dialog.Close>
           <ConversationContainer conversation={conversation} />
           <QuickActionContainer

@@ -11,13 +11,13 @@ interface Props {
 
 export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
   ({ userInput, disabled, setUserInput, setConversation }, ref: Ref<HTMLTextAreaElement>) => (
-    <div className='flex h-52 w-full items-center rounded-lg bg-gray-700  p-2'>
+    <div className='flex h-52 w-full items-center rounded-lg bg-gray-700 p-2'>
       <textarea
         ref={ref}
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
         // disabled={disabled} TODO: Fix disabled logic
-        className='size-full resize-none rounded-lg bg-neutral-600 p-2 text-sm'
+        className='size-full resize-none rounded-lg bg-neutral-600 p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
       />
       <SendPromptButton
         userInput={userInput}
