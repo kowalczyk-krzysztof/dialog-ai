@@ -32,10 +32,27 @@ export const dragHTMLElement = (e: ReactMouseEvent, containerRef: RefObject<HTML
 
     // Update the element's position
     if (containerRef.current) {
-      const top = containerRef.current.offsetTop - deltaY
-      const left = containerRef.current.offsetLeft - deltaX
-      containerRef.current.style.top = `${top <= 0 ? 0 : top}px`
-      containerRef.current.style.left = `${left <= 0 ? 0 : left}px`
+      const element = containerRef.current
+      const newTop = element.offsetTop - deltaY
+      const newLeft = element.offsetLeft - deltaX
+
+      // Get element dimensions
+      const elementWidth = element.offsetWidth
+      const elementHeight = element.offsetHeight
+
+      // Get the viewport dimensions
+      const viewportWidth = window.innerWidth
+      const viewportHeight = window.innerHeight
+
+      // Calculate the scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+
+      // Constrain the position to keep it within the viewport
+      const constrainedTop = Math.max(0, Math.min(newTop, viewportHeight - elementHeight))
+      const constrainedLeft = Math.max(0, Math.min(newLeft, viewportWidth - elementWidth - scrollbarWidth))
+
+      element.style.top = `${constrainedTop}px`
+      element.style.left = `${constrainedLeft}px`
     }
   }
 
