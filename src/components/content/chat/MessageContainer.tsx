@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const MessageContainer = ({ text, isUser }: Props) => (
-  <div className={`${isUser ? 'bg-slate-400' : 'bg-slate-500'} p-2`}>
+  <div className={`${isUser ? 'bg-neutral-600' : 'bg-neutral-700'} rounded-lg p-2`}>
     <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
   </div>
 )

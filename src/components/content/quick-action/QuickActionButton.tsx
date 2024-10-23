@@ -6,7 +6,11 @@ interface Props extends PropsWithChildren {
 }
 
 export const QuickActionButton = ({ children, disabled, onClick }: Props) => (
-  <button className='bg-blue-600' disabled={disabled} onClick={onClick}>
+  <button
+    className='rounded-lg bg-blue-600 p-2 hover:bg-blue-400 disabled:bg-neutral-400'
+    disabled={disabled}
+    onClick={onClick}
+  >
     {children}
   </button>
 )

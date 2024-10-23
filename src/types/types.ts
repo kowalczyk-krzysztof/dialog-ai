@@ -1,10 +1,10 @@
-export enum AIAvailabilityString {
+export enum AIApiAvailabilityString {
   READILY = 'readily',
   AFTER_DOWNLOAD = 'after-download',
   NO = 'no',
 }
 
-export interface AIAvailability {
+export interface AIApiAvailability {
   prompt: {
     available: boolean
     error?: string
@@ -41,7 +41,7 @@ export interface PromptSessionOptions extends AISessionOptions {
 }
 
 export interface BaseCapabilities {
-  available: AIAvailabilityString
+  available: AIApiAvailabilityString
 }
 
 export interface PromptCapabilities extends BaseCapabilities {

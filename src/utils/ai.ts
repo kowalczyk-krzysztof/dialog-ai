@@ -1,11 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react'
 import {
-  type AIAvailability,
+  type AIApiAvailability,
   type Conversation,
   type LanguageModelSession,
   type SummarizationModelSession,
   type TranslationLanguagePair,
-  AIAvailabilityString,
+  AIApiAvailabilityString,
   MessageRole,
   SupportedLanguages,
 } from '../types/types'
@@ -30,7 +30,7 @@ const isValidTranslationLanguagePair = (languagePair: TranslationLanguagePair) =
 const isPromptAvailable = async () => {
   if (window?.ai?.languageModel) {
     const capabilities = await window.ai.languageModel.capabilities()
-    return capabilities.available === AIAvailabilityString.READILY
+    return capabilities.available === AIApiAvailabilityString.READILY
   }
   return false
 }
@@ -40,12 +40,24 @@ const isTranslationAvailable = () => Boolean(window?.translation)
 const isSummarizationAvailable = async () => {
   if (window?.ai?.summarizer) {
     const capabilities = await window.ai.summarizer.capabilities()
-    return capabilities.available === AIAvailabilityString.READILY
+    return capabilities.available === AIApiAvailabilityString.READILY
   }
   return false
 }
 
-export const checkAvailability = async (): Promise<AIAvailability> => {
+export const defaultAIApiAvailability: AIApiAvailability = {
+  prompt: {
+    available: false,
+  },
+  summarization: {
+    available: false,
+  },
+  translation: {
+    available: false,
+  },
+}
+
+export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
   const prompt = await isPromptAvailable()
   const summarization = await isSummarizationAvailable()
   const translation = isTranslationAvailable()
@@ -115,7 +127,7 @@ export const getTranslation = async (
   const isValidPair = isValidTranslationLanguagePair(languagePair)
   const canTranslate = await window.translation.canTranslate(languagePair)
 
-  if (!isValidPair || canTranslate !== AIAvailabilityString.READILY) {
+  if (!isValidPair || canTranslate !== AIApiAvailabilityString.READILY) {
     setConversation(conversation => ({
       ...conversation,
       messages: [

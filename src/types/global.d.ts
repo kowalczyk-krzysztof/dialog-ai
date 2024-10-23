@@ -1,5 +1,5 @@
 import type {
-  AIAvailabilityString,
+  AIApiAvailabilityString,
   AISessionOptions,
   BaseCapabilities,
   LanguageDetectorSession,
@@ -24,7 +24,7 @@ declare global {
     // https://github.com/WICG/translation-api (WIP)
     translation: {
       createTranslator: (languagePair: TranslationLanguagePair) => Promise<TranslationModelSession>
-      canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIAvailabilityString>
+      canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIApiAvailabilityString>
     }
     // https://github.com/explainers-by-googlers/prompt-api (WIP)
     ai: {

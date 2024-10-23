@@ -34,21 +34,26 @@ export const TranslateButton = ({ userInput, disabled, setUserInput, setConversa
 
   const isDisabled = !userInput || isLoading || disabled
 
+  // TODO: Figure out UX for selecting language pair
   return (
     <div>
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
         {t('buttons.translate')}
       </QuickActionButton>
-      <label htmlFor='source'>Source:</label>
-      <select name='source' id='source' onChange={handleSelectSourceLanguage} className='w-6'>
+      <label htmlFor='source' className='hidden'>
+        Source:
+      </label>
+      <select name='source' id='source' onChange={handleSelectSourceLanguage} className='hidden w-6'>
         {Object.values(SupportedLanguages).map(language => (
           <option key={language} value={language}>
             {language}
           </option>
         ))}
       </select>
-      <label htmlFor='target'>Target:</label>
-      <select name='target' id='target' onChange={handleSelectTargetLanguage} className='w-6'>
+      <label htmlFor='target' className='hidden'>
+        Target:
+      </label>
+      <select name='target' id='target' onChange={handleSelectTargetLanguage} className='hidden w-6'>
         {Object.values(SupportedLanguages).map(language => (
           <option key={language} value={language}>
             {language}
