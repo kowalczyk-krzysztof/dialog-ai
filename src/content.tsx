@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { ContentContainer } from './components/content/ContentContainer'
 import { CONTENT_ROOT_ID, CSS_STYLESHEET, DIALOG_Z_INDEX } from '../constants'
 import './index.css'
+import { suppressInvalidRadixUiTitleError } from './utils/content'
 
 /*
   To scope styles to the Chrome extension dialog, shadow DOM is used.
@@ -56,6 +57,7 @@ const injectReactApp = () => {
 }
 
 const load = () => {
+  suppressInvalidRadixUiTitleError()
   if (document.readyState === 'loading') {
     const domContentLoadedHandler = () => {
       injectReactApp()

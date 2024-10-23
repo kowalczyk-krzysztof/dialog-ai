@@ -96,10 +96,11 @@ export const ContentContainer = () => {
   }, [selection])
 
   return (
-    <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen} aria-describedby={undefined}>
+    <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       {/* The container needs to be set to shadow DOM container or it won't work */}
       <Dialog.Portal container={root}>
         <Dialog.Content
+          aria-describedby={undefined}
           ref={dialogRef}
           className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 pt-0 text-slate-200'
           style={{
