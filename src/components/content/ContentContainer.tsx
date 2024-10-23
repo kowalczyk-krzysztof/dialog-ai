@@ -96,12 +96,12 @@ export const ContentContainer = () => {
   }, [selection])
 
   return (
-    <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen} aria-describedby={undefined}>
       {/* The container needs to be set to shadow DOM container or it won't work */}
       <Dialog.Portal container={root}>
         <Dialog.Content
           ref={dialogRef}
-          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 text-slate-200'
+          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 pt-0 text-slate-200'
           style={{
             top: position.top,
             left: position.left,
@@ -115,7 +115,7 @@ export const ContentContainer = () => {
           onPointerDownOutside={handleClickOutside}
         >
           <Dialog.Title
-            className='w-full cursor-grab select-none bg-gray-700 text-center active:cursor-move'
+            className='w-[calc(100%+2rem)] cursor-grab select-none rounded-t-lg bg-gray-700 text-center active:cursor-grabbing'
             onMouseDown={handleGrab}
           >
             Dialog AI
