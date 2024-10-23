@@ -73,7 +73,9 @@ export const ContentContainer = () => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
       // Only set the selection key state if the target is <body>
       if (e.target instanceof HTMLBodyElement) {
-        setIsSelectionKeyHeldDown(e.shiftKey)
+        const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
+        const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
+        setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
       }
     }
 
@@ -99,7 +101,7 @@ export const ContentContainer = () => {
       <Dialog.Portal container={root}>
         <Dialog.Content
           ref={dialogRef}
-          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 text-slate-200 active:cursor-move'
+          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 text-slate-200'
           style={{
             top: position.top,
             left: position.left,
@@ -112,7 +114,10 @@ export const ContentContainer = () => {
           onOpenAutoFocus={handleInitialFocus}
           onPointerDownOutside={handleClickOutside}
         >
-          <Dialog.Title className='w-full cursor-grab select-none bg-gray-700 text-center' onMouseDown={handleGrab}>
+          <Dialog.Title
+            className='w-full cursor-grab select-none bg-gray-700 text-center active:cursor-move'
+            onMouseDown={handleGrab}
+          >
             Dialog AI
           </Dialog.Title>
           <Dialog.Close className='absolute right-1 top-1'>
