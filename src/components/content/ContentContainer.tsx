@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
@@ -42,7 +42,23 @@ export const ContentContainer = () => {
 
   const handleInitialFocus = (e: Event) => {
     e.preventDefault()
-    userInputRef.current?.focus()
+    const userInputContainer = userInputRef.current
+    if (userInputContainer) {
+      userInputRef.current.focus()
+      const valueLength = userInputContainer.value.length
+      userInputContainer.setSelectionRange(valueLength, valueLength)
+      userInputContainer.scrollTop = userInputContainer.scrollHeight
+    }
+  }
+
+  const handleGrab = (e: ReactMouseEvent) => {
+    dragHTMLElement(e, dialogRef)
+  }
+
+  const handleClickOutside = (
+    e: Parameters<NonNullable<ComponentProps<typeof Dialog.Content>['onPointerDownOutside']>>[0]
+  ) => {
+    e.preventDefault()
   }
 
   useEffect(() => {
@@ -94,15 +110,12 @@ export const ContentContainer = () => {
           forceMount
           onEscapeKeyDown={clearState}
           onOpenAutoFocus={handleInitialFocus}
-          onPointerDownOutside={e => {
-            e.preventDefault()
-          }}
-          onMouseDown={e => {
-            dragHTMLElement(e, dialogRef)
-          }}
+          onPointerDownOutside={handleClickOutside}
         >
-          <Dialog.Title className='select-none'>Dialog AI</Dialog.Title>
-          <Dialog.Close className='absolute right-2 top-2'>
+          <Dialog.Title className='w-full cursor-grab select-none bg-gray-700 text-center' onMouseDown={handleGrab}>
+            Dialog AI
+          </Dialog.Title>
+          <Dialog.Close className='absolute right-1 top-1'>
             <X height={14} width={14} className='fill-slate-200 hover:fill-slate-400' />
           </Dialog.Close>
           <ConversationContainer conversation={conversation} />
