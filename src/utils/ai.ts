@@ -6,6 +6,7 @@ import {
   type SummarizationModelSession,
   type TranslationLanguagePair,
   AIApiAvailabilityString,
+  AIApiType,
   MessageRole,
   SupportedLanguages,
 } from '../types/types'
@@ -27,14 +28,17 @@ const isValidTranslationLanguagePair = (languagePair: TranslationLanguagePair) =
   }
 }
 
-interface MessageParams {
+interface UserMessageParams {
   conversation: Conversation
   text: string
+}
+interface SystemMessageParams extends UserMessageParams {
+  type?: AIApiType
   isError?: boolean
   id?: string
 }
 
-const createSystemMessage = ({ conversation, text, isError = false, id }: MessageParams) => {
+const createSystemMessage = ({ conversation, text, isError = false, id, type }: SystemMessageParams) => {
   if (id) {
     if (!conversation.messages.find(message => message.id === id)) {
       return {
@@ -44,6 +48,7 @@ const createSystemMessage = ({ conversation, text, isError = false, id }: Messag
           {
             id,
             text,
+            type,
             role: MessageRole.SYSTEM,
             isError,
           },
@@ -59,11 +64,14 @@ const createSystemMessage = ({ conversation, text, isError = false, id }: Messag
 
   return {
     ...conversation,
-    messages: [...conversation.messages, { id: window.crypto.randomUUID(), text, isError, role: MessageRole.SYSTEM }],
+    messages: [
+      ...conversation.messages,
+      { id: window.crypto.randomUUID(), text, isError, role: MessageRole.SYSTEM, type },
+    ],
   }
 }
 
-const createUserMessage = ({ conversation, text }: MessageParams) => ({
+const createUserMessage = ({ conversation, text }: UserMessageParams) => ({
   ...conversation,
   messages: [
     ...conversation.messages,
@@ -94,13 +102,13 @@ const isSummarizationAvailable = async () => {
 }
 
 export const defaultAIApiAvailability: AIApiAvailability = {
-  prompt: {
+  [AIApiType.PROMPT]: {
     available: false,
   },
-  summarization: {
+  [AIApiType.SUMMARIZATION]: {
     available: false,
   },
-  translation: {
+  [AIApiType.TRANSLATION]: {
     available: false,
   },
 }
@@ -135,7 +143,9 @@ export const getPromptStreamingResponse = async (
   const stream = await session.promptStreaming(text)
   const reponseId = window.crypto.randomUUID()
   for await (const chunk of stream) {
-    setConversation(conversation => createSystemMessage({ conversation, text: chunk.trim(), id: reponseId }))
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.PROMPT })
+    )
   }
 
   return session
@@ -148,7 +158,12 @@ export const getTranslation = async (
 ) => {
   if (!window.translation) {
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: i18n.t('errors.ai.translationNotEnabled'), isError: true })
+      createSystemMessage({
+        conversation,
+        text: i18n.t('errors.ai.translationNotEnabled'),
+        isError: true,
+        type: AIApiType.TRANSLATION,
+      })
     )
     return
   }
@@ -161,7 +176,12 @@ export const getTranslation = async (
 
   if (!isValidPair || canTranslate !== AIApiAvailabilityString.READILY) {
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: i18n.t('errors.ai.invalidLanguagePair'), isError: true })
+      createSystemMessage({
+        conversation,
+        text: i18n.t('errors.ai.invalidLanguagePair'),
+        isError: true,
+        type: AIApiType.TRANSLATION,
+      })
     )
     return
   }
@@ -170,7 +190,9 @@ export const getTranslation = async (
 
   const translation = await translator.translate(text)
 
-  setConversation(conversation => createSystemMessage({ conversation, text: translation, id: reponseId }))
+  setConversation(conversation =>
+    createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
+  )
 }
 
 export const getSummary = async (
@@ -185,7 +207,9 @@ export const getSummary = async (
 
   const summary = await summarizer.summarize(text)
 
-  setConversation(conversation => createSystemMessage({ conversation, id: reponseId, text: summary }))
+  setConversation(conversation =>
+    createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
+  )
 
   return summarizer
 }

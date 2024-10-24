@@ -1,3 +1,9 @@
+export enum AIApiType {
+  PROMPT = 'prompt',
+  TRANSLATION = 'translation',
+  SUMMARIZATION = 'summarization',
+}
+
 export enum AIApiAvailabilityString {
   READILY = 'readily',
   AFTER_DOWNLOAD = 'after-download',
@@ -5,15 +11,15 @@ export enum AIApiAvailabilityString {
 }
 
 export interface AIApiAvailability {
-  prompt: {
+  [AIApiType.PROMPT]: {
     available: boolean
     error?: string
   }
-  summarization: {
+  [AIApiType.SUMMARIZATION]: {
     available: boolean
     error?: string
   }
-  translation: {
+  [AIApiType.TRANSLATION]: {
     available: boolean
     error?: string
   }
@@ -94,6 +100,7 @@ export interface Message {
   text: string
   role: MessageRole
   isError?: boolean
+  type?: AIApiType
 }
 
 export interface Conversation {
