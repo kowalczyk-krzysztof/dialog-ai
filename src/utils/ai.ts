@@ -27,6 +27,54 @@ const isValidTranslationLanguagePair = (languagePair: TranslationLanguagePair) =
   }
 }
 
+interface MessageParams {
+  conversation: Conversation
+  text: string
+  isError?: boolean
+  id?: string
+}
+
+const createSystemMessage = ({ conversation, text, isError = false, id }: MessageParams) => {
+  if (id) {
+    if (!conversation.messages.find(message => message.id === id)) {
+      return {
+        ...conversation,
+        messages: [
+          ...conversation.messages,
+          {
+            id,
+            text,
+            role: MessageRole.SYSTEM,
+            isError,
+          },
+        ],
+      }
+    }
+
+    return {
+      ...conversation,
+      messages: conversation.messages.map(message => (message.id === id ? { ...message, text, isError } : message)),
+    }
+  }
+
+  return {
+    ...conversation,
+    messages: [...conversation.messages, { id: window.crypto.randomUUID(), text, isError, role: MessageRole.SYSTEM }],
+  }
+}
+
+const createUserMessage = ({ conversation, text }: MessageParams) => ({
+  ...conversation,
+  messages: [
+    ...conversation.messages,
+    {
+      id: window.crypto.randomUUID(),
+      text,
+      role: MessageRole.USER,
+    },
+  ],
+})
+
 const isPromptAvailable = async () => {
   if (window?.ai?.languageModel) {
     const capabilities = await window.ai.languageModel.capabilities()
@@ -80,31 +128,14 @@ export const getPromptStreamingResponse = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<LanguageModelSession> => {
-  const reponseId = window.crypto.randomUUID()
-  const userMessageId = window.crypto.randomUUID()
-  const userMessage = { id: userMessageId, text, role: MessageRole.USER }
-
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, userMessage],
-  }))
+  setConversation(conversation => createUserMessage({ conversation, text }))
 
   const session = await window.ai.languageModel.create()
 
-  const response = { id: reponseId, text: '', role: MessageRole.SYSTEM }
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, response],
-  }))
-
   const stream = await session.promptStreaming(text)
+  const reponseId = window.crypto.randomUUID()
   for await (const chunk of stream) {
-    setConversation(conversation => ({
-      ...conversation,
-      messages: conversation.messages.map(message =>
-        message.id === reponseId ? { ...message, text: chunk.trim() } : message
-      ),
-    }))
+    setConversation(conversation => createSystemMessage({ conversation, text: chunk.trim(), id: reponseId }))
   }
 
   return session
@@ -115,26 +146,23 @@ export const getTranslation = async (
   languagePair: TranslationLanguagePair,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ) => {
+  if (!window.translation) {
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: i18n.t('errors.ai.translationNotEnabled'), isError: true })
+    )
+    return
+  }
   const reponseId = window.crypto.randomUUID()
-  const userMessageId = window.crypto.randomUUID()
-  const userMessage = { id: userMessageId, text, role: MessageRole.USER }
 
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, userMessage],
-  }))
+  setConversation(conversation => createUserMessage({ conversation, text }))
 
   const isValidPair = isValidTranslationLanguagePair(languagePair)
   const canTranslate = await window.translation.canTranslate(languagePair)
 
   if (!isValidPair || canTranslate !== AIApiAvailabilityString.READILY) {
-    setConversation(conversation => ({
-      ...conversation,
-      messages: [
-        ...conversation.messages,
-        { id: reponseId, text: i18n.t('errors.ai.invalidLanguagePair'), role: MessageRole.SYSTEM },
-      ],
-    }))
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: i18n.t('errors.ai.invalidLanguagePair'), isError: true })
+    )
     return
   }
 
@@ -142,12 +170,7 @@ export const getTranslation = async (
 
   const translation = await translator.translate(text)
 
-  const response = { id: reponseId, text: translation, role: MessageRole.SYSTEM }
-
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, response],
-  }))
+  setConversation(conversation => createSystemMessage({ conversation, text: translation, id: reponseId }))
 }
 
 export const getSummary = async (
@@ -155,24 +178,14 @@ export const getSummary = async (
   setConversation: Dispatch<SetStateAction<Conversation>>
 ): Promise<SummarizationModelSession> => {
   const reponseId = window.crypto.randomUUID()
-  const userMessageId = window.crypto.randomUUID()
-  const userMessage = { id: userMessageId, text, role: MessageRole.USER }
 
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, userMessage],
-  }))
+  setConversation(conversation => createUserMessage({ conversation, text }))
 
   const summarizer = await window.ai.summarizer.create()
 
   const summary = await summarizer.summarize(text)
 
-  const response = { id: reponseId, text: summary, role: MessageRole.SYSTEM }
-
-  setConversation(conversation => ({
-    ...conversation,
-    messages: [...conversation.messages, response],
-  }))
+  setConversation(conversation => createSystemMessage({ conversation, id: reponseId, text: summary }))
 
   return summarizer
 }

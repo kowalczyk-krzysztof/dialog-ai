@@ -93,6 +93,7 @@ export interface Message {
   id: string
   text: string
   role: MessageRole
+  isError?: boolean
 }
 
 export interface Conversation {

@@ -20,9 +20,9 @@ export const ConversationContainer = ({ conversation }: Props) => {
     <ScrollArea.Root className='w-full'>
       <ScrollArea.Viewport ref={scrollableAreaRef}>
         <div className='my-2 flex h-72 flex-col gap-2'>
-          {conversation.messages.map(({ role, id, text }) => {
+          {conversation.messages.map(({ role, id, text, isError }) => {
             const isUser = role === MessageRole.USER
-            return <MessageContainer text={text} isUser={isUser} key={id} />
+            return <MessageContainer text={text} isUser={isUser} key={id} isError={isError} />
           })}
         </div>
       </ScrollArea.Viewport>
