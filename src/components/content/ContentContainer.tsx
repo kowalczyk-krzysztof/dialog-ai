@@ -120,7 +120,7 @@ export const ContentContainer = () => {
             onMouseDown={handleGrab}
           >
             <p className='grow'>Dialog AI</p>
-            <Dialog.Close>
+            <Dialog.Close onClick={clearState}>
               <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
             </Dialog.Close>
           </Dialog.Title>
