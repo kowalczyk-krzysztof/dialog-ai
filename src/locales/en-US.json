@@ -1,4 +1,5 @@
 {
+  "loading": "Loading response",
   "buttons": {
     "summarize": "Summarize",
     "translate": "Translate",

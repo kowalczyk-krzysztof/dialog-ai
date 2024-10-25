@@ -2,6 +2,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { MessageRole, type Conversation } from '../../../types/types'
 import { MessageContainer } from './MessageContainer'
 import { useEffect, useRef } from 'react'
+import { LoadingDots } from '../../shared/LoadingDots'
 
 interface Props {
   conversation: Conversation
@@ -25,7 +26,7 @@ export const ConversationContainer = ({ conversation, isResponseLoading }: Props
             const isUser = role === MessageRole.USER
             return <MessageContainer text={text} isUser={isUser} key={id} isError={isError} type={type} />
           })}
-          {isResponseLoading && <p className='text-center'>Loading...</p>}
+          {isResponseLoading && <LoadingDots />}
         </div>
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar orientation='vertical'>
