@@ -2,6 +2,7 @@ import Markdown from 'markdown-to-jsx'
 import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import { AIApiType } from '../../../types/types'
 import Copy from '../../icons/copy.svg?react'
+import { Badge } from '../../shared/Badge'
 
 interface Props {
   text: string
@@ -30,15 +31,15 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 rounded-t-lg border-b border-solid border-slate-200 bg-gray-700 py-1 pr-2 text-sm uppercase text-neutral-900'>
-        <p className='rounded bg-slate-200 px-2.5 py-0.5 text-xs font-medium'>{isUser ? 'user' : 'ai'}</p>
-        {type && <p className='rounded bg-slate-200 px-2.5 py-0.5 text-xs font-medium'>{type}</p>}
+      <div className='flex items-center justify-end gap-2 rounded-t-lg border-b border-solid border-slate-200 bg-gray-700 py-1 pr-2'>
+        <Badge>{isUser ? 'user' : 'ai'}</Badge>
+        {type && <Badge>{type}</Badge>}
         <button
           onClick={handleCopy}
-          className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
+          className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
         >
           <AccessibleIcon.Root label='copy content'>
-            <Copy className='size-4 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+            <Copy className='size-4 fill-blue-600 group-disabled:fill-neutral-400' />
           </AccessibleIcon.Root>
         </button>
       </div>
