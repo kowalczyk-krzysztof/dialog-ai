@@ -78,6 +78,8 @@ export const ContentContainer = () => {
         const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
         const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
         setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
+      } else {
+        setIsSelectionKeyHeldDown(false)
       }
     }
 
