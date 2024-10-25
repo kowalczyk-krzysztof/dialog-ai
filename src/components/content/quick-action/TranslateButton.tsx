@@ -2,7 +2,7 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import * as Select from '@radix-ui/react-select'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
-import { getTranslation } from '../../../utils/ai'
+import { getTranslation, languageTagToHumanReadable } from '../../../utils/ai'
 import { SupportedLanguages, type Conversation } from '../../../types/types'
 import { DIALOG_TOOLTIP_Z_INDEX } from '../../../../constants'
 
@@ -70,7 +70,7 @@ export const TranslateButton = ({
                   value={language}
                   className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
                 >
-                  <Select.ItemText>{language}</Select.ItemText>
+                  <Select.ItemText>{languageTagToHumanReadable(language)}</Select.ItemText>
                 </Select.Item>
               ))}
             </Select.Viewport>
@@ -97,7 +97,7 @@ export const TranslateButton = ({
                   value={language}
                   className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
                 >
-                  <Select.ItemText>{language}</Select.ItemText>
+                  <Select.ItemText>{languageTagToHumanReadable(language)}</Select.ItemText>
                 </Select.Item>
               ))}
             </Select.Viewport>

@@ -12,6 +12,14 @@ import {
 } from '../types/types'
 import i18n from '../i118n'
 
+export const languageTagToHumanReadable = (
+  languageTag: SupportedLanguages,
+  targetLanguage: SupportedLanguages = SupportedLanguages.ENGLISH
+) => {
+  const displayNames = new Intl.DisplayNames([targetLanguage], { type: 'language' })
+  return displayNames.of(languageTag)
+}
+
 const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
   language => language !== SupportedLanguages.ENGLISH
 ) as Array<SupportedLanguages>
