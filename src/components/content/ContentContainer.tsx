@@ -11,12 +11,12 @@ import { checkAIApiAvailability, defaultAIApiAvailability } from '../../utils/ai
 import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIApiAvailability } from '../../types/types'
-import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
-import { dragHTMLElement, getDialogPosition } from '../../utils/content'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
+import { dragHTMLElement, getContentRoot, getDialogPosition } from '../../utils/content'
 import { ConversationContainer } from './chat/ConversationContainer'
 
 export const ContentContainer = () => {
-  const root = document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
+  const root = getContentRoot()
   const conversationId = window.crypto.randomUUID()
   const userInputRef = useRef<HTMLTextAreaElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)

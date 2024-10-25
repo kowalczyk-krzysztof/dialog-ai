@@ -1,5 +1,5 @@
 import { type RefObject, type MouseEvent as ReactMouseEvent } from 'react'
-import { DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../constants'
+import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../constants'
 
 export const getDialogPosition = (textBounds: DOMRect) => {
   const { top, left, width, height } = textBounds
@@ -75,3 +75,5 @@ export const suppressInvalidRadixUiTitleError = () => {
     originalConsoleError(...args)
   }
 }
+
+export const getContentRoot = () => document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
