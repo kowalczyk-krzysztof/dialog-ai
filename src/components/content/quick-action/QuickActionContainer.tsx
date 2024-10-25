@@ -4,25 +4,38 @@ import { TranslateButton } from './TranslateButton'
 import { SummarizeButton } from './SummarizeButton'
 
 interface Props {
-  availability: AIApiAvailability
   userInput: string
+  AIApiAvailability: AIApiAvailability
+  isResponseLoading: boolean
   setConversation: Dispatch<SetStateAction<Conversation>>
   setUserInput: Dispatch<SetStateAction<string>>
+  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export const QuickActionContainer = ({ availability, userInput, setUserInput, setConversation }: Props) => (
+export const QuickActionContainer = ({
+  userInput,
+  AIApiAvailability,
+  isResponseLoading,
+  setUserInput,
+  setConversation,
+  setIsResponseLoading,
+}: Props) => (
   <div className='my-2 flex gap-2'>
     <TranslateButton
       userInput={userInput}
+      disabled={!AIApiAvailability.translation.available}
+      isResponseLoading={isResponseLoading}
       setUserInput={setUserInput}
       setConversation={setConversation}
-      disabled={!availability.translation.available}
+      setIsResponseLoading={setIsResponseLoading}
     />
     <SummarizeButton
       userInput={userInput}
+      disabled={!AIApiAvailability.summarization.available}
+      isResponseLoading={isResponseLoading}
       setUserInput={setUserInput}
       setConversation={setConversation}
-      disabled={!availability.summarization.available}
+      setIsResponseLoading={setIsResponseLoading}
     />
   </div>
 )

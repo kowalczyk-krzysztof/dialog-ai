@@ -1,4 +1,5 @@
 import Markdown from 'markdown-to-jsx'
+import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import { AIApiType } from '../../../types/types'
 import Copy from '../../icons/copy.svg?react'
 
@@ -36,7 +37,9 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           onClick={handleCopy}
           className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
         >
-          <Copy className='size-4 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+          <AccessibleIcon.Root label='copy content'>
+            <Copy className='size-4 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+          </AccessibleIcon.Root>
         </button>
       </div>
       <div className='p-2'>

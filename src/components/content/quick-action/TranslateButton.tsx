@@ -7,21 +7,29 @@ import { useTranslation } from 'react-i18next'
 interface Props {
   userInput: string
   disabled: boolean
+  isResponseLoading: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
+  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export const TranslateButton = ({ userInput, disabled, setUserInput, setConversation }: Props) => {
+export const TranslateButton = ({
+  userInput,
+  disabled,
+  isResponseLoading,
+  setUserInput,
+  setConversation,
+  setIsResponseLoading,
+}: Props) => {
   const { t } = useTranslation()
-  const [isLoading, setIsLoading] = useState(false)
   const [sourceLanguage, setSourceLanguage] = useState(SupportedLanguages.ENGLISH)
   const [targetLanguage, setTargetLanguage] = useState(SupportedLanguages.SPANISH)
 
   const handleGetResponse = async () => {
     setUserInput('')
-    setIsLoading(true)
+    setIsResponseLoading(true)
     await getTranslation(userInput, { sourceLanguage, targetLanguage }, setConversation)
-    setIsLoading(false)
+    setIsResponseLoading(false)
   }
 
   const handleSelectSourceLanguage = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -32,7 +40,7 @@ export const TranslateButton = ({ userInput, disabled, setUserInput, setConversa
     setTargetLanguage(event.target.value as SupportedLanguages)
   }
 
-  const isDisabled = !userInput || isLoading || disabled
+  const isDisabled = !userInput || isResponseLoading || disabled
 
   // TODO: Figure out UX for selecting language pair
   return (

@@ -1,4 +1,5 @@
 import { type ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
@@ -19,7 +20,8 @@ export const ContentContainer = () => {
   const userInputRef = useRef<HTMLTextAreaElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const [availability, setAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
+  const [AIApiAvailability, setAIApiAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
+  const [isResponseLoading, setIsResponseLoading] = useState(false)
   const [userInput, setUserInput] = useState('')
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [conversation, setConversation] = useState<Conversation>({
@@ -64,7 +66,7 @@ export const ContentContainer = () => {
   useEffect(() => {
     const getAIApiAvailability = async () => {
       const response = await checkAIApiAvailability()
-      setAvailability(response)
+      setAIApiAvailability(response)
     }
     getAIApiAvailability()
   }, [])
@@ -97,11 +99,15 @@ export const ContentContainer = () => {
 
   return (
     <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      {/* The container needs to be set to shadow DOM container or it won't work */}
+      {/* The container needs to be set to shadow DOM container */}
       <Dialog.Portal container={root}>
         <Dialog.Content
-          aria-describedby={undefined}
           ref={dialogRef}
+          forceMount
+          aria-describedby={undefined}
+          onEscapeKeyDown={clearState}
+          onOpenAutoFocus={handleInitialFocus}
+          onPointerDownOutside={handleClickOutside}
           className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 pt-0 text-slate-200'
           style={{
             top: position.top,
@@ -110,34 +116,35 @@ export const ContentContainer = () => {
             width: DIALOG_WIDTH,
             height: DIALOG_HEIGHT,
           }}
-          forceMount
-          onEscapeKeyDown={clearState}
-          onOpenAutoFocus={handleInitialFocus}
-          onPointerDownOutside={handleClickOutside}
         >
           <Dialog.Title
-            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center rounded-t-lg bg-gray-700 p-1 text-center active:cursor-grabbing'
             onMouseDown={handleGrab}
+            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center rounded-t-lg bg-gray-700 p-1 text-center active:cursor-grabbing'
           >
             <p className='grow'>Dialog AI</p>
             <Dialog.Close onClick={clearState}>
-              <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
+              <AccessibleIcon.Root label='close dialog'>
+                <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
+              </AccessibleIcon.Root>
             </Dialog.Close>
           </Dialog.Title>
-
-          <ConversationContainer conversation={conversation} />
+          <ConversationContainer conversation={conversation} isResponseLoading={isResponseLoading} />
           <QuickActionContainer
-            setConversation={setConversation}
-            availability={availability}
             userInput={userInput}
+            AIApiAvailability={AIApiAvailability}
+            isResponseLoading={isResponseLoading}
+            setConversation={setConversation}
             setUserInput={setUserInput}
+            setIsResponseLoading={setIsResponseLoading}
           />
           <UserInputContainer
             ref={userInputRef}
-            setConversation={setConversation}
-            disabled={!availability.prompt.available}
             userInput={userInput}
+            disabled={!AIApiAvailability.prompt.available}
+            isResponseLoading={isResponseLoading}
+            setConversation={setConversation}
             setUserInput={setUserInput}
+            setIsResponseLoading={setIsResponseLoading}
           />
           <Dialog.Description />
         </Dialog.Content>

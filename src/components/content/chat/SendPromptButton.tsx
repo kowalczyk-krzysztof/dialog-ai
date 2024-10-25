@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
+import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import type { LanguageModelSession, Conversation } from '../../../types/types'
 import { getPromptStreamingResponse } from '../../../utils/ai'
 import Send from '../../icons/send.svg?react'
@@ -6,26 +7,34 @@ import Send from '../../icons/send.svg?react'
 interface Props {
   userInput: string
   disabled: boolean
+  isResponseLoading: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
+  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export const SendPromptButton = ({ userInput, disabled, setConversation, setUserInput }: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
+export const SendPromptButton = ({
+  userInput,
+  disabled,
+  isResponseLoading,
+  setConversation,
+  setUserInput,
+  setIsResponseLoading,
+}: Props) => {
   const [session, setSession] = useState<LanguageModelSession | undefined>()
 
   const handleGetResponse = async () => {
-    setIsLoading(true)
+    setIsResponseLoading(true)
     setUserInput('')
     const aiSession = await getPromptStreamingResponse(userInput, setConversation)
     setSession(aiSession)
-    setIsLoading(false)
+    setIsResponseLoading(false)
     // TODO: Continue session
     await aiSession.destroy()
     return session
   }
 
-  const isDisabled = !userInput || isLoading || disabled
+  const isDisabled = !userInput || isResponseLoading || disabled
 
   return (
     <button
@@ -33,8 +42,9 @@ export const SendPromptButton = ({ userInput, disabled, setConversation, setUser
       onClick={handleGetResponse}
       className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
     >
-      <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
-      <span className='sr-only'>Send message</span>
+      <AccessibleIcon.Root label='send message'>
+        <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+      </AccessibleIcon.Root>
     </button>
   )
 }

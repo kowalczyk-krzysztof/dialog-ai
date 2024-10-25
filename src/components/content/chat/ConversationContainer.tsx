@@ -5,9 +5,10 @@ import { useEffect, useRef } from 'react'
 
 interface Props {
   conversation: Conversation
+  isResponseLoading: boolean
 }
 
-export const ConversationContainer = ({ conversation }: Props) => {
+export const ConversationContainer = ({ conversation, isResponseLoading }: Props) => {
   const scrollableAreaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export const ConversationContainer = ({ conversation }: Props) => {
             const isUser = role === MessageRole.USER
             return <MessageContainer text={text} isUser={isUser} key={id} isError={isError} type={type} />
           })}
+          {isResponseLoading && <p className='text-center'>Loading...</p>}
         </div>
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar orientation='vertical'>
