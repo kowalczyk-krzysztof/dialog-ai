@@ -26,9 +26,8 @@ export const SendPromptButton = ({
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
     setUserInput('')
-    const aiSession = await getPromptStreamingResponse(userInput, setConversation)
+    const aiSession = await getPromptStreamingResponse(userInput, setConversation, setIsResponseLoading)
     setSession(aiSession)
-    setIsResponseLoading(false)
     // TODO: Continue session
     await aiSession.destroy()
     return session

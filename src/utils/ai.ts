@@ -134,7 +134,8 @@ export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
 // TODO: Add unsupported language handling
 export const getPromptStreamingResponse = async (
   text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>
+  setConversation: Dispatch<SetStateAction<Conversation>>,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 ): Promise<LanguageModelSession> => {
   setConversation(conversation => createUserMessage({ conversation, text }))
 
@@ -143,6 +144,7 @@ export const getPromptStreamingResponse = async (
   const stream = await session.promptStreaming(text)
   const reponseId = window.crypto.randomUUID()
   for await (const chunk of stream) {
+    setIsLoading(false)
     setConversation(conversation =>
       createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.PROMPT })
     )
