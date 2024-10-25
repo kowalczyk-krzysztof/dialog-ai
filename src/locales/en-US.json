@@ -1,7 +1,10 @@
 {
   "buttons": {
     "summarize": "Summarize",
-    "translate": "Translate"
+    "translate": "Translate",
+    "copy": "Copy content",
+    "close": "Close dialog",
+    "send": "Send message"
   },
   "errors": {
     "ai": {

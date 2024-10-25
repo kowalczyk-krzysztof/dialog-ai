@@ -1,8 +1,9 @@
 import Markdown from 'markdown-to-jsx'
+import { useTranslation } from 'react-i18next'
 import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
-import { AIApiType } from '../../../types/types'
-import Copy from '../../icons/copy.svg?react'
+import type { AIApiType } from '../../../types/types'
 import { Badge } from '../../shared/Badge'
+import Copy from '../../icons/copy.svg?react'
 
 interface Props {
   text: string
@@ -23,6 +24,7 @@ const copyToClipboard = (text: string) => {
 }
 
 export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
+  const { t } = useTranslation()
   const background = getBackground(isUser, isError)
 
   const handleCopy = () => {
@@ -32,13 +34,13 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
       <div className='flex items-center justify-end gap-2 rounded-t-lg border-b border-solid border-slate-200 bg-gray-700 py-1 pr-2'>
-        <Badge>{isUser ? 'user' : 'ai'}</Badge>
         {type && <Badge>{type}</Badge>}
+        <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
           onClick={handleCopy}
           className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
         >
-          <AccessibleIcon.Root label='copy content'>
+          <AccessibleIcon.Root label={t('buttons.copy')}>
             <Copy className='size-4 fill-blue-600 group-disabled:fill-neutral-400' />
           </AccessibleIcon.Root>
         </button>

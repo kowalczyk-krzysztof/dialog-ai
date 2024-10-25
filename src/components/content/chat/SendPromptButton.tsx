@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import type { LanguageModelSession, Conversation } from '../../../types/types'
 import { getPromptStreamingResponse } from '../../../utils/ai'
@@ -22,6 +23,7 @@ export const SendPromptButton = ({
   setIsResponseLoading,
 }: Props) => {
   const [session, setSession] = useState<LanguageModelSession | undefined>()
+  const { t } = useTranslation()
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
@@ -41,7 +43,7 @@ export const SendPromptButton = ({
       onClick={handleGetResponse}
       className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
     >
-      <AccessibleIcon.Root label='send message'>
+      <AccessibleIcon.Root label={t('send-message')}>
         <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
       </AccessibleIcon.Root>
     </button>

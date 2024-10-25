@@ -1,8 +1,8 @@
 import { ChangeEvent, type Dispatch, type SetStateAction, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
 import { getTranslation } from '../../../utils/ai'
 import { SupportedLanguages, type Conversation } from '../../../types/types'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   userInput: string

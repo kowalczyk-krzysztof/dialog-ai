@@ -1,4 +1,5 @@
 import { type ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -20,6 +21,7 @@ export const ContentContainer = () => {
   const userInputRef = useRef<HTMLTextAreaElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
+  const { t } = useTranslation()
   const [AIApiAvailability, setAIApiAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
   const [isResponseLoading, setIsResponseLoading] = useState(false)
   const [userInput, setUserInput] = useState('')
@@ -125,7 +127,7 @@ export const ContentContainer = () => {
           >
             <p className='grow'>Dialog AI</p>
             <Dialog.Close onClick={clearState}>
-              <AccessibleIcon.Root label='close dialog'>
+              <AccessibleIcon.Root label={t('buttons.close')}>
                 <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
               </AccessibleIcon.Root>
             </Dialog.Close>
