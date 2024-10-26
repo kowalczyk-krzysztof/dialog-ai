@@ -26,7 +26,7 @@ export const ConversationContainer = ({ conversation, isResponseLoading }: Props
             const isUser = role === MessageRole.USER
             return <MessageContainer text={text} isUser={isUser} key={id} isError={isError} type={type} />
           })}
-          {isResponseLoading && <LoadingDots />}
+          {isResponseLoading ? <LoadingDots /> : null}
         </div>
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar orientation='vertical'>

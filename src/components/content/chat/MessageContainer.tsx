@@ -34,7 +34,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
       <div className='flex items-center justify-end gap-2 rounded-t-lg border-b border-solid border-slate-200 bg-gray-700 py-1 pr-2'>
-        {type && <Badge>{type}</Badge>}
+        {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
           onClick={handleCopy}
