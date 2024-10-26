@@ -196,7 +196,9 @@ export const getChatStreamingResponse = async (
     return session
   } catch (error) {
     const unknownError = i18n.t('errors.ai.unknownError')
-    setConversation(conversation => createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT }))
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
+    )
   }
 }
 
@@ -283,7 +285,13 @@ export const getTranslation = async (
   } catch (e) {
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.TRANSLATION })
+      createSystemMessage({
+        conversation,
+        text: unknownError,
+        id: reponseId,
+        type: AIApiType.TRANSLATION,
+        isError: true,
+      })
     )
   }
 }
@@ -356,7 +364,13 @@ export const getSummary = async (
   } catch (_) {
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.SUMMARIZATION })
+      createSystemMessage({
+        conversation,
+        text: unknownError,
+        id: reponseId,
+        type: AIApiType.SUMMARIZATION,
+        isError: true,
+      })
     )
   }
 }
