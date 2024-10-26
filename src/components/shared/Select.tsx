@@ -1,6 +1,6 @@
 import {
   SelectContent,
-  SelectItem,
+  SelectItem as RadixSelectItem,
   SelectItemText,
   SelectPortal,
   Root as SelectRoot,
@@ -40,13 +40,13 @@ export const Select = ({ disabled, items, value, onChange }: Props) => {
         >
           <SelectViewport className='bg-slate-500'>
             {items.map(({ value, label, key }) => (
-              <SelectItem
+              <RadixSelectItem
                 key={key}
                 value={value}
                 className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
               >
                 <SelectItemText>{label}</SelectItemText>
-              </SelectItem>
+              </RadixSelectItem>
             ))}
           </SelectViewport>
         </SelectContent>
