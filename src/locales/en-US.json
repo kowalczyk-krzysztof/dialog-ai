@@ -16,7 +16,8 @@
       "unknownError": "An unknown error occurred.",
       "aiNotEnabled": "AI functionality is not enabled.",
       "aiSummarizationNotEnabled": "Summarization functionality is not enabled.",
-      "couldNotCreateSummarizer": "Could not create summarizer."
+      "couldNotCreateSummarizer": "Could not create summarizer.",
+      "couldNotCreateLanguageModel": "Could not create language model."
     }
   }
 }

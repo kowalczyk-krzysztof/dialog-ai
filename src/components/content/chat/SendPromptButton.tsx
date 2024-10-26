@@ -32,8 +32,10 @@ export const SendPromptButton = ({
     const aiSession = await getPromptStreamingResponse(userInput, setConversation, setIsResponseLoading)
     setSession(aiSession)
     // TODO: Continue session
-    await aiSession.destroy()
-    return session
+    if (aiSession) {
+      await aiSession.destroy()
+      return session
+    }
   }
 
   const isDisabled = !userInput || isResponseLoading || disabled

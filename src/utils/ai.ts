@@ -140,26 +140,64 @@ export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
   }
 }
 
-// TODO: Add unsupported language handling
+const createLanguageModel = async (
+  setConversation: Dispatch<SetStateAction<Conversation>>
+): Promise<LanguageModelSession | undefined> => {
+  try {
+    const session = await window.ai.languageModel.create()
+    return session
+  } catch (_) {
+    const couldNotCreateLanguageModelText = i18n.t('errors.ai.couldNotCreateLanguageModel')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: couldNotCreateLanguageModelText,
+        isError: true,
+        type: AIApiType.PROMPT,
+      })
+    )
+  }
+}
+
 export const getPromptStreamingResponse = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>,
   setIsLoading: Dispatch<SetStateAction<boolean>>
-): Promise<LanguageModelSession> => {
+): Promise<LanguageModelSession | undefined> => {
   setConversation(conversation => createUserMessage({ conversation, text }))
-
-  const session = await window.ai.languageModel.create()
-
-  const stream = await session.promptStreaming(text)
-  const reponseId = window.crypto.randomUUID()
-  for await (const chunk of stream) {
-    setIsLoading(false)
+  if (!window.ai) {
+    const aiNotEnabledText = i18n.t('errors.ai.aiNotEnabled')
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.PROMPT })
+      createSystemMessage({
+        conversation,
+        text: aiNotEnabledText,
+        isError: true,
+        type: AIApiType.SUMMARIZATION,
+      })
     )
+    return
   }
 
-  return session
+  const session = await createLanguageModel(setConversation)
+
+  if (!session) {
+    return
+  }
+
+  try {
+    const stream = await session.promptStreaming(text)
+    const reponseId = window.crypto.randomUUID()
+    for await (const chunk of stream) {
+      setIsLoading(false)
+      setConversation(conversation =>
+        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.PROMPT })
+      )
+    }
+    return session
+  } catch (error) {
+    const unknownError = i18n.t('errors.ai.unknownError')
+    setConversation(conversation => createSystemMessage({ conversation, text: unknownError, type: AIApiType.PROMPT }))
+  }
 }
 
 const createTranslator = async (
@@ -318,7 +356,7 @@ export const getSummary = async (
   } catch (_) {
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.TRANSLATION })
+      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.SUMMARIZATION })
     )
   }
 }
