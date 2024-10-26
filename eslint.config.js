@@ -3,6 +3,7 @@ import eslint from '@eslint/js'
 import tailwind from 'eslint-plugin-tailwindcss'
 import react from 'eslint-plugin-react'
 import hooksPlugin from 'eslint-plugin-react-hooks'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -10,6 +11,7 @@ export default tseslint.config(
   ...tailwind.configs['flat/recommended'],
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
+  jsxA11y.flatConfigs.recommended,
   {
     settings: {
       react: {
@@ -24,6 +26,11 @@ export default tseslint.config(
       parser: tseslint.parser,
       ecmaVersion: 2022,
       sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     rules: {
       'no-multi-spaces': 'warn',
