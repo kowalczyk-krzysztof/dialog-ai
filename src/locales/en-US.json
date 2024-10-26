@@ -5,7 +5,8 @@
     "translate": "Translate",
     "copy": "Copy content",
     "close": "Close dialog",
-    "send": "Send message"
+    "send": "Send message",
+    "swapLanguages": "Swap target and source languages"
   },
   "errors": {
     "ai": {

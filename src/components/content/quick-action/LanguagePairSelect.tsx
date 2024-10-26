@@ -1,19 +1,10 @@
-import { useState, type Dispatch, type SetStateAction } from 'react'
-import {
-  SelectContent,
-  SelectItem,
-  SelectItemText,
-  SelectPortal,
-  Root as SelectRoot,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-} from '@radix-ui/react-select'
+import { type Dispatch, type SetStateAction } from 'react'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { SupportedLanguages, type TranslationLanguagePair } from '../../../types/types'
-import { DIALOG_TOOLTIP_Z_INDEX } from '../../../../constants'
 import { languageTagToHumanReadable } from '../../../utils/ai'
 import Swap from '../../icons/swap.svg?react'
+import { Select } from '../../shared/Select'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   languagePair: TranslationLanguagePair
@@ -21,6 +12,9 @@ interface Props {
 }
 
 export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => {
+  const { t } = useTranslation()
+  const swapLanguagesText = t('swapLanguages')
+
   const handleSelectSourceLanguage = (value: string) => {
     setLanguagePair(languagePair => ({
       ...languagePair,
@@ -42,78 +36,54 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
     }))
   }
 
+  const sourceLanguageItems = Object.values(SupportedLanguages).map(language => ({
+    key: language,
+    value: language,
+    label: languageTagToHumanReadable(language),
+  }))
+
+  const targetLanguageItems = Object.values(SupportedLanguages).map(language => ({
+    key: language,
+    value: language,
+    label: languageTagToHumanReadable(language),
+  }))
+
+  const sourceLanguageItem = {
+    key: languagePair.sourceLanguage,
+    value: languagePair.sourceLanguage,
+    label: languageTagToHumanReadable(languagePair.sourceLanguage),
+  }
+
+  const targetLanguageItem = {
+    key: languagePair.targetLanguage,
+    value: languagePair.targetLanguage,
+    label: languageTagToHumanReadable(languagePair.targetLanguage),
+  }
+
+  const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
+
   return (
     <>
-      <SelectRoot
-        value={languagePair.sourceLanguage}
-        onValueChange={handleSelectSourceLanguage}
-        disabled={languagePair.sourceLanguage === SupportedLanguages.ENGLISH}
-      >
-        <SelectTrigger
-          aria-label='source language'
-          className='inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-blue-600 px-[15px] py-0 text-[13px] leading-none text-slate-200 shadow-[0_2px_10px_var(--black-a7)] disabled:cursor-not-allowed disabled:bg-neutral-400'
-        >
-          <SelectValue />
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectContent
-            style={{
-              zIndex: DIALOG_TOOLTIP_Z_INDEX,
-            }}
-          >
-            <SelectViewport className='bg-slate-500'>
-              {Object.values(SupportedLanguages).map(language => (
-                <SelectItem
-                  key={language}
-                  value={language}
-                  className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
-                >
-                  <SelectItemText>{languageTagToHumanReadable(language)}</SelectItemText>
-                </SelectItem>
-              ))}
-            </SelectViewport>
-          </SelectContent>
-        </SelectPortal>
-      </SelectRoot>
+      <Select
+        disabled={isDisabled(languagePair.sourceLanguage)}
+        items={sourceLanguageItems}
+        value={sourceLanguageItem}
+        onChange={handleSelectSourceLanguage}
+      />
       <button
         onClick={handleSwapLanguages}
         className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
       >
-        <AccessibleIcon label={'swap'}>
+        <AccessibleIcon label={swapLanguagesText}>
           <Swap className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
         </AccessibleIcon>
       </button>
-      <SelectRoot
-        value={languagePair.targetLanguage}
-        onValueChange={handleSelectTargetLanguage}
-        disabled={languagePair.targetLanguage === SupportedLanguages.ENGLISH}
-      >
-        <SelectTrigger
-          aria-label='source language'
-          className='inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-blue-600 px-[15px] py-0 text-[13px] leading-none text-slate-200 shadow-[0_2px_10px_var(--black-a7)] disabled:cursor-not-allowed disabled:bg-neutral-400'
-        >
-          <SelectValue />
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectContent
-            style={{
-              zIndex: DIALOG_TOOLTIP_Z_INDEX,
-            }}
-          >
-            <SelectViewport className='bg-slate-500'>
-              {Object.values(SupportedLanguages).map(language => (
-                <SelectItem
-                  key={language}
-                  value={language}
-                  className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
-                >
-                  <SelectItemText>{languageTagToHumanReadable(language)}</SelectItemText>
-                </SelectItem>
-              ))}
-            </SelectViewport>
-          </SelectContent>
-        </SelectPortal>
-      </SelectRoot>
+      <Select
+        disabled={isDisabled(languagePair.targetLanguage)}
+        items={targetLanguageItems}
+        value={targetLanguageItem}
+        onChange={handleSelectTargetLanguage}
+      />
     </>
   )
 }
