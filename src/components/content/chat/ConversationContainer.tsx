@@ -1,4 +1,10 @@
-import * as ScrollArea from '@radix-ui/react-scroll-area'
+import {
+  Root as ScrollAreaRoot,
+  ScrollAreaViewport,
+  ScrollAreaScrollbar,
+  ScrollAreaThumb,
+  ScrollAreaCorner,
+} from '@radix-ui/react-scroll-area'
 import { MessageRole, type Conversation } from '../../../types/types'
 import { MessageContainer } from './MessageContainer'
 import { useEffect, useRef } from 'react'
@@ -19,8 +25,8 @@ export const ConversationContainer = ({ conversation, isResponseLoading }: Props
   }, [conversation])
 
   return (
-    <ScrollArea.Root className='w-full'>
-      <ScrollArea.Viewport ref={scrollableAreaRef}>
+    <ScrollAreaRoot className='w-full'>
+      <ScrollAreaViewport ref={scrollableAreaRef}>
         <div className='my-2 flex h-72 flex-col gap-2'>
           {conversation.messages.map(({ role, id, text, isError, type }) => {
             const isUser = role === MessageRole.USER
@@ -28,11 +34,11 @@ export const ConversationContainer = ({ conversation, isResponseLoading }: Props
           })}
           {isResponseLoading ? <LoadingDots /> : null}
         </div>
-      </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar orientation='vertical'>
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-      <ScrollArea.Corner />
-    </ScrollArea.Root>
+      </ScrollAreaViewport>
+      <ScrollAreaScrollbar orientation='vertical'>
+        <ScrollAreaThumb />
+      </ScrollAreaScrollbar>
+      <ScrollAreaCorner />
+    </ScrollAreaRoot>
   )
 }

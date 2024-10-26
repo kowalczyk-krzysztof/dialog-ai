@@ -1,7 +1,7 @@
-import { type ComponentProps, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
-import * as Dialog from '@radix-ui/react-dialog'
+import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
+import { DialogContent, DialogPortal, Root as DialogRoot, DialogTitle, DialogClose } from '@radix-ui/react-dialog'
 
 import { QuickActionContainer } from './quick-action/QuickActionContainer'
 import { UserInputContainer } from './chat/UserInputContainer'
@@ -92,10 +92,10 @@ export const ContentContainer = () => {
   }, [selection])
 
   return (
-    <Dialog.Root modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <DialogRoot modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       {/* The container needs to be set to shadow DOM container */}
-      <Dialog.Portal container={root}>
-        <Dialog.Content
+      <DialogPortal container={root}>
+        <DialogContent
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
@@ -111,17 +111,17 @@ export const ContentContainer = () => {
             height: DIALOG_HEIGHT,
           }}
         >
-          <Dialog.Title
+          <DialogTitle
             onMouseDown={handleGrab}
             className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center rounded-t-lg bg-gray-700 p-1 text-center active:cursor-grabbing'
           >
             <p className='grow'>Dialog AI</p>
-            <Dialog.Close onClick={clearState}>
-              <AccessibleIcon.Root label={t('buttons.close')}>
+            <DialogClose onClick={clearState}>
+              <AccessibleIcon label={t('buttons.close')}>
                 <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
-              </AccessibleIcon.Root>
-            </Dialog.Close>
-          </Dialog.Title>
+              </AccessibleIcon>
+            </DialogClose>
+          </DialogTitle>
           <ConversationContainer conversation={conversation} isResponseLoading={isResponseLoading} />
           <QuickActionContainer
             userInput={userInput}
@@ -140,9 +140,8 @@ export const ContentContainer = () => {
             setUserInput={setUserInput}
             setIsResponseLoading={setIsResponseLoading}
           />
-          <Dialog.Description />
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
   )
 }

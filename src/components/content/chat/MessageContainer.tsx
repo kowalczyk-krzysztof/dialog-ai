@@ -1,6 +1,6 @@
 import Markdown from 'markdown-to-jsx'
 import { useTranslation } from 'react-i18next'
-import * as AccessibleIcon from '@radix-ui/react-accessible-icon'
+import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import type { AIApiType } from '../../../types/types'
 import { Badge } from '../../shared/Badge'
 import Copy from '../../icons/copy.svg?react'
@@ -40,9 +40,9 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           onClick={handleCopy}
           className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
         >
-          <AccessibleIcon.Root label={t('buttons.copy')}>
+          <AccessibleIcon label={t('buttons.copy')}>
             <Copy className='size-4 fill-blue-600 group-disabled:fill-neutral-400' />
-          </AccessibleIcon.Root>
+          </AccessibleIcon>
         </button>
       </div>
       <div className='p-2'>

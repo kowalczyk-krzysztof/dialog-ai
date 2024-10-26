@@ -1,5 +1,14 @@
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import * as Select from '@radix-ui/react-select'
+import {
+  SelectContent,
+  SelectItem,
+  SelectItemText,
+  SelectPortal,
+  Root as SelectRoot,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from '@radix-ui/react-select'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
 import { getTranslation, languageTagToHumanReadable } from '../../../utils/ai'
@@ -50,60 +59,60 @@ export const TranslateButton = ({
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
         {t('buttons.translate')}
       </QuickActionButton>
-      <Select.Root defaultValue={sourceLanguage} onValueChange={handleSelectSourceLanguage}>
-        <Select.Trigger
+      <SelectRoot defaultValue={sourceLanguage} onValueChange={handleSelectSourceLanguage}>
+        <SelectTrigger
           aria-label='source language'
           className='inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-slate-500 px-[15px] py-0 text-[13px] leading-none text-slate-200 shadow-[0_2px_10px_var(--black-a7)]'
         >
-          <Select.Value />
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content
+          <SelectValue />
+        </SelectTrigger>
+        <SelectPortal>
+          <SelectContent
             style={{
               zIndex: DIALOG_TOOLTIP_Z_INDEX,
             }}
           >
-            <Select.Viewport className='bg-slate-500'>
+            <SelectViewport className='bg-slate-500'>
               {Object.values(SupportedLanguages).map(language => (
-                <Select.Item
+                <SelectItem
                   key={language}
                   value={language}
                   className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
                 >
-                  <Select.ItemText>{languageTagToHumanReadable(language)}</Select.ItemText>
-                </Select.Item>
+                  <SelectItemText>{languageTagToHumanReadable(language)}</SelectItemText>
+                </SelectItem>
               ))}
-            </Select.Viewport>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
-      <Select.Root defaultValue={targetLanguage} onValueChange={handleSelectTargetLanguage}>
-        <Select.Trigger
+            </SelectViewport>
+          </SelectContent>
+        </SelectPortal>
+      </SelectRoot>
+      <SelectRoot defaultValue={targetLanguage} onValueChange={handleSelectTargetLanguage}>
+        <SelectTrigger
           aria-label='source language'
           className='inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-slate-500 px-[15px] py-0 text-[13px] leading-none text-slate-200 shadow-[0_2px_10px_var(--black-a7)]'
         >
-          <Select.Value />
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content
+          <SelectValue />
+        </SelectTrigger>
+        <SelectPortal>
+          <SelectContent
             style={{
               zIndex: DIALOG_TOOLTIP_Z_INDEX,
             }}
           >
-            <Select.Viewport className='bg-slate-500'>
+            <SelectViewport className='bg-slate-500'>
               {Object.values(SupportedLanguages).map(language => (
-                <Select.Item
+                <SelectItem
                   key={language}
                   value={language}
                   className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-slate-200'
                 >
-                  <Select.ItemText>{languageTagToHumanReadable(language)}</Select.ItemText>
-                </Select.Item>
+                  <SelectItemText>{languageTagToHumanReadable(language)}</SelectItemText>
+                </SelectItem>
               ))}
-            </Select.Viewport>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
+            </SelectViewport>
+          </SelectContent>
+        </SelectPortal>
+      </SelectRoot>
     </div>
   )
 }
