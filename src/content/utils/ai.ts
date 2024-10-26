@@ -10,8 +10,8 @@ import {
   MessageRole,
   SupportedLanguages,
   TranslationModelSession,
-} from '../types/types'
-import i18n from '../i118n'
+} from '../../content/types'
+import i18n from '../../i118n'
 
 export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,

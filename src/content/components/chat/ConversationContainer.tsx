@@ -5,10 +5,10 @@ import {
   ScrollAreaThumb,
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
-import { MessageRole, type Conversation } from '../../../types/types'
+import { MessageRole, type Conversation } from '../../types'
 import { MessageContainer } from './MessageContainer'
 import { useEffect, useRef } from 'react'
-import { LoadingDots } from '../../shared/LoadingDots'
+import { LoadingDots } from '../../../shared/components/LoadingDots'
 
 interface Props {
   conversation: Conversation

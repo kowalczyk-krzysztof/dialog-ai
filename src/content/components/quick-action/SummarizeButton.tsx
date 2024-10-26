@@ -1,8 +1,9 @@
 import { type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
-import { getSummary } from '../../../utils/ai'
-import type { Conversation, SummarizationSession } from '../../../types/types'
+
+import type { Conversation, SummarizationSession } from '../../types'
+import { getSummary } from '../../utils/ai'
 
 interface Props {
   userInput: string

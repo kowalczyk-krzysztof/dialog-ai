@@ -1,9 +1,10 @@
-import { useState, type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import type { ChatSession, Conversation } from '../../../types/types'
-import { getChatStreamingResponse } from '../../../utils/ai'
+import type { ChatSession, Conversation } from '../../types'
+
 import Send from '../../icons/send.svg?react'
+import { getChatStreamingResponse } from '../../utils/ai'
 
 interface Props {
   userInput: string

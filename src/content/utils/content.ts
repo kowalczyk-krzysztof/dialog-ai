@@ -1,5 +1,5 @@
 import { type RefObject, type MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
-import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../constants'
+import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../../constants'
 
 export const getDialogPosition = (textBounds: DOMRect) => {
   const { top, left, width, height } = textBounds

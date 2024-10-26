@@ -3,12 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { DialogContent, DialogPortal, Root as DialogRoot, DialogTitle, DialogClose } from '@radix-ui/react-dialog'
 
-import { QuickActionContainer } from './quick-action/QuickActionContainer'
-import { UserInputContainer } from './chat/UserInputContainer'
-import Close from '../icons/close.svg?react'
+import Close from './icons/close.svg?react'
 
-import { checkAIApiAvailability, defaultAIApiAvailability } from '../../utils/ai'
-import { useTextSelection } from '../../hooks/useTextSelection'
+import { useTextSelection } from '../shared/hooks/useTextSelection'
 
 import type {
   Conversation,
@@ -16,16 +13,19 @@ import type {
   PointerDownOutsideEvent,
   ChatSession,
   SummarizationSession,
-} from '../../types/types'
-import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
+} from './types'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
 import {
   dragHTMLElement,
   getContentRoot,
   getDialogPosition,
   isSelectingTextWithModifierKey,
   setInitialFocusToTextArea,
-} from '../../utils/content'
-import { ConversationContainer } from './chat/ConversationContainer'
+} from './utils/content'
+import { checkAIApiAvailability, defaultAIApiAvailability } from './utils/ai'
+import { ConversationContainer } from './components/chat/ConversationContainer'
+import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
+import { UserInputContainer } from './components/chat/UserInputContainer'
 
 export const ContentContainer = () => {
   const root = getContentRoot()

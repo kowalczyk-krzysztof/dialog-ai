@@ -1,5 +1,5 @@
 import { forwardRef, Ref, type Dispatch, type SetStateAction } from 'react'
-import type { ChatSession, Conversation } from '../../../types/types'
+import type { ChatSession, Conversation } from '../../types'
 import { SendChatMessageButton } from './SendChatMessageButton'
 
 interface Props {

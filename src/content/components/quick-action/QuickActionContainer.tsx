@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
-import type { AIApiAvailability, Conversation, SummarizationSession } from '../../../types/types'
+import type { AIApiAvailability, Conversation, SummarizationSession } from '../../types'
 import { TranslateButton } from './TranslateButton'
 import { SummarizeButton } from './SummarizeButton'
 

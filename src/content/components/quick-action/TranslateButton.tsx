@@ -1,20 +1,9 @@
 import { type Dispatch, type SetStateAction, useState } from 'react'
-import {
-  SelectContent,
-  SelectItem,
-  SelectItemText,
-  SelectPortal,
-  Root as SelectRoot,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-} from '@radix-ui/react-select'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
-import { getTranslation, languageTagToHumanReadable } from '../../../utils/ai'
-import { SupportedLanguages, type Conversation } from '../../../types/types'
-import { DIALOG_TOOLTIP_Z_INDEX } from '../../../../constants'
+import { SupportedLanguages, type Conversation } from '../../types'
 import { LanguagePairSelect } from './LanguagePairSelect'
+import { getTranslation } from '../../utils/ai'
 
 interface Props {
   userInput: string
