@@ -19,6 +19,7 @@ interface Props {
   userInput: string
   disabled: boolean
   isResponseLoading: boolean
+  isStreamingResponse: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   setIsResponseLoading: Dispatch<SetStateAction<boolean>>
@@ -28,6 +29,7 @@ export const TranslateButton = ({
   userInput,
   disabled,
   isResponseLoading,
+  isStreamingResponse,
   setUserInput,
   setConversation,
   setIsResponseLoading,
@@ -52,7 +54,7 @@ export const TranslateButton = ({
     setTargetLanguage(value as SupportedLanguages)
   }
 
-  const isDisabled = !userInput || isResponseLoading || disabled
+  const isDisabled = !userInput || isResponseLoading || disabled || isStreamingResponse
 
   // TODO: Figure out UX for selecting language pair
   return (

@@ -10,7 +10,13 @@ import Close from '../icons/close.svg?react'
 import { checkAIApiAvailability, defaultAIApiAvailability } from '../../utils/ai'
 import { useTextSelection } from '../../hooks/useTextSelection'
 
-import { type Conversation, type AIApiAvailability, type PointerDownOutsideEvent } from '../../types/types'
+import type {
+  Conversation,
+  AIApiAvailability,
+  PointerDownOutsideEvent,
+  ChatSession,
+  SummarizationSession,
+} from '../../types/types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
 import {
   dragHTMLElement,
@@ -29,8 +35,10 @@ export const ContentContainer = () => {
 
   const { t } = useTranslation()
   const closeText = t('buttons.close')
+
   const [AIApiAvailability, setAIApiAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
   const [isResponseLoading, setIsResponseLoading] = useState(false)
+  const [isStreamingResponse, setIsStreamingResponse] = useState(false)
   const [userInput, setUserInput] = useState('')
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [conversation, setConversation] = useState<Conversation>({
@@ -38,8 +46,10 @@ export const ContentContainer = () => {
     messages: [],
   })
   const [position, setPosition] = useState({ top: '0px', left: '0px' })
-
   const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
+  const [chatSession, setChatSession] = useState<ChatSession>()
+  const [summarizationSession, setSummarizationSession] = useState<SummarizationSession>()
+
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
   const clearState = () => {
@@ -49,6 +59,15 @@ export const ContentContainer = () => {
     })
     setUserInput('')
     setIsDialogOpen(false)
+    setIsResponseLoading(false)
+    setIsStreamingResponse(false)
+
+    if (chatSession) {
+      chatSession.destroy()
+    }
+    if (summarizationSession) {
+      summarizationSession.destroy()
+    }
   }
 
   const handleInitialFocus = (e: Event) => {
@@ -128,18 +147,25 @@ export const ContentContainer = () => {
             userInput={userInput}
             AIApiAvailability={AIApiAvailability}
             isResponseLoading={isResponseLoading}
+            summarizationSession={summarizationSession}
+            isStreamingResponse={isStreamingResponse}
             setConversation={setConversation}
             setUserInput={setUserInput}
             setIsResponseLoading={setIsResponseLoading}
+            setSummarizationSession={setSummarizationSession}
           />
           <UserInputContainer
             ref={userInputRef}
             userInput={userInput}
             disabled={!AIApiAvailability.chat.available}
             isResponseLoading={isResponseLoading}
+            chatSession={chatSession}
+            isStreamingResponse={isStreamingResponse}
             setConversation={setConversation}
             setUserInput={setUserInput}
             setIsResponseLoading={setIsResponseLoading}
+            setChatSession={setChatSession}
+            setIsStreamingResponse={setIsStreamingResponse}
           />
         </DialogContent>
       </DialogPortal>

@@ -2,24 +2,30 @@ import { type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
 import { getSummary } from '../../../utils/ai'
-import type { Conversation } from '../../../types/types'
+import type { Conversation, SummarizationSession } from '../../../types/types'
 
 interface Props {
   userInput: string
   disabled: boolean
   isResponseLoading: boolean
+  summarizationSession: SummarizationSession | undefined
+  isStreamingResponse: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   setIsResponseLoading: Dispatch<SetStateAction<boolean>>
+  setSummarizationSession: Dispatch<SetStateAction<SummarizationSession | undefined>>
 }
 
 export const SummarizeButton = ({
   userInput,
   disabled,
   isResponseLoading,
+  summarizationSession,
+  isStreamingResponse,
   setUserInput,
   setConversation,
   setIsResponseLoading,
+  setSummarizationSession,
 }: Props) => {
   const { t } = useTranslation()
   const summarizeText = t('buttons.summarize')
@@ -27,15 +33,11 @@ export const SummarizeButton = ({
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
     setUserInput('')
-    const session = await getSummary(userInput, setConversation)
+    await getSummary(userInput, summarizationSession, setConversation, setSummarizationSession)
     setIsResponseLoading(false)
-    // TODO: Continue session
-    if (session) {
-      await session.destroy()
-    }
   }
 
-  const isDisabled = !userInput || isResponseLoading || disabled
+  const isDisabled = !userInput || isResponseLoading || disabled || isStreamingResponse
 
   return (
     <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>

@@ -2,8 +2,8 @@ import type { Dispatch, SetStateAction } from 'react'
 import {
   type AIApiAvailability,
   type Conversation,
-  type LanguageModelSession,
-  type SummarizationModelSession,
+  type ChatSession,
+  type SummarizationSession,
   type TranslationLanguagePair,
   AIApiAvailabilityString,
   AIApiType,
@@ -140,9 +140,9 @@ export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
   }
 }
 
-const createLanguageModel = async (
+const createChatSession = async (
   setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<LanguageModelSession | undefined> => {
+): Promise<ChatSession | undefined> => {
   try {
     const session = await window.ai.languageModel.create()
     return session
@@ -159,12 +159,57 @@ const createLanguageModel = async (
   }
 }
 
+const getChatResponse = async (
+  chatSession: ChatSession,
+  text: string,
+  setIsResponseLoading: Dispatch<SetStateAction<boolean>>,
+  setConversation: Dispatch<SetStateAction<Conversation>>,
+  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>,
+  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
+) => {
+  try {
+    const stream = await chatSession.promptStreaming(text)
+    const reponseId = window.crypto.randomUUID()
+    for await (const chunk of stream) {
+      setIsResponseLoading(false)
+      setIsStreamingResponse(true)
+      setConversation(conversation =>
+        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.CHAT })
+      )
+    }
+    setChatSession(chatSession)
+    setIsStreamingResponse(false)
+  } catch (error) {
+    const unknownError = i18n.t('errors.ai.unknownError')
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
+    )
+    setChatSession(undefined)
+    setIsStreamingResponse(false)
+  }
+}
+
 export const getChatStreamingResponse = async (
   text: string,
+  chatSession: ChatSession | undefined,
   setConversation: Dispatch<SetStateAction<Conversation>>,
-  setIsLoading: Dispatch<SetStateAction<boolean>>
-): Promise<LanguageModelSession | undefined> => {
+  setIsResponseLoading: Dispatch<SetStateAction<boolean>>,
+  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>,
+  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
+) => {
   setConversation(conversation => createUserMessage({ conversation, text }))
+  if (chatSession) {
+    await getChatResponse(
+      chatSession,
+      text,
+      setIsResponseLoading,
+      setConversation,
+      setChatSession,
+      setIsStreamingResponse
+    )
+    return
+  }
+
   if (!window.ai) {
     const aiNotEnabledText = i18n.t('errors.ai.aiNotEnabled')
     setConversation(conversation =>
@@ -178,28 +223,13 @@ export const getChatStreamingResponse = async (
     return
   }
 
-  const session = await createLanguageModel(setConversation)
+  const session = await createChatSession(setConversation)
 
   if (!session) {
     return
   }
 
-  try {
-    const stream = await session.promptStreaming(text)
-    const reponseId = window.crypto.randomUUID()
-    for await (const chunk of stream) {
-      setIsLoading(false)
-      setConversation(conversation =>
-        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.CHAT })
-      )
-    }
-    return session
-  } catch (error) {
-    const unknownError = i18n.t('errors.ai.unknownError')
-    setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
-    )
-  }
+  await getChatResponse(session, text, setIsResponseLoading, setConversation, setChatSession, setIsStreamingResponse)
 }
 
 const createTranslator = async (
@@ -298,7 +328,7 @@ export const getTranslation = async (
 
 const createSummarizer = async (
   setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<SummarizationModelSession | undefined> => {
+): Promise<SummarizationSession | undefined> => {
   try {
     const summarizer = await window.ai.summarizer.create()
     return summarizer
@@ -315,11 +345,48 @@ const createSummarizer = async (
   }
 }
 
+const getSummarizationResponse = async (
+  summarizer: SummarizationSession,
+  text: string,
+  setConversation: Dispatch<SetStateAction<Conversation>>,
+  setSummarizationSession: Dispatch<SetStateAction<SummarizationSession | undefined>>
+) => {
+  const reponseId = window.crypto.randomUUID()
+  try {
+    const summary = await summarizer.summarize(text)
+
+    setConversation(conversation =>
+      createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
+    )
+
+    setSummarizationSession(summarizer)
+  } catch (_) {
+    const unknownError = i18n.t('errors.ai.unknownError')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: unknownError,
+        id: reponseId,
+        type: AIApiType.SUMMARIZATION,
+        isError: true,
+      })
+    )
+    setSummarizationSession(undefined)
+  }
+}
+
 export const getSummary = async (
   text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<SummarizationModelSession | undefined> => {
+  existingSession: SummarizationSession | undefined,
+  setConversation: Dispatch<SetStateAction<Conversation>>,
+  setSummarizationSession: Dispatch<SetStateAction<SummarizationSession | undefined>>
+) => {
   setConversation(conversation => createUserMessage({ conversation, text }))
+  if (existingSession) {
+    await getSummarizationResponse(existingSession, text, setConversation, setSummarizationSession)
+    return
+  }
+
   if (!window.ai) {
     const aiNotEnabledText = i18n.t('errors.ai.aiNotEnabled')
     setConversation(conversation =>
@@ -345,7 +412,6 @@ export const getSummary = async (
     )
     return
   }
-  const reponseId = window.crypto.randomUUID()
 
   const summarizer = await createSummarizer(setConversation)
 
@@ -353,24 +419,5 @@ export const getSummary = async (
     return
   }
 
-  try {
-    const summary = await summarizer.summarize(text)
-
-    setConversation(conversation =>
-      createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
-    )
-
-    return summarizer
-  } catch (_) {
-    const unknownError = i18n.t('errors.ai.unknownError')
-    setConversation(conversation =>
-      createSystemMessage({
-        conversation,
-        text: unknownError,
-        id: reponseId,
-        type: AIApiType.SUMMARIZATION,
-        isError: true,
-      })
-    )
-  }
+  await getSummarizationResponse(summarizer, text, setConversation, setSummarizationSession)
 }

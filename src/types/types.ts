@@ -59,7 +59,7 @@ export interface ChatCapabilities extends BaseCapabilities {
   maxTemperature: number
 }
 
-export interface LanguageModelSession {
+export interface ChatSession {
   maxTokens: number
   temperature: number
   tokensLeft: number
@@ -68,7 +68,7 @@ export interface LanguageModelSession {
   prompt: (prompt: string, options?: AISessionOptions) => Promise<string>
   promptStreaming: (prompt: string, options?: AISessionOptions) => Promise<ReadableStream<string>>
   destroy: () => Promise<void>
-  clone: (options?: AISessionOptions) => Promise<LanguageModelSession>
+  clone: (options?: AISessionOptions) => Promise<ChatSession>
   countPromptTokens: (prompt: string) => Promise<number>
 }
 
@@ -82,7 +82,7 @@ export interface LanguageDetectorSession {
   detect: (text: string) => Promise<string>
 }
 
-export interface SummarizationModelSession {
+export interface SummarizationSession {
   summarize: (text: string) => Promise<string>
   destroy: () => Promise<void>
 }

@@ -1,19 +1,34 @@
 import { forwardRef, Ref, type Dispatch, type SetStateAction } from 'react'
-import type { Conversation } from '../../../types/types'
+import type { ChatSession, Conversation } from '../../../types/types'
 import { SendChatMessageButton } from './SendChatMessageButton'
 
 interface Props {
   userInput: string
   disabled: boolean
   isResponseLoading: boolean
+  chatSession: ChatSession | undefined
+  isStreamingResponse: boolean
   setUserInput: Dispatch<SetStateAction<string>>
   setConversation: Dispatch<SetStateAction<Conversation>>
   setIsResponseLoading: Dispatch<SetStateAction<boolean>>
+  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>
+  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
 }
 
 export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
   (
-    { userInput, disabled, isResponseLoading, setUserInput, setConversation, setIsResponseLoading },
+    {
+      userInput,
+      disabled,
+      isResponseLoading,
+      chatSession,
+      isStreamingResponse,
+      setUserInput,
+      setConversation,
+      setIsResponseLoading,
+      setChatSession,
+      setIsStreamingResponse,
+    },
     ref: Ref<HTMLTextAreaElement>
   ) => (
     <div className='flex h-52 w-full items-center rounded-lg bg-gray-700 p-2'>
@@ -27,9 +42,13 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
         userInput={userInput}
         disabled={disabled}
         isResponseLoading={isResponseLoading}
+        chatSession={chatSession}
+        isStreamingResponse={isStreamingResponse}
         setUserInput={setUserInput}
         setConversation={setConversation}
         setIsResponseLoading={setIsResponseLoading}
+        setChatSession={setChatSession}
+        setIsStreamingResponse={setIsStreamingResponse}
       />
     </div>
   )
