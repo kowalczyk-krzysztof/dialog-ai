@@ -13,7 +13,10 @@
       "translationNotEnabled": "Translation funcionality is not enabled.",
       "translationNotDownloaded": "Translation for this language pair is not downloaded.",
       "couldNotCreateTranslator": "Could not create translator.",
-      "unknownError": "An unknown error occurred."
+      "unknownError": "An unknown error occurred.",
+      "aiNotEnabled": "AI functionality is not enabled.",
+      "aiSummarizationNotEnabled": "Summarization functionality is not enabled.",
+      "couldNotCreateSummarizer": "Could not create summarizer."
     }
   }
 }

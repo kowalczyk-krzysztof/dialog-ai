@@ -30,7 +30,9 @@ export const SummarizeButton = ({
     const session = await getSummary(userInput, setConversation)
     setIsResponseLoading(false)
     // TODO: Continue session
-    await session.destroy()
+    if (session) {
+      await session.destroy()
+    }
   }
 
   const isDisabled = !userInput || isResponseLoading || disabled

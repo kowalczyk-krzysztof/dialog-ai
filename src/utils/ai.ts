@@ -187,6 +187,7 @@ export const getTranslation = async (
   languagePair: TranslationLanguagePair,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ) => {
+  setConversation(conversation => createUserMessage({ conversation, text }))
   if (!window.translation) {
     const translationNotEnabledText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
@@ -200,9 +201,6 @@ export const getTranslation = async (
     return
   }
   const reponseId = window.crypto.randomUUID()
-
-  setConversation(conversation => createUserMessage({ conversation, text }))
-
   const isValidPair = isValidTranslationLanguagePair(languagePair)
 
   if (!isValidPair) {
@@ -252,21 +250,75 @@ export const getTranslation = async (
   }
 }
 
+const createSummarizer = async (
+  setConversation: Dispatch<SetStateAction<Conversation>>
+): Promise<SummarizationModelSession | undefined> => {
+  try {
+    const summarizer = await window.ai.summarizer.create()
+    return summarizer
+  } catch (_) {
+    const couldNotCreateSummarizerText = i18n.t('errors.ai.couldNotCreateSummarizer')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: couldNotCreateSummarizerText,
+        isError: true,
+        type: AIApiType.SUMMARIZATION,
+      })
+    )
+  }
+}
+
 export const getSummary = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<SummarizationModelSession> => {
+): Promise<SummarizationModelSession | undefined> => {
+  setConversation(conversation => createUserMessage({ conversation, text }))
+  if (!window.ai) {
+    const aiNotEnabledText = i18n.t('errors.ai.aiNotEnabled')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: aiNotEnabledText,
+        isError: true,
+        type: AIApiType.SUMMARIZATION,
+      })
+    )
+    return
+  }
+
+  if (!window.ai.summarizer) {
+    const summarizationNotEnabledText = i18n.t('errors.ai.summarizationNotEnabled')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: summarizationNotEnabledText,
+        isError: true,
+        type: AIApiType.SUMMARIZATION,
+      })
+    )
+    return
+  }
   const reponseId = window.crypto.randomUUID()
 
-  setConversation(conversation => createUserMessage({ conversation, text }))
+  const summarizer = await createSummarizer(setConversation)
 
-  const summarizer = await window.ai.summarizer.create()
+  if (!summarizer) {
+    return
+  }
 
-  const summary = await summarizer.summarize(text)
+  try {
+    const summary = await summarizer.summarize(text)
 
-  setConversation(conversation =>
-    createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
-  )
+    setConversation(conversation =>
+      createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
+    )
 
-  return summarizer
+    return summarizer
+  } catch (_) {
+    const unknownError = i18n.t('errors.ai.unknownError')
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.TRANSLATION })
+    )
+  }
 }
