@@ -33,6 +33,7 @@ export const TranslateButton = ({
   setIsResponseLoading,
 }: Props) => {
   const { t } = useTranslation()
+  const translateText = t('buttons.translate')
   const [sourceLanguage, setSourceLanguage] = useState(SupportedLanguages.ENGLISH)
   const [targetLanguage, setTargetLanguage] = useState(SupportedLanguages.SPANISH)
 
@@ -57,7 +58,7 @@ export const TranslateButton = ({
   return (
     <div>
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
-        {t('buttons.translate')}
+        {translateText}
       </QuickActionButton>
       <SelectRoot defaultValue={sourceLanguage} onValueChange={handleSelectSourceLanguage}>
         <SelectTrigger

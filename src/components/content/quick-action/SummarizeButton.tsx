@@ -22,6 +22,7 @@ export const SummarizeButton = ({
   setIsResponseLoading,
 }: Props) => {
   const { t } = useTranslation()
+  const summarizeText = t('buttons.summarize')
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
@@ -36,7 +37,7 @@ export const SummarizeButton = ({
 
   return (
     <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
-      {t('buttons.summarize')}
+      {summarizeText}
     </QuickActionButton>
   )
 }

@@ -9,6 +9,7 @@ import {
   AIApiType,
   MessageRole,
   SupportedLanguages,
+  TranslationModelSession,
 } from '../types/types'
 import i18n from '../i118n'
 
@@ -161,16 +162,37 @@ export const getPromptStreamingResponse = async (
   return session
 }
 
+const createTranslator = async (
+  languagePair: TranslationLanguagePair,
+  setConversation: Dispatch<SetStateAction<Conversation>>
+): Promise<TranslationModelSession | undefined> => {
+  try {
+    const translator = await window.translation.createTranslator(languagePair)
+    return translator
+  } catch (_) {
+    const couldNotCreateTranslatorText = i18n.t('errors.ai.couldNotCreateTranslator')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: couldNotCreateTranslatorText,
+        isError: true,
+        type: AIApiType.TRANSLATION,
+      })
+    )
+  }
+}
+
 export const getTranslation = async (
   text: string,
   languagePair: TranslationLanguagePair,
   setConversation: Dispatch<SetStateAction<Conversation>>
 ) => {
   if (!window.translation) {
+    const translationNotEnabledText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
       createSystemMessage({
         conversation,
-        text: i18n.t('errors.ai.translationNotEnabled'),
+        text: translationNotEnabledText,
         isError: true,
         type: AIApiType.TRANSLATION,
       })
@@ -182,13 +204,13 @@ export const getTranslation = async (
   setConversation(conversation => createUserMessage({ conversation, text }))
 
   const isValidPair = isValidTranslationLanguagePair(languagePair)
-  const canTranslate = await window.translation.canTranslate(languagePair)
 
-  if (!isValidPair || canTranslate !== AIApiAvailabilityString.READILY) {
+  if (!isValidPair) {
+    const invalidLanguagePairText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
       createSystemMessage({
         conversation,
-        text: i18n.t('errors.ai.invalidLanguagePair'),
+        text: invalidLanguagePairText,
         isError: true,
         type: AIApiType.TRANSLATION,
       })
@@ -196,13 +218,38 @@ export const getTranslation = async (
     return
   }
 
-  const translator = await window.translation.createTranslator(languagePair)
+  const isTranslationDownloadedForLanguagePair = await window.translation.canTranslate(languagePair)
 
-  const translation = await translator.translate(text)
+  if (!isTranslationDownloadedForLanguagePair) {
+    const translationNotDownloadedText = i18n.t('errors.ai.translationNotDownloaded')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: translationNotDownloadedText,
+        isError: true,
+        type: AIApiType.TRANSLATION,
+      })
+    )
+    return
+  }
 
-  setConversation(conversation =>
-    createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
-  )
+  const translator = await createTranslator(languagePair, setConversation)
+
+  if (!translator) {
+    return
+  }
+
+  try {
+    const translation = await translator.translate(text)
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
+    )
+  } catch (e) {
+    const unknownError = i18n.t('errors.ai.unknownError')
+    setConversation(conversation =>
+      createSystemMessage({ conversation, text: unknownError, id: reponseId, type: AIApiType.TRANSLATION })
+    )
+  }
 }
 
 export const getSummary = async (

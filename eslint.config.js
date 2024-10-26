@@ -35,6 +35,8 @@ export default tseslint.config(
     rules: {
       'no-multi-spaces': 'warn',
       'no-useless-escape': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@eslint-js/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-unused-expressions': 'error',
       'no-duplicate-imports': 'warn',
       'no-useless-return': 'error',

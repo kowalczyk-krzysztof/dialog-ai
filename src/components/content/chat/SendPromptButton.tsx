@@ -24,6 +24,7 @@ export const SendPromptButton = ({
 }: Props) => {
   const [session, setSession] = useState<LanguageModelSession | undefined>()
   const { t } = useTranslation()
+  const sendText = t('buttons.send')
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
@@ -43,7 +44,7 @@ export const SendPromptButton = ({
       onClick={handleGetResponse}
       className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
     >
-      <AccessibleIcon label={t('send-message')}>
+      <AccessibleIcon label={sendText}>
         <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
       </AccessibleIcon>
     </button>

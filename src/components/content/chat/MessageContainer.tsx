@@ -25,6 +25,7 @@ const copyToClipboard = (text: string) => {
 
 export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
   const { t } = useTranslation()
+  const copyText = t('buttons.copy')
   const background = getBackground(isUser, isError)
 
   const handleCopy = () => {
@@ -33,19 +34,19 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 bg-gray-700 py-0.5 pr-2 border border-solid border-slate-200 border-b-0'>
+      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-slate-200 bg-gray-700 py-0.5 pr-2'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
           onClick={handleCopy}
           className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
         >
-          <AccessibleIcon label={t('buttons.copy')}>
+          <AccessibleIcon label={copyText}>
             <Copy className='size-4 fill-blue-600 group-disabled:fill-neutral-400' />
           </AccessibleIcon>
         </button>
       </div>
-      <div className='p-2 border border-solid border-slate-200 border-t-0 rounded-b-md break-words'>
+      <div className='break-words rounded-b-md border border-t-0 border-solid border-slate-200 p-2'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>

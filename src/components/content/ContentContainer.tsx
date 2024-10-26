@@ -28,6 +28,7 @@ export const ContentContainer = () => {
   const dialogRef = useRef<HTMLDivElement>(null)
 
   const { t } = useTranslation()
+  const closeText = t('buttons.close')
   const [AIApiAvailability, setAIApiAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
   const [isResponseLoading, setIsResponseLoading] = useState(false)
   const [userInput, setUserInput] = useState('')
@@ -117,7 +118,7 @@ export const ContentContainer = () => {
           >
             <p className='grow'>Dialog AI</p>
             <DialogClose onClick={clearState}>
-              <AccessibleIcon label={t('buttons.close')}>
+              <AccessibleIcon label={closeText}>
                 <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
               </AccessibleIcon>
             </DialogClose>

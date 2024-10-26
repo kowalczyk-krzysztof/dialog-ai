@@ -10,7 +10,10 @@
   "errors": {
     "ai": {
       "invalidLanguagePair": "Invalid language pair.",
-      "translationNotEnabled": "Translation funcionality is not enabled."
+      "translationNotEnabled": "Translation funcionality is not enabled.",
+      "translationNotDownloaded": "Translation for this language pair is not downloaded.",
+      "couldNotCreateTranslator": "Could not create translator.",
+      "unknownError": "An unknown error occurred."
     }
   }
 }
