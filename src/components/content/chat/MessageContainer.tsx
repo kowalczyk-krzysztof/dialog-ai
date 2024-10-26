@@ -45,7 +45,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           </AccessibleIcon>
         </button>
       </div>
-      <div className='p-2 border border-solid border-slate-200 border-t-0 rounded-b-md'>
+      <div className='p-2 border border-solid border-slate-200 border-t-0 rounded-b-md break-words'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>
