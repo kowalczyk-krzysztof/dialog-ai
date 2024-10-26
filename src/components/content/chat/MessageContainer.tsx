@@ -33,7 +33,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 rounded-t-lg border-b border-solid border-slate-200 bg-gray-700 py-1 pr-2'>
+      <div className='flex items-center justify-end gap-2 bg-gray-700 py-0.5 pr-2 border border-solid border-slate-200 border-b-0'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
@@ -45,7 +45,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           </AccessibleIcon>
         </button>
       </div>
-      <div className='p-2'>
+      <div className='p-2 border border-solid border-slate-200 border-t-0 rounded-b-md'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>
