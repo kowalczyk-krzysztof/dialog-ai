@@ -10,7 +10,7 @@ import Close from '../icons/close.svg?react'
 import { checkAIApiAvailability, defaultAIApiAvailability } from '../../utils/ai'
 import { useTextSelection } from '../../hooks/useTextSelection'
 
-import { type Conversation, type AIApiAvailability } from '../../types/types'
+import { type Conversation, type AIApiAvailability, type PointerDownOutsideEvent } from '../../types/types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
 import { dragHTMLElement, getContentRoot, getDialogPosition } from '../../utils/content'
 import { ConversationContainer } from './chat/ConversationContainer'
@@ -59,9 +59,7 @@ export const ContentContainer = () => {
     dragHTMLElement(e, dialogRef)
   }
 
-  const handleClickOutside = (
-    e: Parameters<NonNullable<ComponentProps<typeof Dialog.Content>['onPointerDownOutside']>>[0]
-  ) => {
+  const handleClickOutside = (e: PointerDownOutsideEvent) => {
     e.preventDefault()
   }
 

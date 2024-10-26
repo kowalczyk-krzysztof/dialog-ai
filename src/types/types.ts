@@ -1,3 +1,6 @@
+import { DialogContent } from '@radix-ui/react-dialog'
+import { ComponentProps } from 'react'
+
 export enum AIApiType {
   PROMPT = 'prompt',
   TRANSLATION = 'translation',
@@ -134,3 +137,7 @@ export interface TextSelection {
   text: string
   bounds: DOMRect
 }
+
+export type PointerDownOutsideEvent = Parameters<
+  NonNullable<ComponentProps<typeof DialogContent>['onPointerDownOutside']>
+>[0]
