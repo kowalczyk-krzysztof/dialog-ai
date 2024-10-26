@@ -12,7 +12,13 @@ import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIApiAvailability, type PointerDownOutsideEvent } from '../../types/types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
-import { dragHTMLElement, getContentRoot, getDialogPosition, isSelectingTextWithModifierKey } from '../../utils/content'
+import {
+  dragHTMLElement,
+  getContentRoot,
+  getDialogPosition,
+  isSelectingTextWithModifierKey,
+  setInitialFocusToTextArea,
+} from '../../utils/content'
 import { ConversationContainer } from './chat/ConversationContainer'
 
 export const ContentContainer = () => {
@@ -45,14 +51,7 @@ export const ContentContainer = () => {
   }
 
   const handleInitialFocus = (e: Event) => {
-    e.preventDefault()
-    const userInputContainer = userInputRef.current
-    if (userInputContainer) {
-      userInputRef.current.focus()
-      const valueLength = userInputContainer.value.length
-      userInputContainer.setSelectionRange(valueLength, valueLength)
-      userInputContainer.scrollTop = userInputContainer.scrollHeight
-    }
+    setInitialFocusToTextArea(e, userInputRef)
   }
 
   const handleGrab = (e: ReactMouseEvent) => {
@@ -72,8 +71,9 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const handleKeyboardEvent = (e: KeyboardEvent) =>
+    const handleKeyboardEvent = (e: KeyboardEvent) => {
       isSelectingTextWithModifierKey(e, isDialogOpen, setIsSelectionKeyHeldDown)
+    }
 
     document.addEventListener('keydown', handleKeyboardEvent)
     document.addEventListener('keyup', handleKeyboardEvent)

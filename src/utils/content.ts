@@ -92,3 +92,14 @@ export const isSelectingTextWithModifierKey = (
     setIsSelectionKeyHeldDown(false)
   }
 }
+
+export const setInitialFocusToTextArea = (e: Event, userInputRef: RefObject<HTMLTextAreaElement> | null) => {
+  e.preventDefault()
+  const userInputContainer = userInputRef?.current
+  if (userInputContainer) {
+    userInputContainer.focus()
+    const valueLength = userInputContainer.value.length
+    userInputContainer.setSelectionRange(valueLength, valueLength)
+    userInputContainer.scrollTop = userInputContainer.scrollHeight
+  }
+}
