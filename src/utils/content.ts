@@ -1,4 +1,4 @@
-import { type RefObject, type MouseEvent as ReactMouseEvent } from 'react'
+import { type RefObject, type MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
 import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../constants'
 
 export const getDialogPosition = (textBounds: DOMRect) => {
@@ -77,3 +77,18 @@ export const suppressInvalidRadixUiTitleError = () => {
 }
 
 export const getContentRoot = () => document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
+
+export const isSelectingTextWithModifierKey = (
+  e: KeyboardEvent,
+  isDialogOpen: boolean,
+  setIsSelectionKeyHeldDown: Dispatch<SetStateAction<boolean>>
+) => {
+  // Only set the selection key state if the target is <body> and the dialog is not open
+  if (e.target instanceof HTMLBodyElement && !isDialogOpen) {
+    const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
+    const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
+    setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
+  } else {
+    setIsSelectionKeyHeldDown(false)
+  }
+}

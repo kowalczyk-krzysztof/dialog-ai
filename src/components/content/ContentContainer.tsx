@@ -12,7 +12,7 @@ import { useTextSelection } from '../../hooks/useTextSelection'
 
 import { type Conversation, type AIApiAvailability, type PointerDownOutsideEvent } from '../../types/types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../../constants'
-import { dragHTMLElement, getContentRoot, getDialogPosition } from '../../utils/content'
+import { dragHTMLElement, getContentRoot, getDialogPosition, isSelectingTextWithModifierKey } from '../../utils/content'
 import { ConversationContainer } from './chat/ConversationContainer'
 
 export const ContentContainer = () => {
@@ -72,16 +72,8 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
-    const handleKeyboardEvent = (e: KeyboardEvent) => {
-      // Only set the selection key state if the target is <body>
-      if (e.target instanceof HTMLBodyElement) {
-        const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
-        const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
-        setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
-      } else {
-        setIsSelectionKeyHeldDown(false)
-      }
-    }
+    const handleKeyboardEvent = (e: KeyboardEvent) =>
+      isSelectingTextWithModifierKey(e, isDialogOpen, setIsSelectionKeyHeldDown)
 
     document.addEventListener('keydown', handleKeyboardEvent)
     document.addEventListener('keyup', handleKeyboardEvent)
@@ -89,7 +81,7 @@ export const ContentContainer = () => {
       document.removeEventListener('keydown', handleKeyboardEvent)
       document.removeEventListener('keyup', handleKeyboardEvent)
     }
-  }, [])
+  }, [isDialogOpen])
 
   useEffect(() => {
     if (selection && selection.text.length > 0) {
