@@ -92,7 +92,7 @@ const createUserMessage = ({ conversation, text }: UserMessageParams) => ({
   ],
 })
 
-const isPromptAvailable = async () => {
+const isChatAvailable = async () => {
   if (window?.ai?.languageModel) {
     const capabilities = await window.ai.languageModel.capabilities()
     return capabilities.available === AIApiAvailabilityString.READILY
@@ -111,7 +111,7 @@ const isSummarizationAvailable = async () => {
 }
 
 export const defaultAIApiAvailability: AIApiAvailability = {
-  [AIApiType.PROMPT]: {
+  [AIApiType.CHAT]: {
     available: false,
   },
   [AIApiType.SUMMARIZATION]: {
@@ -123,13 +123,13 @@ export const defaultAIApiAvailability: AIApiAvailability = {
 }
 
 export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
-  const prompt = await isPromptAvailable()
+  const chat = await isChatAvailable()
   const summarization = await isSummarizationAvailable()
   const translation = isTranslationAvailable()
 
   return {
-    prompt: {
-      available: prompt,
+    chat: {
+      available: chat,
     },
     summarization: {
       available: summarization,
@@ -153,13 +153,13 @@ const createLanguageModel = async (
         conversation,
         text: couldNotCreateLanguageModelText,
         isError: true,
-        type: AIApiType.PROMPT,
+        type: AIApiType.CHAT,
       })
     )
   }
 }
 
-export const getPromptStreamingResponse = async (
+export const getChatStreamingResponse = async (
   text: string,
   setConversation: Dispatch<SetStateAction<Conversation>>,
   setIsLoading: Dispatch<SetStateAction<boolean>>
@@ -190,13 +190,13 @@ export const getPromptStreamingResponse = async (
     for await (const chunk of stream) {
       setIsLoading(false)
       setConversation(conversation =>
-        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.PROMPT })
+        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.CHAT })
       )
     }
     return session
   } catch (error) {
     const unknownError = i18n.t('errors.ai.unknownError')
-    setConversation(conversation => createSystemMessage({ conversation, text: unknownError, type: AIApiType.PROMPT }))
+    setConversation(conversation => createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT }))
   }
 }
 

@@ -2,7 +2,7 @@ import { DialogContent } from '@radix-ui/react-dialog'
 import { ComponentProps } from 'react'
 
 export enum AIApiType {
-  PROMPT = 'prompt',
+  CHAT = 'chat',
   TRANSLATION = 'translation',
   SUMMARIZATION = 'summarization',
 }
@@ -14,7 +14,7 @@ export enum AIApiAvailabilityString {
 }
 
 export interface AIApiAvailability {
-  [AIApiType.PROMPT]: {
+  [AIApiType.CHAT]: {
     available: boolean
     error?: string
   }
@@ -28,13 +28,12 @@ export interface AIApiAvailability {
   }
 }
 
-export enum InitialPromptRole {
+export enum InitialChatRole {
   USER = 'user',
   SYSTEM = 'system',
-  ASSISTANT = 'assistant',
 }
-export interface InitialPrompt {
-  role: InitialPromptRole
+export interface InitialChatPrompt {
+  role: InitialChatRole
   content: string
 }
 
@@ -42,18 +41,18 @@ export interface AISessionOptions {
   signal: AbortSignal
 }
 
-export interface PromptSessionOptions extends AISessionOptions {
+export interface ChatSessionOptions extends AISessionOptions {
   temperature?: number
   topK?: number
   systemPrompt?: string
-  initialPrompts?: InitialPrompt[]
+  initialPrompts?: InitialChatPrompt[]
 }
 
 export interface BaseCapabilities {
   available: AIApiAvailabilityString
 }
 
-export interface PromptCapabilities extends BaseCapabilities {
+export interface ChatCapabilities extends BaseCapabilities {
   defaultTemperature: number
   defaultTopK: number
   maxTopK: number

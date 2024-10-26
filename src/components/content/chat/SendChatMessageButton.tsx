@@ -2,7 +2,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import type { LanguageModelSession, Conversation } from '../../../types/types'
-import { getPromptStreamingResponse } from '../../../utils/ai'
+import { getChatStreamingResponse } from '../../../utils/ai'
 import Send from '../../icons/send.svg?react'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   setIsResponseLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export const SendPromptButton = ({
+export const SendChatMessageButton = ({
   userInput,
   disabled,
   isResponseLoading,
@@ -29,7 +29,7 @@ export const SendPromptButton = ({
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
     setUserInput('')
-    const aiSession = await getPromptStreamingResponse(userInput, setConversation, setIsResponseLoading)
+    const aiSession = await getChatStreamingResponse(userInput, setConversation, setIsResponseLoading)
     setSession(aiSession)
     // TODO: Continue session
     if (aiSession) {

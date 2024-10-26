@@ -1,6 +1,6 @@
 import { forwardRef, Ref, type Dispatch, type SetStateAction } from 'react'
 import type { Conversation } from '../../../types/types'
-import { SendPromptButton } from './SendPromptButton'
+import { SendChatMessageButton } from './SendChatMessageButton'
 
 interface Props {
   userInput: string
@@ -23,7 +23,7 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
         onChange={e => setUserInput(e.target.value)}
         className='size-full resize-none rounded-lg bg-neutral-600 p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
       />
-      <SendPromptButton
+      <SendChatMessageButton
         userInput={userInput}
         disabled={disabled}
         isResponseLoading={isResponseLoading}

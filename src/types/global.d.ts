@@ -4,11 +4,11 @@ import type {
   BaseCapabilities,
   LanguageDetectorSession,
   LanguageModelSession,
-  PromptCapabilities,
+  ChatCapabilities,
   TranslationLanguagePair,
   TranslationModelSession,
   SummarizationModelSession,
-  PromptSessionOptions,
+  ChatSessionOptions,
 } from './types'
 
 declare global {
@@ -29,8 +29,8 @@ declare global {
     // https://github.com/explainers-by-googlers/prompt-api (WIP)
     ai: {
       languageModel: {
-        create: (options?: PromptSessionOptions) => Promise<LanguageModelSession>
-        capabilities: () => Promise<PromptCapabilities>
+        create: (options?: ChatSessionOptions) => Promise<LanguageModelSession>
+        capabilities: () => Promise<ChatCapabilities>
       }
       summarizer: {
         create: (options?: AISessionOptions) => Promise<SummarizationModelSession>

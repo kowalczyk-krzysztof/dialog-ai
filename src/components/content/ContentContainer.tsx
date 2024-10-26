@@ -135,7 +135,7 @@ export const ContentContainer = () => {
           <UserInputContainer
             ref={userInputRef}
             userInput={userInput}
-            disabled={!AIApiAvailability.prompt.available}
+            disabled={!AIApiAvailability.chat.available}
             isResponseLoading={isResponseLoading}
             setConversation={setConversation}
             setUserInput={setUserInput}
