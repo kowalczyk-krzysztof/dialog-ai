@@ -17,7 +17,7 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<H
         ref={ref}
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
-        className='size-full resize-none rounded-lg bg-neutral-600 p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
+        className='size-full resize-none rounded-lg bg-primary p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
       />
       <SendChatMessageButton />
     </div>

@@ -34,7 +34,7 @@ export const TranslateButton = () => {
   const isDisabled = !userInput || isResponseLoading || !aiApiAvailability.translation.available || isStreamingResponse
 
   return (
-    <div>
+    <div className='flex grow gap-2'>
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
         {translateText}
       </QuickActionButton>

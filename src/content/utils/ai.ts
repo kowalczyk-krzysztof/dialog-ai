@@ -17,7 +17,9 @@ export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,
   targetLanguage: SupportedLanguages = SupportedLanguages.ENGLISH
 ) => {
-  const displayNames = new Intl.DisplayNames([targetLanguage], { type: 'language' })
+  const displayNames = new Intl.DisplayNames([targetLanguage], {
+    type: 'language',
+  })
   return displayNames.of(languageTag) ?? languageTag
 }
 

@@ -109,7 +109,7 @@ export const ContentContainer = () => {
           onEscapeKeyDown={clearState}
           onOpenAutoFocus={handleInitialFocus}
           onPointerDownOutside={handleClickOutside}
-          className='fixed flex flex-col items-center rounded-lg bg-neutral-900 p-4 pt-0 text-slate-200'
+          className='fixed flex flex-col items-center rounded-lg bg-background p-4 pt-0 text-text'
           style={{
             top: position.top,
             left: position.left,
@@ -125,7 +125,7 @@ export const ContentContainer = () => {
             <p className='grow'>Dialog AI</p>
             <DialogClose onClick={clearState}>
               <AccessibleIcon label={closeText}>
-                <Close height={16} width={16} className='fill-slate-200 hover:fill-slate-400' />
+                <Close height={16} width={16} className='fill-text hover:fill-slate-400' />
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>

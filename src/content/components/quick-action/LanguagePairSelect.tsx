@@ -66,19 +66,16 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
 
   return (
-    <>
+    <div className='flex'>
       <Select
         disabled={isDisabled(languagePair.sourceLanguage)}
         items={sourceLanguageItems}
         value={sourceLanguageItem}
         onChange={handleSelectSourceLanguage}
       />
-      <button
-        onClick={handleSwapLanguages}
-        className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
-      >
+      <button onClick={handleSwapLanguages} className='flex justify-center items-center mx-2'>
         <AccessibleIcon label={swapLanguagesText}>
-          <Swap className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+          <Swap className='size-4 fill-blue-600 hover:fill-blue-400' />
         </AccessibleIcon>
       </button>
       <Select
@@ -87,6 +84,6 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
         value={targetLanguageItem}
         onChange={handleSelectTargetLanguage}
       />
-    </>
+    </div>
   )
 }

@@ -17,7 +17,7 @@ const getBackground = (isUser: boolean, isError?: boolean) => {
   if (isError) {
     return 'bg-red-600'
   }
-  return isUser ? 'bg-neutral-600' : 'bg-neutral-700'
+  return isUser ? 'bg-primary' : 'bg-secondary'
 }
 
 const copyToClipboard = (text: string) => {
@@ -35,7 +35,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-slate-200 bg-gray-700 py-0.5 pr-2'>
+      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-text bg-gray-700 py-0.5 pr-2'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
@@ -43,11 +43,11 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
         >
           <AccessibleIcon label={copyText}>
-            <Copy className='size-4 fill-blue-600 group-disabled:fill-neutral-400' />
+            <Copy className='size-4 fill-blue-600 group-disabled:fill-disabled' />
           </AccessibleIcon>
         </button>
       </div>
-      <div className='break-words rounded-b-md border border-t-0 border-solid border-slate-200 p-2'>
+      <div className='break-words rounded-b-md border border-t-0 border-solid border-text p-2'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>

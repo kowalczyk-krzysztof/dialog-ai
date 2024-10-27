@@ -36,7 +36,7 @@ export const SendChatMessageButton = () => {
       className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
     >
       <AccessibleIcon label={sendText}>
-        <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-neutral-400' />
+        <Send className='size-5 fill-blue-600 hover:fill-blue-400 group-disabled:fill-disabled' />
       </AccessibleIcon>
     </button>
   )
