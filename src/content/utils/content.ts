@@ -94,10 +94,9 @@ export const isOpeningDialog = (
   // Only set the selection key state if the target is <body> and the dialog is not open
   if (e.target instanceof HTMLBodyElement && !isDialogOpen) {
     if (e.shiftKey && e.key === 'D') {
-      const { setUserInput } = useContentStore.getState()
+      e.preventDefault() // This prevents D from being typed in the text area
       const center = getCenterOfTheScreen()
       setPostion(center)
-      setUserInput('') // TODO: Clear the user input
       setIsDialogOpen(true)
       return
     }
