@@ -140,3 +140,5 @@ export interface TextSelection {
 export type PointerDownOutsideEvent = Parameters<
   NonNullable<ComponentProps<typeof DialogContent>['onPointerDownOutside']>
 >[0]
+
+export type FocusOutsideEvent = Parameters<NonNullable<ComponentProps<typeof DialogContent>['onFocusOutside']>>[0]

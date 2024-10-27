@@ -7,7 +7,7 @@ import Close from './icons/close.svg?react'
 
 import { useTextSelection } from '../shared/hooks/useTextSelection'
 
-import type { PointerDownOutsideEvent } from './types'
+import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
 import {
   dragHTMLElement,
@@ -59,6 +59,10 @@ export const ContentContainer = () => {
   }
 
   const handleClickOutside = (e: PointerDownOutsideEvent) => {
+    e.preventDefault()
+  }
+
+  const handleFocusOutside = (e: PointerDownOutsideEvent | FocusOutsideEvent) => {
     e.preventDefault()
   }
 
@@ -118,6 +122,7 @@ export const ContentContainer = () => {
           onEscapeKeyDown={clearState}
           onOpenAutoFocus={handleInitialFocus}
           onPointerDownOutside={handleClickOutside}
+          onInteractOutside={handleFocusOutside}
         >
           <DialogTitle
             className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing'
