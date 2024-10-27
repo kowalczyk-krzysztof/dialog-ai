@@ -12,8 +12,8 @@ import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
 import {
   dragHTMLElement,
   getContentRoot,
-  getDialogPosition,
-  isSelectingTextWithModifierKey,
+  getDialogPositionRelativeToSelection,
+  isOpeningDialog,
   setInitialFocusToTextArea,
 } from './utils/content'
 import { checkAiApiAvailability } from './utils/ai'
@@ -79,7 +79,7 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
-      isSelectingTextWithModifierKey(e, isDialogOpen, setIsSelectionKeyHeldDown)
+      isOpeningDialog(e, isDialogOpen, setIsDialogOpen, setIsSelectionKeyHeldDown, setPosition)
     }
 
     document.addEventListener('keydown', handleKeyboardEvent)
@@ -92,7 +92,7 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     if (selection && selection.text.length > 0) {
-      setPosition(getDialogPosition(selection.bounds))
+      setPosition(getDialogPositionRelativeToSelection(selection.bounds))
       setUserInput(selection.text)
       setIsDialogOpen(true)
     }

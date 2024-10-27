@@ -1,7 +1,8 @@
 import { type RefObject, type MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
 import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../../constants'
+import { useContentStore } from '../store'
 
-export const getDialogPosition = (textBounds: DOMRect) => {
+export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {
   const { top, left, width, height } = textBounds
   const dialogLeft = left + width / 2 - DIALOG_WIDTH / 2
   const dialogTop = top + height / 2 - DIALOG_HEIGHT - DIALOG_POSITION_PADDING
@@ -76,15 +77,31 @@ export const suppressInvalidRadixUiTitleError = () => {
   }
 }
 
+const getCenterOfTheScreen = () => ({
+  top: `${window.innerHeight / 2 - DIALOG_HEIGHT / 2}px`,
+  left: `${window.innerWidth / 2 - DIALOG_WIDTH / 2}px`,
+})
+
 export const getContentRoot = () => document.getElementById(CONTENT_ROOT_ID)?.shadowRoot || document.body
 
-export const isSelectingTextWithModifierKey = (
+export const isOpeningDialog = (
   e: KeyboardEvent,
   isDialogOpen: boolean,
-  setIsSelectionKeyHeldDown: Dispatch<SetStateAction<boolean>>
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
+  setIsSelectionKeyHeldDown: Dispatch<SetStateAction<boolean>>,
+  setPostion: Dispatch<SetStateAction<{ top: string; left: string }>>
 ) => {
   // Only set the selection key state if the target is <body> and the dialog is not open
   if (e.target instanceof HTMLBodyElement && !isDialogOpen) {
+    if (e.shiftKey && e.key === 'D') {
+      const { setUserInput } = useContentStore.getState()
+      const center = getCenterOfTheScreen()
+      setPostion(center)
+      setUserInput('') // TODO: Clear the user input
+      setIsDialogOpen(true)
+      return
+    }
+
     const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
     const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
     setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
