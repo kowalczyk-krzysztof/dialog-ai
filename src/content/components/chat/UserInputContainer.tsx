@@ -29,7 +29,7 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<H
   }
 
   return (
-    <div className='flex h-52 w-full items-center rounded-lg bg-tertiary p-2'>
+    <div className='flex h-52 w-full items-center rounded-lg bg-tertiary p-2 border-border border'>
       <textarea
         ref={ref}
         value={userInput}

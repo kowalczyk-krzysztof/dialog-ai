@@ -26,6 +26,9 @@ export default {
           DEFAULT: '#a1a1aa',
           text: '#707070',
         },
+        border: {
+          DEFAULT: '#898A8D',
+        },
       },
     },
   },

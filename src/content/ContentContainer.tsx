@@ -111,7 +111,7 @@ export const ContentContainer = () => {
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          className='fixed flex flex-col items-center rounded-lg bg-background p-4 pt-0 text-text'
+          className='fixed flex flex-col items-center rounded-lg rounded-t-none bg-background p-4 pt-0 text-text border border-border'
           style={{
             top: position.top,
             left: position.left,
@@ -125,13 +125,13 @@ export const ContentContainer = () => {
           onInteractOutside={handleFocusOutside}
         >
           <DialogTitle
-            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing'
+            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing border-b border-border'
             onMouseDown={handleGrab}
           >
             <p className='grow'>Dialog AI</p>
-            <DialogClose className='p-2 hover:bg-tertiary-hover' onClick={clearState}>
+            <DialogClose className='p-2 hover:bg-tertiary-hover group' onClick={clearState}>
               <AccessibleIcon label={closeText}>
-                <Close height={16} width={16} className='fill-primary hover:fill-primary-hover' />
+                <Close height={16} width={16} className='fill-primary group-hover:fill-primary-hover' />
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>

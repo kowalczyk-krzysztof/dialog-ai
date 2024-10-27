@@ -36,7 +36,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
   }
 
   return (
-    <div className={`${background} flex flex-col rounded-lg`}>
+    <div className={`${background} flex flex-col rounded-lg border-border border rounded-t-none`}>
       <div className='flex items-center justify-end gap-2 bg-tertiary py-0.5 pr-2'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
@@ -45,7 +45,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           onClick={handleCopy}
         >
           <AccessibleIcon label={copyText}>
-            <Copy className='size-4 fill-primary group-disabled:fill-disabled' />
+            <Copy className='size-4 fill-primary group-disabled:fill-disabled group-hover:fill-primary-hover' />
           </AccessibleIcon>
         </button>
       </div>

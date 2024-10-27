@@ -28,7 +28,7 @@ export const Select = ({ disabled, items, value, onChange }: Props) => {
     <SelectRoot value={value.value} disabled={disabled} onValueChange={onChange}>
       <SelectTrigger
         aria-label='source language'
-        className='text-xs disabled:text-disabled disabled:cursor-not-allowed px-1'
+        className='text-xs disabled:text-disabled disabled:cursor-not-allowed px-1 hover:text-text-hover hover:bg-tertiary-hover disabled:bg-tertiary'
       >
         <SelectValue />
       </SelectTrigger>

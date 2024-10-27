@@ -28,10 +28,10 @@ export const SendChatMessageButton = () => {
     <button
       disabled={isDisabled}
       onClick={handleGetResponse}
-      className='group inline-flex cursor-pointer justify-center rounded-full p-2 disabled:cursor-not-allowed'
+      className='group flex cursor-pointer justify-center items-center rounded-full p-2 disabled:cursor-not-allowed hover:bg-tertiary-hover ml-2 disabled:bg-tertiary'
     >
       <AccessibleIcon label={sendText}>
-        <Send className='size-5 fill-primary hover:fill-primary-hover group-disabled:fill-disabled' />
+        <Send className='size-5 fill-primary group-hover:fill-primary-hover group-disabled:fill-disabled ml-0.5' />
       </AccessibleIcon>
     </button>
   )
