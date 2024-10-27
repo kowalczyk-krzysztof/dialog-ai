@@ -8,11 +8,11 @@ import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 
 export const TranslateButton = () => {
-  const { aiApiAvailability, userInput, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
+  const { userInput, aiApiAvailability, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
     useContentStore(
       useShallow(state => ({
-        aiApiAvailability: state.aiApiAvailability,
         userInput: state.userInput,
+        aiApiAvailability: state.aiApiAvailability,
         isStreamingResponse: state.isStreamingResponse,
         isResponseLoading: state.isResponseLoading,
         setIsResponseLoading: state.setIsResponseLoading,

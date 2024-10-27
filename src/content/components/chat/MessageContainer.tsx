@@ -21,7 +21,9 @@ const getBackground = (isUser: boolean, isError?: boolean) => {
 }
 
 const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text)
+  try {
+    navigator.clipboard.writeText(text)
+  } catch (e) {}
 }
 
 export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
@@ -39,8 +41,8 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
-          onClick={handleCopy}
           className='group flex cursor-pointer justify-center p-2 hover:bg-tertiary-hover disabled:cursor-not-allowed'
+          onClick={handleCopy}
         >
           <AccessibleIcon label={copyText}>
             <Copy className='size-4 fill-primary group-disabled:fill-disabled' />

@@ -54,7 +54,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setChatSession: session => set({ chatSession: session }),
   setSummarizationSession: session => set({ summarizationSession: session }),
   setAiApiAvailability: availability => set({ aiApiAvailability: availability }),
-  setUserInput: input => set(() => ({ userInput: input })),
+  setUserInput: input => set(() => ({ userInput: input.trim() })),
   setChatResponseAbortController: controller => set({ chatResponseAbortController: controller }),
   setSummarizationResponseAbortController: controller => set({ summarizationResponseAbortController: controller }),
   setTranslationResponseAbortController: controller => set({ translationResponseAbortController: controller }),

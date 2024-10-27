@@ -18,14 +18,14 @@ interface SelectItem {
 
 interface Props {
   disabled: boolean
-  onChange: (value: string) => void
   items: SelectItem[]
   value: SelectItem
+  onChange: (value: string) => void
 }
 
 export const Select = ({ disabled, items, value, onChange }: Props) => {
   return (
-    <SelectRoot value={value.value} onValueChange={onChange} disabled={disabled}>
+    <SelectRoot value={value.value} disabled={disabled} onValueChange={onChange}>
       <SelectTrigger
         aria-label='source language'
         className='text-xs disabled:text-disabled disabled:cursor-not-allowed'

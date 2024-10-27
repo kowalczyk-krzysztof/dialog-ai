@@ -106,9 +106,6 @@ export const ContentContainer = () => {
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          onEscapeKeyDown={clearState}
-          onOpenAutoFocus={handleInitialFocus}
-          onPointerDownOutside={handleClickOutside}
           className='fixed flex flex-col items-center rounded-lg bg-background p-4 pt-0 text-text'
           style={{
             top: position.top,
@@ -117,10 +114,13 @@ export const ContentContainer = () => {
             width: DIALOG_WIDTH,
             height: DIALOG_HEIGHT,
           }}
+          onEscapeKeyDown={clearState}
+          onOpenAutoFocus={handleInitialFocus}
+          onPointerDownOutside={handleClickOutside}
         >
           <DialogTitle
-            onMouseDown={handleGrab}
             className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing'
+            onMouseDown={handleGrab}
           >
             <p className='grow'>Dialog AI</p>
             <DialogClose onClick={clearState}>

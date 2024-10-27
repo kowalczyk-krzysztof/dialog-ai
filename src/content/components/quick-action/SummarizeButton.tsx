@@ -5,11 +5,11 @@ import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
 
 export const SummarizeButton = () => {
-  const { aiApiAvailability, userInput, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
+  const { userInput, aiApiAvailability, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
     useContentStore(
       useShallow(state => ({
-        aiApiAvailability: state.aiApiAvailability,
         userInput: state.userInput,
+        aiApiAvailability: state.aiApiAvailability,
         isStreamingResponse: state.isStreamingResponse,
         isResponseLoading: state.isResponseLoading,
         setIsResponseLoading: state.setIsResponseLoading,

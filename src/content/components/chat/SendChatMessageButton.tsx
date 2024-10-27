@@ -6,7 +6,7 @@ import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
 
 export const SendChatMessageButton = () => {
-  const { aiApiAvailability, userInput, isResponseLoading, isStreamingResponse, setIsResponseLoading } =
+  const { userInput, aiApiAvailability, isResponseLoading, isStreamingResponse, setIsResponseLoading } =
     useContentStore(
       useShallow(state => ({
         userInput: state.userInput,
@@ -14,8 +14,6 @@ export const SendChatMessageButton = () => {
         isResponseLoading: state.isResponseLoading,
         isStreamingResponse: state.isStreamingResponse,
         setIsResponseLoading: state.setIsResponseLoading,
-        setAiApiAvailability: state.setAiApiAvailability,
-        reset: state.reset,
       }))
     )
   const { t } = useTranslation()
