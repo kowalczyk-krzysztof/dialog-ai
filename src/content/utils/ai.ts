@@ -110,18 +110,6 @@ const isSummarizationAvailable = async () => {
   return false
 }
 
-export const defaultAIApiAvailability: AIApiAvailability = {
-  [AIApiType.CHAT]: {
-    available: false,
-  },
-  [AIApiType.SUMMARIZATION]: {
-    available: false,
-  },
-  [AIApiType.TRANSLATION]: {
-    available: false,
-  },
-}
-
 export const checkAiApiAvailability = async (): Promise<AIApiAvailability> => {
   const chat = await isChatAvailable()
   const summarization = await isSummarizationAvailable()
@@ -159,10 +147,19 @@ const createChatSession = async (): Promise<ChatSession | undefined> => {
 }
 
 const getChatResponse = async (chatSession: ChatSession) => {
-  const { setConversation, userInput, setIsStreamingResponse, setIsResponseLoading, setChatSession, setUserInput } =
-    useContentStore.getState()
+  const {
+    setConversation,
+    userInput,
+    setIsStreamingResponse,
+    setIsResponseLoading,
+    setChatSession,
+    setUserInput,
+    setChatResponseAbortController,
+  } = useContentStore.getState()
   try {
-    const stream = await chatSession.promptStreaming(userInput)
+    const abortController = new AbortController()
+    const stream = await chatSession.promptStreaming(userInput, { signal: abortController.signal })
+    setChatResponseAbortController(abortController)
     setUserInput('')
     const reponseId = window.crypto.randomUUID()
     for await (const chunk of stream) {
@@ -173,14 +170,18 @@ const getChatResponse = async (chatSession: ChatSession) => {
       )
     }
     setChatSession(chatSession)
-    setIsStreamingResponse(false)
   } catch (e) {
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      return
+    }
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
       createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
     )
     setChatSession(undefined)
+  } finally {
     setIsStreamingResponse(false)
+    setChatResponseAbortController(undefined)
   }
 }
 
@@ -235,7 +236,7 @@ const createTranslator = async (
 }
 
 export const getTranslation = async (languagePair: TranslationLanguagePair) => {
-  const { setConversation, userInput, setUserInput } = useContentStore.getState()
+  const { setConversation, userInput, setUserInput, setTranslationResponseAbortController } = useContentStore.getState()
 
   setConversation(conversation => createUserMessage({ conversation, text: userInput }))
   if (!window.translation) {
@@ -288,12 +289,17 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
   }
 
   try {
-    const translation = await translator.translate(userInput)
+    const controller = new AbortController()
+    const translation = await translator.translate(userInput, { signal: controller.signal })
+    setTranslationResponseAbortController(controller)
     setUserInput('')
     setConversation(conversation =>
       createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
     )
   } catch (e) {
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      return
+    }
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
       createSystemMessage({
@@ -304,6 +310,8 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
         isError: true,
       })
     )
+  } finally {
+    setTranslationResponseAbortController(undefined)
   }
 }
 
@@ -326,12 +334,15 @@ const createSummarizer = async (): Promise<SummarizationSession | undefined> => 
 }
 
 const getSummarizationResponse = async (summarizer: SummarizationSession) => {
-  const { setConversation, userInput, setSummarizationSession, setUserInput } = useContentStore.getState()
+  const { setConversation, userInput, setSummarizationSession, setUserInput, setSummarizationResponseAbortController } =
+    useContentStore.getState()
   const reponseId = window.crypto.randomUUID()
 
   try {
     setUserInput('')
-    const summary = await summarizer.summarize(userInput)
+    const abortController = new AbortController()
+    const summary = await summarizer.summarize(userInput, { signal: abortController.signal })
+    setSummarizationResponseAbortController(abortController)
 
     setConversation(conversation =>
       createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
@@ -339,6 +350,9 @@ const getSummarizationResponse = async (summarizer: SummarizationSession) => {
 
     setSummarizationSession(summarizer)
   } catch (e) {
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      return
+    }
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
       createSystemMessage({
@@ -350,6 +364,8 @@ const getSummarizationResponse = async (summarizer: SummarizationSession) => {
       })
     )
     setSummarizationSession(undefined)
+  } finally {
+    setSummarizationResponseAbortController(undefined)
   }
 }
 

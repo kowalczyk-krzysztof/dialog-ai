@@ -46,7 +46,6 @@ export const ContentContainer = () => {
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
   const clearState = () => {
-    // TODO: Add aborting of ongoing streams here
     reset()
   }
 

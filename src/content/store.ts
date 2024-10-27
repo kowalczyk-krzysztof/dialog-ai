@@ -21,7 +21,9 @@ interface ContentStore {
   summarizationSession: SummarizationSession | undefined
   aiApiAvailability: AIApiAvailability
   userInput: string
-
+  chatResponseAbortController: AbortController | undefined
+  summarizationResponseAbortController: AbortController | undefined
+  translationResponseAbortController: AbortController | undefined
   setIsResponseLoading: (loading: boolean) => void
   setIsStreamingResponse: (streaming: boolean) => void
   setConversation: (updateFn: (conversation: Conversation) => Conversation) => void
@@ -29,6 +31,9 @@ interface ContentStore {
   setSummarizationSession: (session: SummarizationSession | undefined) => void
   setAiApiAvailability: (availability: AIApiAvailability) => void
   setUserInput: (input: string) => void
+  setChatResponseAbortController: (controller: AbortController | undefined) => void
+  setSummarizationResponseAbortController: (controller: AbortController | undefined) => void
+  setTranslationResponseAbortController: (controller: AbortController | undefined) => void
   reset: () => void
 }
 
@@ -40,6 +45,9 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   summarizationSession: undefined,
   aiApiAvailability: defaultAIApiAvailability,
   userInput: '',
+  chatResponseAbortController: undefined,
+  summarizationResponseAbortController: undefined,
+  translationResponseAbortController: undefined,
   setIsResponseLoading: loading => set({ isResponseLoading: loading }),
   setIsStreamingResponse: streaming => set({ isStreamingResponse: streaming }),
   setConversation: updateFn => set(state => ({ conversation: updateFn(state.conversation) })),
@@ -47,8 +55,30 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setSummarizationSession: session => set({ summarizationSession: session }),
   setAiApiAvailability: availability => set({ aiApiAvailability: availability }),
   setUserInput: input => set(() => ({ userInput: input })),
+  setChatResponseAbortController: controller => set({ chatResponseAbortController: controller }),
+  setSummarizationResponseAbortController: controller => set({ summarizationResponseAbortController: controller }),
+  setTranslationResponseAbortController: controller => set({ translationResponseAbortController: controller }),
   reset: async () => {
-    const { chatSession, summarizationSession, aiApiAvailability } = get() // Access the current chatSession state
+    const {
+      chatSession,
+      summarizationSession,
+      aiApiAvailability,
+      chatResponseAbortController,
+      summarizationResponseAbortController,
+      translationResponseAbortController,
+    } = get()
+
+    if (chatResponseAbortController) {
+      chatResponseAbortController.abort()
+    }
+
+    if (summarizationResponseAbortController) {
+      summarizationResponseAbortController.abort()
+    }
+
+    if (translationResponseAbortController) {
+      translationResponseAbortController.abort()
+    }
 
     if (chatSession && typeof chatSession.destroy === 'function') {
       await chatSession.destroy()
@@ -67,6 +97,9 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       } as Conversation,
       chatSession: undefined,
       summarizationSession: undefined,
+      chatResponseAbortController: undefined,
+      summarizationResponseAbortController: undefined,
+      translationResponseAbortController: undefined,
       aiApiAvailability: aiApiAvailability,
       userInput: '',
     })

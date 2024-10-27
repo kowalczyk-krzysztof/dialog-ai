@@ -83,7 +83,7 @@ export interface LanguageDetectorSession {
 }
 
 export interface SummarizationSession {
-  summarize: (text: string) => Promise<string>
+  summarize: (text: string, options?: AISessionOptions) => Promise<string>
   destroy: () => Promise<void>
 }
 

@@ -9,7 +9,7 @@ import type {
   TranslationModelSession,
   SummarizationSession,
   ChatSessionOptions,
-} from '../content/types'
+} from './content/types'
 
 declare global {
   interface ReadableStream<R = unknown> {
