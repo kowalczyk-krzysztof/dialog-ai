@@ -4,34 +4,31 @@ export default {
     extend: {
       colors: {
         background: {
-          DEFAULT: '#101842',
-          hover: '#203084',
+          DEFAULT: '#111113',
         },
         primary: {
-          DEFAULT: '#5A6BC0',
-          hover: '#95A0D7',
+          DEFAULT: '#569CD6',
+          hover: '#77AFDE',
         },
         secondary: {
-          DEFAULT: '#5F6896',
-          hover: '#8F95B8',
+          DEFAULT: '#3A3D41',
+          hover: '#45484D',
         },
         tertiary: {
-          DEFAULT: '#4662EB',
-          hover: '#90A0F3',
+          DEFAULT: '#212224',
+          hover: '#484A4F',
         },
         text: {
-          DEFAULT: '#ffffff',
+          DEFAULT: '#FFFFFF',
           hover: '#C7C7C7',
         },
         disabled: {
-          DEFAULT: '#d1d5db',
-          text: '#94a3b8',
-        },
-        border: {
-          DEFAULT: '#1f2d3d',
+          DEFAULT: '#a1a1aa',
+          text: '#707070',
         },
       },
     },
   },
+
   plugins: [],
 }

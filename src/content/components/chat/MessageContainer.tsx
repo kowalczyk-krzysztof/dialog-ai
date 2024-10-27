@@ -17,7 +17,7 @@ const getBackground = (isUser: boolean, isError?: boolean) => {
   if (isError) {
     return 'bg-red-600'
   }
-  return isUser ? 'bg-primary' : 'bg-secondary'
+  return isUser ? 'bg-secondary' : 'bg-secondary-hover'
 }
 
 const copyToClipboard = (text: string) => {
@@ -37,7 +37,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-border bg-tertiary py-0.5 pr-2'>
+      <div className='flex items-center justify-end gap-2 bg-tertiary py-0.5 pr-2'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
@@ -49,7 +49,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
           </AccessibleIcon>
         </button>
       </div>
-      <div className='break-words rounded-b-md border border-t-0 border-solid border-border p-2'>
+      <div className='break-words rounded-b-md p-2'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>

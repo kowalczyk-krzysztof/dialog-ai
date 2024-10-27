@@ -66,7 +66,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
 
   return (
-    <div className='flex'>
+    <div className='flex bg-tertiary px-2 rounded-lg'>
       <Select
         disabled={isDisabled(languagePair.sourceLanguage)}
         items={sourceLanguageItems}

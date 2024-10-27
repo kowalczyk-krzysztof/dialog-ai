@@ -33,7 +33,7 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<H
       <textarea
         ref={ref}
         value={userInput}
-        className='size-full resize-none rounded-lg bg-primary p-2 text-sm'
+        className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
         onChange={handleOnChange}
         onKeyDown={handleEnterKey}
       />

@@ -129,9 +129,9 @@ export const ContentContainer = () => {
             onMouseDown={handleGrab}
           >
             <p className='grow'>Dialog AI</p>
-            <DialogClose onClick={clearState}>
+            <DialogClose className='p-2 hover:bg-tertiary-hover' onClick={clearState}>
               <AccessibleIcon label={closeText}>
-                <Close height={16} width={16} className='fill-text hover:fill-text-hover' />
+                <Close height={16} width={16} className='fill-primary hover:fill-primary-hover' />
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>
