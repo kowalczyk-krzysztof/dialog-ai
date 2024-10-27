@@ -47,15 +47,15 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setSummarizationSession: session => set({ summarizationSession: session }),
   setAiApiAvailability: availability => set({ aiApiAvailability: availability }),
   setUserInput: input => set(() => ({ userInput: input })),
-  reset: () => {
+  reset: async () => {
     const { chatSession, summarizationSession, aiApiAvailability } = get() // Access the current chatSession state
 
     if (chatSession && typeof chatSession.destroy === 'function') {
-      chatSession.destroy()
+      await chatSession.destroy()
     }
 
     if (summarizationSession && typeof summarizationSession.destroy === 'function') {
-      summarizationSession.destroy()
+      await summarizationSession.destroy()
     }
 
     set({

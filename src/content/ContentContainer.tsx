@@ -63,6 +63,14 @@ export const ContentContainer = () => {
   }
 
   useEffect(() => {
+    window.addEventListener('beforeunload', reset)
+
+    return () => {
+      window.removeEventListener('beforeunload', reset)
+    }
+  }, [])
+
+  useEffect(() => {
     const getAIApiAvailability = async () => {
       const response = await checkAiApiAvailability()
       setAiApiAvailability(response)
