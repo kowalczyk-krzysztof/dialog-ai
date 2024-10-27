@@ -158,9 +158,10 @@ const getChatResponse = async (chatSession: ChatSession) => {
   } = useContentStore.getState()
   try {
     const abortController = new AbortController()
-    const stream = await chatSession.promptStreaming(userInput, { signal: abortController.signal })
-    setChatResponseAbortController(abortController)
+    const storedUserInput = userInput
     setUserInput('')
+    const stream = await chatSession.promptStreaming(storedUserInput, { signal: abortController.signal })
+    setChatResponseAbortController(abortController)
     const reponseId = window.crypto.randomUUID()
     for await (const chunk of stream) {
       setIsResponseLoading(false)
@@ -290,9 +291,10 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
 
   try {
     const controller = new AbortController()
-    const translation = await translator.translate(userInput, { signal: controller.signal })
-    setTranslationResponseAbortController(controller)
+    const storedUserInput = userInput
     setUserInput('')
+    const translation = await translator.translate(storedUserInput, { signal: controller.signal })
+    setTranslationResponseAbortController(controller)
     setConversation(conversation =>
       createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
     )
@@ -339,9 +341,10 @@ const getSummarizationResponse = async (summarizer: SummarizationSession) => {
   const reponseId = window.crypto.randomUUID()
 
   try {
-    setUserInput('')
+    const storedUserInput = userInput
     const abortController = new AbortController()
-    const summary = await summarizer.summarize(userInput, { signal: abortController.signal })
+    setUserInput('')
+    const summary = await summarizer.summarize(storedUserInput, { signal: abortController.signal })
     setSummarizationResponseAbortController(abortController)
 
     setConversation(conversation =>

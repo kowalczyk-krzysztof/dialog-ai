@@ -120,7 +120,7 @@ export const ContentContainer = () => {
         >
           <DialogTitle
             onMouseDown={handleGrab}
-            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center rounded-t-lg bg-gray-700 p-1 text-center active:cursor-grabbing'
+            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-gray-700 p-1 text-center active:cursor-grabbing'
           >
             <p className='grow'>Dialog AI</p>
             <DialogClose onClick={clearState}>
