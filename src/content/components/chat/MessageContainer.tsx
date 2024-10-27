@@ -35,19 +35,19 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${background} flex flex-col rounded-lg`}>
-      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-text bg-gray-700 py-0.5 pr-2'>
+      <div className='flex items-center justify-end gap-2 border border-b-0 border-solid border-border bg-tertiary py-0.5 pr-2'>
         {type ? <Badge>{type}</Badge> : null}
         <Badge>{isUser ? 'user' : 'ai'}</Badge>
         <button
           onClick={handleCopy}
-          className='group flex cursor-pointer justify-center p-2 hover:bg-gray-500 disabled:cursor-not-allowed'
+          className='group flex cursor-pointer justify-center p-2 hover:bg-tertiary-hover disabled:cursor-not-allowed'
         >
           <AccessibleIcon label={copyText}>
-            <Copy className='size-4 fill-blue-600 group-disabled:fill-disabled' />
+            <Copy className='size-4 fill-primary group-disabled:fill-disabled' />
           </AccessibleIcon>
         </button>
       </div>
-      <div className='break-words rounded-b-md border border-t-0 border-solid border-text p-2'>
+      <div className='break-words rounded-b-md border border-t-0 border-solid border-border p-2'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>
     </div>

@@ -12,12 +12,12 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<H
     }))
   )
   return (
-    <div className='flex h-52 w-full items-center rounded-lg bg-gray-700 p-2'>
+    <div className='flex h-52 w-full items-center rounded-lg bg-tertiary p-2'>
       <textarea
         ref={ref}
         value={userInput}
         onChange={e => setUserInput(e.target.value)}
-        className='size-full resize-none rounded-lg bg-primary p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
+        className='size-full resize-none rounded-lg bg-primary p-2 text-sm focus:outline focus:outline-2 focus:outline-border'
       />
       <SendChatMessageButton />
     </div>

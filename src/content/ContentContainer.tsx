@@ -120,12 +120,12 @@ export const ContentContainer = () => {
         >
           <DialogTitle
             onMouseDown={handleGrab}
-            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-gray-700 p-1 text-center active:cursor-grabbing'
+            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing'
           >
             <p className='grow'>Dialog AI</p>
             <DialogClose onClick={clearState}>
               <AccessibleIcon label={closeText}>
-                <Close height={16} width={16} className='fill-text hover:fill-slate-400' />
+                <Close height={16} width={16} className='fill-text hover:fill-text-hover' />
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>

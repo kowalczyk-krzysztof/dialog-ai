@@ -45,7 +45,7 @@ export const Select = ({ disabled, items, value, onChange }: Props) => {
               <RadixSelectItem
                 key={key}
                 value={value}
-                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-blue-400'
+                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-secondary'
               >
                 <SelectItemText>{label}</SelectItemText>
               </RadixSelectItem>

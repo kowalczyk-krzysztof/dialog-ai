@@ -75,7 +75,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       />
       <button onClick={handleSwapLanguages} className='flex justify-center items-center mx-2'>
         <AccessibleIcon label={swapLanguagesText}>
-          <Swap className='size-4 fill-blue-600 hover:fill-blue-400' />
+          <Swap className='size-4 fill-primary hover:fill-primary-hover' />
         </AccessibleIcon>
       </button>
       <Select
