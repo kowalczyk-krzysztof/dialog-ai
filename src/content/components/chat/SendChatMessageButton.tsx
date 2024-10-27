@@ -1,54 +1,33 @@
-import { type Dispatch, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import type { ChatSession, Conversation } from '../../types'
-
 import Send from '../../icons/send.svg?react'
 import { getChatStreamingResponse } from '../../utils/ai'
+import { useContentStore } from '../../store'
+import { useShallow } from 'zustand/react/shallow'
 
-interface Props {
-  userInput: string
-  disabled: boolean
-  isResponseLoading: boolean
-  chatSession: ChatSession | undefined
-  isStreamingResponse: boolean
-  setUserInput: Dispatch<SetStateAction<string>>
-  setConversation: Dispatch<SetStateAction<Conversation>>
-  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
-  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>
-  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
-}
-
-export const SendChatMessageButton = ({
-  userInput,
-  disabled,
-  isResponseLoading,
-  chatSession,
-  isStreamingResponse,
-  setConversation,
-  setUserInput,
-  setIsResponseLoading,
-  setChatSession,
-  setIsStreamingResponse,
-}: Props) => {
+export const SendChatMessageButton = () => {
+  const { aiApiAvailability, userInput, isResponseLoading, isStreamingResponse, setIsResponseLoading } =
+    useContentStore(
+      useShallow(state => ({
+        userInput: state.userInput,
+        aiApiAvailability: state.aiApiAvailability,
+        isResponseLoading: state.isResponseLoading,
+        isStreamingResponse: state.isStreamingResponse,
+        setIsResponseLoading: state.setIsResponseLoading,
+        setAiApiAvailability: state.setAiApiAvailability,
+        reset: state.reset,
+      }))
+    )
   const { t } = useTranslation()
   const sendText = t('buttons.send')
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
-    setUserInput('')
-    await getChatStreamingResponse(
-      userInput,
-      chatSession,
-      setConversation,
-      setIsResponseLoading,
-      setChatSession,
-      setIsStreamingResponse
-    )
+    await getChatStreamingResponse()
     setIsResponseLoading(false)
   }
 
-  const isDisabled = !userInput || isResponseLoading || disabled || isStreamingResponse
+  const isDisabled = !userInput || isResponseLoading || !aiApiAvailability.chat.available || isStreamingResponse
 
   return (
     <button

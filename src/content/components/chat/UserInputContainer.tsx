@@ -1,36 +1,17 @@
-import { forwardRef, Ref, type Dispatch, type SetStateAction } from 'react'
-import type { ChatSession, Conversation } from '../../types'
+import { forwardRef, Ref } from 'react'
 import { SendChatMessageButton } from './SendChatMessageButton'
+import { useContentStore } from '../../store'
+import { useShallow } from 'zustand/react/shallow'
 
-interface Props {
-  userInput: string
-  disabled: boolean
-  isResponseLoading: boolean
-  chatSession: ChatSession | undefined
-  isStreamingResponse: boolean
-  setUserInput: Dispatch<SetStateAction<string>>
-  setConversation: Dispatch<SetStateAction<Conversation>>
-  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
-  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>
-  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
-}
-
-export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
-  (
-    {
-      userInput,
-      disabled,
-      isResponseLoading,
-      chatSession,
-      isStreamingResponse,
-      setUserInput,
-      setConversation,
-      setIsResponseLoading,
-      setChatSession,
-      setIsStreamingResponse,
-    },
-    ref: Ref<HTMLTextAreaElement>
-  ) => (
+export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<HTMLTextAreaElement>) => {
+  const { userInput, setUserInput } = useContentStore(
+    useShallow(state => ({
+      userInput: state.userInput,
+      setAiApiAvailability: state.setAiApiAvailability,
+      setUserInput: state.setUserInput,
+    }))
+  )
+  return (
     <div className='flex h-52 w-full items-center rounded-lg bg-gray-700 p-2'>
       <textarea
         ref={ref}
@@ -38,20 +19,9 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement, Props>(
         onChange={e => setUserInput(e.target.value)}
         className='size-full resize-none rounded-lg bg-neutral-600 p-2 text-sm focus:outline focus:outline-2 focus:outline-blue-600'
       />
-      <SendChatMessageButton
-        userInput={userInput}
-        disabled={disabled}
-        isResponseLoading={isResponseLoading}
-        chatSession={chatSession}
-        isStreamingResponse={isStreamingResponse}
-        setUserInput={setUserInput}
-        setConversation={setConversation}
-        setIsResponseLoading={setIsResponseLoading}
-        setChatSession={setChatSession}
-        setIsStreamingResponse={setIsStreamingResponse}
-      />
+      <SendChatMessageButton />
     </div>
   )
-)
+})
 
 UserInputContainer.displayName = 'UserInputContainer'

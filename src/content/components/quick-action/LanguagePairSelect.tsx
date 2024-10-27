@@ -13,6 +13,7 @@ interface Props {
   setLanguagePair: Dispatch<SetStateAction<TranslationLanguagePair>>
 }
 
+// TODO: Style this better
 export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => {
   const { t } = useTranslation()
   const swapLanguagesText = t('swapLanguages')
