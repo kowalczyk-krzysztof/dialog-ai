@@ -8,16 +8,14 @@ import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 
 export const TranslateButton = () => {
-  const { userInput, aiApiAvailability, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
-    useContentStore(
-      useShallow(state => ({
-        userInput: state.userInput,
-        aiApiAvailability: state.aiApiAvailability,
-        isStreamingResponse: state.isStreamingResponse,
-        isResponseLoading: state.isResponseLoading,
-        setIsResponseLoading: state.setIsResponseLoading,
-      }))
-    )
+  const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
+    useShallow(state => ({
+      userInput: state.userInput,
+      aiApiAvailability: state.aiApiAvailability,
+      setIsResponseLoading: state.setIsResponseLoading,
+      areControlsDisabled: state.areControlsDisabled,
+    }))
+  )
   const { t } = useTranslation()
   const translateText = t('buttons.translate')
   const [languagePair, setLanguagePair] = useState({
@@ -31,7 +29,7 @@ export const TranslateButton = () => {
     setIsResponseLoading(false)
   }
 
-  const isDisabled = !userInput || isResponseLoading || !aiApiAvailability.translation.available || isStreamingResponse
+  const isDisabled = areControlsDisabled() || !aiApiAvailability.translation.available
 
   return (
     <div className='flex grow gap-2'>

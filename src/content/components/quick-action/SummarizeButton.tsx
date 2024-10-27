@@ -5,16 +5,14 @@ import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
 
 export const SummarizeButton = () => {
-  const { userInput, aiApiAvailability, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
-    useContentStore(
-      useShallow(state => ({
-        userInput: state.userInput,
-        aiApiAvailability: state.aiApiAvailability,
-        isStreamingResponse: state.isStreamingResponse,
-        isResponseLoading: state.isResponseLoading,
-        setIsResponseLoading: state.setIsResponseLoading,
-      }))
-    )
+  const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
+    useShallow(state => ({
+      userInput: state.userInput,
+      aiApiAvailability: state.aiApiAvailability,
+      setIsResponseLoading: state.setIsResponseLoading,
+      areControlsDisabled: state.areControlsDisabled,
+    }))
+  )
   const { t } = useTranslation()
   const summarizeText = t('buttons.summarize')
 
@@ -24,8 +22,7 @@ export const SummarizeButton = () => {
     setIsResponseLoading(false)
   }
 
-  const isDisabled =
-    !userInput || isResponseLoading || !aiApiAvailability.summarization.available || isStreamingResponse
+  const isDisabled = areControlsDisabled() || !aiApiAvailability.summarization.available
 
   return (
     <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
