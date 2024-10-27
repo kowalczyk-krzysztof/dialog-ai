@@ -47,6 +47,7 @@ export const ContentContainer = () => {
 
   const clearState = () => {
     reset()
+    setIsDialogOpen(false)
   }
 
   const handleInitialFocus = (e: Event) => {
@@ -62,10 +63,10 @@ export const ContentContainer = () => {
   }
 
   useEffect(() => {
-    window.addEventListener('beforeunload', reset)
+    window.addEventListener('beforeunload', clearState)
 
     return () => {
-      window.removeEventListener('beforeunload', reset)
+      window.removeEventListener('beforeunload', clearState)
     }
   }, [])
 
