@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
 import {
   type AIApiAvailability,
   type Conversation,
@@ -12,6 +11,7 @@ import {
   TranslationModelSession,
 } from '../../content/types'
 import i18n from '../../i118n'
+import { useContentStore } from '../store'
 
 export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,
@@ -122,7 +122,7 @@ export const defaultAIApiAvailability: AIApiAvailability = {
   },
 }
 
-export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
+export const checkAiApiAvailability = async (): Promise<AIApiAvailability> => {
   const chat = await isChatAvailable()
   const summarization = await isSummarizationAvailable()
   const translation = isTranslationAvailable()
@@ -140,13 +140,12 @@ export const checkAIApiAvailability = async (): Promise<AIApiAvailability> => {
   }
 }
 
-const createChatSession = async (
-  setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<ChatSession | undefined> => {
+const createChatSession = async (): Promise<ChatSession | undefined> => {
+  const { setConversation } = useContentStore.getState()
   try {
     const session = await window.ai.languageModel.create()
     return session
-  } catch (_) {
+  } catch (e) {
     const couldNotCreateLanguageModelText = i18n.t('errors.ai.couldNotCreateLanguageModel')
     setConversation(conversation =>
       createSystemMessage({
@@ -159,16 +158,12 @@ const createChatSession = async (
   }
 }
 
-const getChatResponse = async (
-  chatSession: ChatSession,
-  text: string,
-  setIsResponseLoading: Dispatch<SetStateAction<boolean>>,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>,
-  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
-) => {
+const getChatResponse = async (chatSession: ChatSession) => {
+  const { setConversation, userInput, setIsStreamingResponse, setIsResponseLoading, setChatSession, setUserInput } =
+    useContentStore.getState()
   try {
-    const stream = await chatSession.promptStreaming(text)
+    const stream = await chatSession.promptStreaming(userInput)
+    setUserInput('')
     const reponseId = window.crypto.randomUUID()
     for await (const chunk of stream) {
       setIsResponseLoading(false)
@@ -179,7 +174,7 @@ const getChatResponse = async (
     }
     setChatSession(chatSession)
     setIsStreamingResponse(false)
-  } catch (error) {
+  } catch (e) {
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
       createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
@@ -189,24 +184,11 @@ const getChatResponse = async (
   }
 }
 
-export const getChatStreamingResponse = async (
-  text: string,
-  chatSession: ChatSession | undefined,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  setIsResponseLoading: Dispatch<SetStateAction<boolean>>,
-  setChatSession: Dispatch<SetStateAction<ChatSession | undefined>>,
-  setIsStreamingResponse: Dispatch<SetStateAction<boolean>>
-) => {
-  setConversation(conversation => createUserMessage({ conversation, text }))
+export const getChatStreamingResponse = async () => {
+  const { setConversation, userInput, chatSession } = useContentStore.getState()
+  setConversation(conversation => createUserMessage({ conversation, text: userInput }))
   if (chatSession) {
-    await getChatResponse(
-      chatSession,
-      text,
-      setIsResponseLoading,
-      setConversation,
-      setChatSession,
-      setIsStreamingResponse
-    )
+    await getChatResponse(chatSession)
     return
   }
 
@@ -223,23 +205,23 @@ export const getChatStreamingResponse = async (
     return
   }
 
-  const session = await createChatSession(setConversation)
+  const session = await createChatSession()
 
   if (!session) {
     return
   }
 
-  await getChatResponse(session, text, setIsResponseLoading, setConversation, setChatSession, setIsStreamingResponse)
+  await getChatResponse(session)
 }
 
 const createTranslator = async (
-  languagePair: TranslationLanguagePair,
-  setConversation: Dispatch<SetStateAction<Conversation>>
+  languagePair: TranslationLanguagePair
 ): Promise<TranslationModelSession | undefined> => {
+  const { setConversation } = useContentStore.getState()
   try {
     const translator = await window.translation.createTranslator(languagePair)
     return translator
-  } catch (_) {
+  } catch (e) {
     const couldNotCreateTranslatorText = i18n.t('errors.ai.couldNotCreateTranslator')
     setConversation(conversation =>
       createSystemMessage({
@@ -252,12 +234,10 @@ const createTranslator = async (
   }
 }
 
-export const getTranslation = async (
-  text: string,
-  languagePair: TranslationLanguagePair,
-  setConversation: Dispatch<SetStateAction<Conversation>>
-) => {
-  setConversation(conversation => createUserMessage({ conversation, text }))
+export const getTranslation = async (languagePair: TranslationLanguagePair) => {
+  const { setConversation, userInput, setUserInput } = useContentStore.getState()
+
+  setConversation(conversation => createUserMessage({ conversation, text: userInput }))
   if (!window.translation) {
     const translationNotEnabledText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
@@ -301,14 +281,15 @@ export const getTranslation = async (
     return
   }
 
-  const translator = await createTranslator(languagePair, setConversation)
+  const translator = await createTranslator(languagePair)
 
   if (!translator) {
     return
   }
 
   try {
-    const translation = await translator.translate(text)
+    const translation = await translator.translate(userInput)
+    setUserInput('')
     setConversation(conversation =>
       createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
     )
@@ -326,13 +307,12 @@ export const getTranslation = async (
   }
 }
 
-const createSummarizer = async (
-  setConversation: Dispatch<SetStateAction<Conversation>>
-): Promise<SummarizationSession | undefined> => {
+const createSummarizer = async (): Promise<SummarizationSession | undefined> => {
+  const { setConversation } = useContentStore.getState()
   try {
     const summarizer = await window.ai.summarizer.create()
     return summarizer
-  } catch (_) {
+  } catch (e) {
     const couldNotCreateSummarizerText = i18n.t('errors.ai.couldNotCreateSummarizer')
     setConversation(conversation =>
       createSystemMessage({
@@ -345,22 +325,20 @@ const createSummarizer = async (
   }
 }
 
-const getSummarizationResponse = async (
-  summarizer: SummarizationSession,
-  text: string,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  setSummarizationSession: Dispatch<SetStateAction<SummarizationSession | undefined>>
-) => {
+const getSummarizationResponse = async (summarizer: SummarizationSession) => {
+  const { setConversation, userInput, setSummarizationSession, setUserInput } = useContentStore.getState()
   const reponseId = window.crypto.randomUUID()
+
   try {
-    const summary = await summarizer.summarize(text)
+    setUserInput('')
+    const summary = await summarizer.summarize(userInput)
 
     setConversation(conversation =>
       createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
     )
 
     setSummarizationSession(summarizer)
-  } catch (_) {
+  } catch (e) {
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
       createSystemMessage({
@@ -375,15 +353,11 @@ const getSummarizationResponse = async (
   }
 }
 
-export const getSummary = async (
-  text: string,
-  existingSession: SummarizationSession | undefined,
-  setConversation: Dispatch<SetStateAction<Conversation>>,
-  setSummarizationSession: Dispatch<SetStateAction<SummarizationSession | undefined>>
-) => {
-  setConversation(conversation => createUserMessage({ conversation, text }))
-  if (existingSession) {
-    await getSummarizationResponse(existingSession, text, setConversation, setSummarizationSession)
+export const getSummary = async () => {
+  const { setConversation, userInput, summarizationSession } = useContentStore.getState()
+  setConversation(conversation => createUserMessage({ conversation, text: userInput }))
+  if (summarizationSession) {
+    await getSummarizationResponse(summarizationSession)
     return
   }
 
@@ -413,11 +387,11 @@ export const getSummary = async (
     return
   }
 
-  const summarizer = await createSummarizer(setConversation)
+  const summarizer = await createSummarizer()
 
   if (!summarizer) {
     return
   }
 
-  await getSummarizationResponse(summarizer, text, setConversation, setSummarizationSession)
+  await getSummarizationResponse(summarizer)
 }

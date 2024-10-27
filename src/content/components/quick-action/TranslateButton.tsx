@@ -1,29 +1,23 @@
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { QuickActionButton } from './QuickActionButton'
-import { SupportedLanguages, type Conversation } from '../../types'
+import { SupportedLanguages } from '../../types'
 import { LanguagePairSelect } from './LanguagePairSelect'
 import { getTranslation } from '../../utils/ai'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
 
-interface Props {
-  userInput: string
-  disabled: boolean
-  isResponseLoading: boolean
-  isStreamingResponse: boolean
-  setUserInput: Dispatch<SetStateAction<string>>
-  setConversation: Dispatch<SetStateAction<Conversation>>
-  setIsResponseLoading: Dispatch<SetStateAction<boolean>>
-}
-
-export const TranslateButton = ({
-  userInput,
-  disabled,
-  isResponseLoading,
-  isStreamingResponse,
-  setUserInput,
-  setConversation,
-  setIsResponseLoading,
-}: Props) => {
+export const TranslateButton = () => {
+  const { aiApiAvailability, userInput, isStreamingResponse, isResponseLoading, setIsResponseLoading } =
+    useContentStore(
+      useShallow(state => ({
+        aiApiAvailability: state.aiApiAvailability,
+        userInput: state.userInput,
+        isStreamingResponse: state.isStreamingResponse,
+        isResponseLoading: state.isResponseLoading,
+        setIsResponseLoading: state.setIsResponseLoading,
+      }))
+    )
   const { t } = useTranslation()
   const translateText = t('buttons.translate')
   const [languagePair, setLanguagePair] = useState({
@@ -32,15 +26,13 @@ export const TranslateButton = ({
   })
 
   const handleGetResponse = async () => {
-    setUserInput('')
     setIsResponseLoading(true)
-    await getTranslation(userInput, languagePair, setConversation)
+    await getTranslation(languagePair)
     setIsResponseLoading(false)
   }
 
-  const isDisabled = !userInput || isResponseLoading || disabled || isStreamingResponse
+  const isDisabled = !userInput || isResponseLoading || !aiApiAvailability.translation.available || isStreamingResponse
 
-  // TODO: Figure out UX for selecting language pair
   return (
     <div>
       <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>

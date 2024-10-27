@@ -5,17 +5,20 @@ import {
   ScrollAreaThumb,
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
-import { MessageRole, type Conversation } from '../../types'
+import { MessageRole } from '../../types'
 import { MessageContainer } from './MessageContainer'
 import { useEffect, useRef } from 'react'
 import { LoadingDots } from '../../../shared/components/LoadingDots'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
 
-interface Props {
-  conversation: Conversation
-  isResponseLoading: boolean
-}
-
-export const ConversationContainer = ({ conversation, isResponseLoading }: Props) => {
+export const ConversationContainer = () => {
+  const { conversation, isResponseLoading } = useContentStore(
+    useShallow(state => ({
+      conversation: state.conversation,
+      isResponseLoading: state.isResponseLoading,
+    }))
+  )
   const scrollableAreaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

@@ -7,13 +7,7 @@ import Close from './icons/close.svg?react'
 
 import { useTextSelection } from '../shared/hooks/useTextSelection'
 
-import type {
-  Conversation,
-  AIApiAvailability,
-  PointerDownOutsideEvent,
-  ChatSession,
-  SummarizationSession,
-} from './types'
+import type { PointerDownOutsideEvent } from './types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
 import {
   dragHTMLElement,
@@ -22,52 +16,38 @@ import {
   isSelectingTextWithModifierKey,
   setInitialFocusToTextArea,
 } from './utils/content'
-import { checkAIApiAvailability, defaultAIApiAvailability } from './utils/ai'
+import { checkAiApiAvailability } from './utils/ai'
 import { ConversationContainer } from './components/chat/ConversationContainer'
 import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
 import { UserInputContainer } from './components/chat/UserInputContainer'
+import { useContentStore } from './store'
+import { useShallow } from 'zustand/react/shallow'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
-  const conversationId = window.crypto.randomUUID()
   const userInputRef = useRef<HTMLTextAreaElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+
+  const { setAiApiAvailability, reset, setUserInput } = useContentStore(
+    useShallow(state => ({
+      setAiApiAvailability: state.setAiApiAvailability,
+      reset: state.reset,
+      setUserInput: state.setUserInput,
+    }))
+  )
 
   const { t } = useTranslation()
   const closeText = t('buttons.close')
 
-  const [AIApiAvailability, setAIApiAvailability] = useState<AIApiAvailability>(defaultAIApiAvailability)
-  const [isResponseLoading, setIsResponseLoading] = useState(false)
-  const [isStreamingResponse, setIsStreamingResponse] = useState(false)
-  const [userInput, setUserInput] = useState('')
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [conversation, setConversation] = useState<Conversation>({
-    id: conversationId,
-    messages: [],
-  })
   const [position, setPosition] = useState({ top: '0px', left: '0px' })
   const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
-  const [chatSession, setChatSession] = useState<ChatSession>()
-  const [summarizationSession, setSummarizationSession] = useState<SummarizationSession>()
 
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
   const clearState = () => {
-    setConversation({
-      id: '',
-      messages: [],
-    })
-    setUserInput('')
-    setIsDialogOpen(false)
-    setIsResponseLoading(false)
-    setIsStreamingResponse(false)
-
-    if (chatSession) {
-      chatSession.destroy()
-    }
-    if (summarizationSession) {
-      summarizationSession.destroy()
-    }
+    // TODO: Add aborting of ongoing streams here
+    reset()
   }
 
   const handleInitialFocus = (e: Event) => {
@@ -84,8 +64,8 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     const getAIApiAvailability = async () => {
-      const response = await checkAIApiAvailability()
-      setAIApiAvailability(response)
+      const response = await checkAiApiAvailability()
+      setAiApiAvailability(response)
     }
     getAIApiAvailability()
   }, [])
@@ -142,31 +122,9 @@ export const ContentContainer = () => {
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>
-          <ConversationContainer conversation={conversation} isResponseLoading={isResponseLoading} />
-          <QuickActionContainer
-            userInput={userInput}
-            AIApiAvailability={AIApiAvailability}
-            isResponseLoading={isResponseLoading}
-            summarizationSession={summarizationSession}
-            isStreamingResponse={isStreamingResponse}
-            setConversation={setConversation}
-            setUserInput={setUserInput}
-            setIsResponseLoading={setIsResponseLoading}
-            setSummarizationSession={setSummarizationSession}
-          />
-          <UserInputContainer
-            ref={userInputRef}
-            userInput={userInput}
-            disabled={!AIApiAvailability.chat.available}
-            isResponseLoading={isResponseLoading}
-            chatSession={chatSession}
-            isStreamingResponse={isStreamingResponse}
-            setConversation={setConversation}
-            setUserInput={setUserInput}
-            setIsResponseLoading={setIsResponseLoading}
-            setChatSession={setChatSession}
-            setIsStreamingResponse={setIsStreamingResponse}
-          />
+          <ConversationContainer />
+          <QuickActionContainer />
+          <UserInputContainer ref={userInputRef} />
         </DialogContent>
       </DialogPortal>
     </DialogRoot>
