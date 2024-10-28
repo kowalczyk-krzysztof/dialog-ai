@@ -30,7 +30,7 @@ export const ConversationContainer = () => {
   return (
     <ScrollAreaRoot className='w-full'>
       <ScrollAreaViewport ref={scrollableAreaRef}>
-        <div className='my-2 flex h-80 flex-col gap-2'>
+        <div className='my-2 flex h-96 flex-col gap-2'>
           {conversation.messages.map(({ role, id, text, isError, type }) => (
             <MessageContainer text={text} isUser={role === MessageRole.USER} key={id} isError={isError} type={type} />
           ))}
