@@ -1,4 +1,11 @@
 import type { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
+import {
+  Root as ScrollAreaRoot,
+  ScrollAreaViewport,
+  ScrollAreaScrollbar,
+  ScrollAreaThumb,
+  ScrollAreaCorner,
+} from '@radix-ui/react-scroll-area'
 import { SendChatMessageButton } from './SendChatMessageButton'
 import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
@@ -37,14 +44,23 @@ export const UserInputContainer = () => {
 
   return (
     <div className='flex h-52 w-full items-center rounded-lg bg-tertiary p-2 border-border border'>
-      <textarea
-        autoFocus={true}
-        value={userInput}
-        className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
-        onChange={handleOnChange}
-        onKeyDown={handleEnterKey}
-        onFocus={handleFocus}
-      />
+      <ScrollAreaRoot className='size-full'>
+        <ScrollAreaViewport asChild={true}>
+          <textarea
+            autoFocus={true}
+            value={userInput}
+            className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
+            onChange={handleOnChange}
+            onKeyDown={handleEnterKey}
+            onFocus={handleFocus}
+          />
+        </ScrollAreaViewport>
+        <ScrollAreaScrollbar orientation='vertical'>
+          <ScrollAreaThumb />
+        </ScrollAreaScrollbar>
+        <ScrollAreaCorner />
+      </ScrollAreaRoot>
+
       <SendChatMessageButton />
     </div>
   )
