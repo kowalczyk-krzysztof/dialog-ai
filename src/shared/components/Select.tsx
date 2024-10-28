@@ -62,7 +62,7 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
               <RadixSelectItem
                 key={key}
                 value={value}
-                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-primary'
+                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-primary [&:not(:focus):not(:hover)]:data-[state=checked]:bg-primary-hover [&:not(:focus):not(:hover)]:data-[state=checked]:text-text-hover'
               >
                 <SelectItemText>{label}</SelectItemText>
               </RadixSelectItem>

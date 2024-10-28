@@ -7,8 +7,8 @@ export default {
           DEFAULT: '#111113',
         },
         primary: {
-          DEFAULT: '#569CD6',
-          hover: '#77AFDE',
+          DEFAULT: '#4FC1FF',
+          hover: '#78CFFF',
         },
         secondary: {
           DEFAULT: '#3A3D41',
@@ -20,7 +20,7 @@ export default {
         },
         text: {
           DEFAULT: '#FFFFFF',
-          hover: '#C7C7C7',
+          hover: '#d4d4d4',
         },
         disabled: {
           DEFAULT: '#a1a1aa',
