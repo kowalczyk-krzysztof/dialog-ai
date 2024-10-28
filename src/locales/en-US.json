@@ -3,6 +3,8 @@
     "ai": "ai",
     "user": "User"
   },
+  "from": "From",
+  "to": "To",
   "loading": "Loading response",
   "buttons": {
     "summarize": "Summarize",
