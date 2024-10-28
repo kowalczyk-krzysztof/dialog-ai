@@ -3,9 +3,9 @@ import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 import { QuickActionButton } from './QuickActionButton'
 import { LanguagePairSelect } from './LanguagePairSelect'
-import { getTranslation } from '../../utils/ai'
+import { getTranslation } from '../../api/translation'
 
-export const TranslateButton = () => {
+export const TranslationButton = () => {
   const { aiApiAvailability, sourceLanguage, targetLanguage, setIsResponseLoading, areControlsDisabled } =
     useContentStore(
       useShallow(state => ({

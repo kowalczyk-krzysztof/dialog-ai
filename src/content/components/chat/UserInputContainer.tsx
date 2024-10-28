@@ -9,7 +9,7 @@ import {
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 import { SendChatMessageButton } from './SendChatMessageButton'
-import { getChatStreamingResponse } from '../../utils/ai'
+import { getChatStreamingResponse } from '../../api/chat'
 
 export const UserInputContainer = () => {
   const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(
