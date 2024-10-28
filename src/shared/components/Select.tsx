@@ -46,7 +46,7 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
         {isOpen ? (
           <ChevronUp className='size-3 fill-primary group-hover:fill-primary-hover' />
         ) : (
-          <ChevronDown className='size-3 fill-primary group-hover:fill-primary-hover' />
+          <ChevronDown className='size-3 fill-primary group-hover:fill-primary-hover group-disabled:fill-disabled-text' />
         )}
       </SelectTrigger>
       <SelectPortal>
@@ -56,12 +56,12 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
           }}
           position='popper'
         >
-          <SelectViewport className='bg-background'>
+          <SelectViewport className='bg-secondary rounded-lg'>
             {items.map(({ value, label, key }) => (
               <RadixSelectItem
                 key={key}
                 value={value}
-                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-secondary'
+                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-primary'
               >
                 <SelectItemText>{label}</SelectItemText>
               </RadixSelectItem>
