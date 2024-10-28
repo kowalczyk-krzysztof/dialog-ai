@@ -240,8 +240,9 @@ const createTranslator = async (
 
 export const getTranslation = async (languagePair: TranslationLanguagePair) => {
   const { setConversation, userInput, setUserInput, setTranslationResponseAbortController } = useContentStore.getState()
-
-  setConversation(conversation => createUserMessage({ conversation, text: userInput }))
+  const storedUserInput = userInput
+  setUserInput('')
+  setConversation(conversation => createUserMessage({ conversation, text: storedUserInput }))
   if (!window.translation) {
     const translationNotEnabledText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
@@ -293,8 +294,6 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
 
   try {
     const controller = new AbortController()
-    const storedUserInput = userInput
-    setUserInput('')
     const translation = await translator.translate(storedUserInput, { signal: controller.signal })
     setTranslationResponseAbortController(controller)
     setConversation(conversation =>
