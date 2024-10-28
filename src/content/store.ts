@@ -4,6 +4,7 @@ import {
   type ChatSession,
   type Conversation,
   type SummarizationSession,
+  SupportedLanguages,
   AIApiType,
 } from './types'
 
@@ -30,6 +31,8 @@ interface ContentStore {
   chatResponseAbortController: AbortController | undefined
   summarizationResponseAbortController: AbortController | undefined
   translationResponseAbortController: AbortController | undefined
+  trasnlationSourceLanguage: SupportedLanguages
+  trasnlationTargetLanguage: SupportedLanguages
   areControlsDisabled: () => boolean
   setIsResponseLoading: (loading: boolean) => void
   setIsStreamingResponse: (streaming: boolean) => void
@@ -41,6 +44,8 @@ interface ContentStore {
   setChatResponseAbortController: (controller: AbortController | undefined) => void
   setSummarizationResponseAbortController: (controller: AbortController | undefined) => void
   setTranslationResponseAbortController: (controller: AbortController | undefined) => void
+  setTranslationSourceLanguage: (language: SupportedLanguages) => void
+  setTranslationTargetLanguage: (language: SupportedLanguages) => void
   reset: () => void
 }
 
@@ -55,6 +60,8 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   chatResponseAbortController: undefined,
   summarizationResponseAbortController: undefined,
   translationResponseAbortController: undefined,
+  trasnlationSourceLanguage: SupportedLanguages.ENGLISH,
+  trasnlationTargetLanguage: SupportedLanguages.SPANISH,
   areControlsDisabled: () => {
     const { isResponseLoading, isStreamingResponse, userInput } = get()
     return isResponseLoading || isStreamingResponse || userInput.trim().length === 0
@@ -69,6 +76,8 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setChatResponseAbortController: controller => set({ chatResponseAbortController: controller }),
   setSummarizationResponseAbortController: controller => set({ summarizationResponseAbortController: controller }),
   setTranslationResponseAbortController: controller => set({ translationResponseAbortController: controller }),
+  setTranslationSourceLanguage: language => set({ trasnlationSourceLanguage: language }),
+  setTranslationTargetLanguage: language => set({ trasnlationTargetLanguage: language }),
   reset: async () => {
     const {
       chatSession,
@@ -113,6 +122,8 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       translationResponseAbortController: undefined,
       aiApiAvailability: aiApiAvailability,
       userInput: '',
+      trasnlationSourceLanguage: SupportedLanguages.ENGLISH,
+      trasnlationTargetLanguage: SupportedLanguages.SPANISH,
     })
   },
 }))

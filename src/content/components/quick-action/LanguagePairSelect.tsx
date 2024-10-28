@@ -1,43 +1,41 @@
-import type { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../shared/components/Select'
-import { languageTagToHumanReadable } from '../../utils/ai'
-import Swap from '../../icons/swap.svg?react'
-import { type TranslationLanguagePair, SupportedLanguages } from '../../types'
 import { LanguagePairLabel } from './LanguagePairLabel'
+import { languageTagToHumanReadable } from '../../utils/ai'
+import { SupportedLanguages } from '../../types'
+import Swap from '../../icons/swap.svg?react'
 
-interface Props {
-  languagePair: TranslationLanguagePair
-  setLanguagePair: Dispatch<SetStateAction<TranslationLanguagePair>>
-}
-
-// TODO: Style this better
-export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => {
+export const LanguagePairSelect = () => {
   const { t } = useTranslation()
+  const { sourceLanguage, targetLanguage, setTranslationSourceLanguage, setTranslationTargetLanguage } =
+    useContentStore(
+      useShallow(state => ({
+        sourceLanguage: state.trasnlationSourceLanguage,
+        targetLanguage: state.trasnlationTargetLanguage,
+        setTranslationSourceLanguage: state.setTranslationSourceLanguage,
+        setTranslationTargetLanguage: state.setTranslationTargetLanguage,
+      }))
+    )
   const swapLanguagesText = t('buttons.swapLanguages')
   const fromLabel = t('from')
   const toLabel = t('to')
 
   const handleSelectSourceLanguage = (value: string) => {
-    setLanguagePair(languagePair => ({
-      ...languagePair,
-      sourceLanguage: value as SupportedLanguages,
-    }))
+    setTranslationSourceLanguage(value as SupportedLanguages)
   }
 
   const handleSelectTargetLanguage = (value: string) => {
-    setLanguagePair(languagePair => ({
-      ...languagePair,
-      targetLanguage: value as SupportedLanguages,
-    }))
+    setTranslationTargetLanguage(value as SupportedLanguages)
   }
 
   const handleSwapLanguages = () => {
-    setLanguagePair(languagePair => ({
-      sourceLanguage: languagePair.targetLanguage,
-      targetLanguage: languagePair.sourceLanguage,
-    }))
+    const storedTargetLanguage = targetLanguage
+    const storedSourceLanguage = sourceLanguage
+    setTranslationSourceLanguage(storedTargetLanguage)
+    setTranslationTargetLanguage(storedSourceLanguage)
   }
 
   const sourceLanguageItems = Object.values(SupportedLanguages).map(language => ({
@@ -53,15 +51,15 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   }))
 
   const sourceLanguageItem = {
-    key: languagePair.sourceLanguage,
-    value: languagePair.sourceLanguage,
-    label: languageTagToHumanReadable(languagePair.sourceLanguage),
+    key: sourceLanguage,
+    value: sourceLanguage,
+    label: languageTagToHumanReadable(sourceLanguage),
   }
 
   const targetLanguageItem = {
-    key: languagePair.targetLanguage,
-    value: languagePair.targetLanguage,
-    label: languageTagToHumanReadable(languagePair.targetLanguage),
+    key: targetLanguage,
+    value: targetLanguage,
+    label: languageTagToHumanReadable(targetLanguage),
   }
 
   const sourceId = 'source-language'
@@ -74,7 +72,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       <div className='flex items-end relative pb-1'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
-          disabled={isDisabled(languagePair.sourceLanguage)}
+          disabled={isDisabled(sourceLanguage)}
           items={sourceLanguageItems}
           value={sourceLanguageItem}
           id={sourceId}
@@ -95,7 +93,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       <div className='flex items-end relative pb-1'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
-          disabled={isDisabled(languagePair.targetLanguage)}
+          disabled={isDisabled(targetLanguage)}
           items={targetLanguageItems}
           value={targetLanguageItem}
           id={targetId}

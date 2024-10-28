@@ -2,20 +2,17 @@ import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { DialogContent, DialogPortal, Root as DialogRoot, DialogTitle, DialogClose } from '@radix-ui/react-dialog'
-
-import Close from './icons/close.svg?react'
-
-import { useTextSelection } from '../shared/hooks/useTextSelection'
-
-import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
-import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
-import { dragHTMLElement, getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
-import { checkAiApiAvailability } from './utils/ai'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from './store'
 import { ConversationContainer } from './components/chat/ConversationContainer'
 import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
 import { UserInputContainer } from './components/chat/UserInputContainer'
-import { useContentStore } from './store'
-import { useShallow } from 'zustand/react/shallow'
+import { useTextSelection } from '../shared/hooks/useTextSelection'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
+import { dragHTMLElement, getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
+import { checkAiApiAvailability } from './utils/ai'
+import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
+import Close from './icons/close.svg?react'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
