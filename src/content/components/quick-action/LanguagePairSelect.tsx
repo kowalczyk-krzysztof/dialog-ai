@@ -6,7 +6,7 @@ import { Select } from '../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
 import { languageTagToHumanReadable } from '../../utils/ai'
 import { SupportedLanguages } from '../../types'
-import Swap from '../../icons/swap.svg?react'
+import Swap from '../../../shared/icons/swap.svg?react'
 
 export const LanguagePairSelect = () => {
   const { t } = useTranslation()

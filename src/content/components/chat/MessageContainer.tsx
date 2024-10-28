@@ -5,9 +5,8 @@ import { Badge } from '../../../shared/components/Badge'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 import { AIApiType } from '../../types'
-import Copy from '../../icons/copy.svg?react'
 import { languageTagToHumanReadable } from '../../utils/ai'
-
+import Copy from '../../../shared/icons/copy.svg?react'
 interface Props {
   text: string
   isUser: boolean
