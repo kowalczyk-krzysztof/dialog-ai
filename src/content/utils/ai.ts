@@ -10,8 +10,8 @@ import {
   SupportedLanguages,
   TranslationModelSession,
 } from '../../content/types'
-import i18n from '../../i118n'
 import { useContentStore } from '../store'
+import i18n from '../../i118n'
 
 export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,

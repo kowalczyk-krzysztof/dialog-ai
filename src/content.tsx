@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ContentContainer } from './content/ContentContainer'
 import { CONTENT_ROOT_ID, CSS_STYLESHEET, DIALOG_Z_INDEX } from '../constants'
-import './index.css'
 import { suppressInvalidRadixUiTitleError } from './content/utils/content'
+import './index.css'
 
 /*
   To scope styles to the Chrome extension dialog, shadow DOM is used.

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { QuickActionButton } from './QuickActionButton'
-import { SupportedLanguages } from '../../types'
-import { LanguagePairSelect } from './LanguagePairSelect'
-import { getTranslation } from '../../utils/ai'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
+import { QuickActionButton } from './QuickActionButton'
+import { LanguagePairSelect } from './LanguagePairSelect'
+import { getTranslation } from '../../utils/ai'
+import { SupportedLanguages } from '../../types'
 
 export const TranslateButton = () => {
   const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(

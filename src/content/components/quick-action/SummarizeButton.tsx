@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
 import { QuickActionButton } from './QuickActionButton'
 import { getSummary } from '../../utils/ai'
-import { useContentStore } from '../../store'
-import { useShallow } from 'zustand/react/shallow'
 
 export const SummarizeButton = () => {
   const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(

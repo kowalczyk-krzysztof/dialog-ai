@@ -1,4 +1,4 @@
-import { type RefObject, type MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
+import type { RefObject, MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
 import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../../constants'
 
 export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {

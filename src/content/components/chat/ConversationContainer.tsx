@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import {
   Root as ScrollAreaRoot,
   ScrollAreaViewport,
@@ -5,12 +6,11 @@ import {
   ScrollAreaThumb,
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
-import { MessageRole } from '../../types'
-import { MessageContainer } from './MessageContainer'
-import { useEffect, useRef } from 'react'
-import { LoadingDots } from '../../../shared/components/LoadingDots'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
+import { MessageContainer } from './MessageContainer'
+import { LoadingDots } from '../../../shared/components/LoadingDots'
+import { MessageRole } from '../../types'
 
 export const ConversationContainer = () => {
   const { conversation, isResponseLoading } = useContentStore(
@@ -31,10 +31,9 @@ export const ConversationContainer = () => {
     <ScrollAreaRoot className='w-full'>
       <ScrollAreaViewport ref={scrollableAreaRef}>
         <div className='my-2 flex h-80 flex-col gap-2'>
-          {conversation.messages.map(({ role, id, text, isError, type }) => {
-            const isUser = role === MessageRole.USER
-            return <MessageContainer text={text} isUser={isUser} key={id} isError={isError} type={type} />
-          })}
+          {conversation.messages.map(({ role, id, text, isError, type }) => (
+            <MessageContainer text={text} isUser={role === MessageRole.USER} key={id} isError={isError} type={type} />
+          ))}
           {isResponseLoading ? <LoadingDots /> : null}
         </div>
       </ScrollAreaViewport>

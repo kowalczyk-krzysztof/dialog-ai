@@ -6,9 +6,9 @@ import {
   ScrollAreaThumb,
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
-import { SendChatMessageButton } from './SendChatMessageButton'
-import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
+import { SendChatMessageButton } from './SendChatMessageButton'
 import { getChatStreamingResponse } from '../../utils/ai'
 
 export const UserInputContainer = () => {
@@ -60,7 +60,6 @@ export const UserInputContainer = () => {
         </ScrollAreaScrollbar>
         <ScrollAreaCorner />
       </ScrollAreaRoot>
-
       <SendChatMessageButton />
     </div>
   )

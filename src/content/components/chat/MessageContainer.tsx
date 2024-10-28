@@ -1,10 +1,9 @@
 import Markdown from 'markdown-to-jsx'
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { AIApiType } from '../../types'
-
-import Copy from '../../icons/copy.svg?react'
 import { Badge } from '../../../shared/components/Badge'
+import { AIApiType } from '../../types'
+import Copy from '../../icons/copy.svg?react'
 
 interface Props {
   text: string

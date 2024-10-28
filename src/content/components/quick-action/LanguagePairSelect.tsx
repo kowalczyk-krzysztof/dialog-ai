@@ -1,12 +1,10 @@
-import { type Dispatch, type SetStateAction } from 'react'
-import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { SupportedLanguages, type TranslationLanguagePair } from '../../types'
-
-import Swap from '../../icons/swap.svg?react'
-
+import type { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-import { languageTagToHumanReadable } from '../../utils/ai'
+import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../shared/components/Select'
+import { languageTagToHumanReadable } from '../../utils/ai'
+import Swap from '../../icons/swap.svg?react'
+import { type TranslationLanguagePair, SupportedLanguages } from '../../types'
 
 interface Props {
   languagePair: TranslationLanguagePair

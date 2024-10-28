@@ -123,7 +123,7 @@ export const ContentContainer = () => {
             <p className='grow'>Dialog AI</p>
             <DialogClose className='p-2 hover:bg-tertiary-hover group' onClick={clearState}>
               <AccessibleIcon label={closeText}>
-                <Close height={16} width={16} className='fill-primary group-hover:fill-primary-hover' />
+                <Close className=' size-4 fill-primary group-hover:fill-primary-hover' />
               </AccessibleIcon>
             </DialogClose>
           </DialogTitle>

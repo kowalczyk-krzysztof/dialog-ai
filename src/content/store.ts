@@ -1,5 +1,11 @@
 import { create } from 'zustand'
-import { AIApiAvailability, AIApiType, ChatSession, Conversation, SummarizationSession } from './types'
+import {
+  type AIApiAvailability,
+  type ChatSession,
+  type Conversation,
+  type SummarizationSession,
+  AIApiType,
+} from './types'
 
 const defaultAIApiAvailability: AIApiAvailability = {
   [AIApiType.CHAT]: {
