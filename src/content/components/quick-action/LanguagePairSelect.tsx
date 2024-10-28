@@ -68,8 +68,8 @@ export const LanguagePairSelect = () => {
   const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
 
   return (
-    <div className='flex bg-tertiary px-2 rounded-lg border border-border'>
-      <div className='flex items-end relative pb-1'>
+    <div className='flex bg-tertiary px-2 rounded-lg border border-border pb-1 pt-5'>
+      <div className='flex items-end relative'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
           disabled={isDisabled(sourceLanguage)}
@@ -81,7 +81,7 @@ export const LanguagePairSelect = () => {
       </div>
       <div className='flex items-end'>
         <button
-          className='flex justify-center items-end mx-2 px-2 pb-1 group'
+          className='flex justify-center items-end mx-2 group'
           onClick={handleSwapLanguages}
           title={swapLanguagesText}
         >
@@ -90,7 +90,7 @@ export const LanguagePairSelect = () => {
           </AccessibleIcon>
         </button>
       </div>
-      <div className='flex items-end relative pb-1'>
+      <div className='flex items-end relative'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
           disabled={isDisabled(targetLanguage)}

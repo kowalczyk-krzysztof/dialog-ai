@@ -39,7 +39,7 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
       <SelectTrigger
         id={id}
         aria-label='source language'
-        className='text-xs disabled:text-disabled disabled:cursor-not-allowed px-1 hover:text-text-hover disabled:bg-transparent flex gap-1 items-center group'
+        className='text-sm disabled:text-disabled disabled:cursor-not-allowed px-1 hover:text-text-hover disabled:bg-transparent flex gap-1 items-center group'
         onClick={handleClickTrigger}
       >
         <SelectValue />{' '}
@@ -55,7 +55,6 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
             zIndex: DIALOG_TOOLTIP_Z_INDEX,
           }}
           position='popper'
-          align='center'
         >
           <SelectViewport className='bg-background'>
             {items.map(({ value, label, key }) => (
