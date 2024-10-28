@@ -1,10 +1,10 @@
-import { ChangeEvent, forwardRef, KeyboardEvent, Ref } from 'react'
+import type { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
 import { SendChatMessageButton } from './SendChatMessageButton'
 import { useContentStore } from '../../store'
 import { useShallow } from 'zustand/react/shallow'
 import { getChatStreamingResponse } from '../../utils/ai'
 
-export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<HTMLTextAreaElement>) => {
+export const UserInputContainer = () => {
   const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(
     useShallow(state => ({
       userInput: state.userInput,
@@ -28,18 +28,24 @@ export const UserInputContainer = forwardRef<HTMLTextAreaElement>((_, ref: Ref<H
     setUserInput(e.target.value)
   }
 
+  const handleFocus = (e: FocusEvent) => {
+    const userInputContainer = e.target as HTMLTextAreaElement
+    const valueLength = userInputContainer.value.length
+    userInputContainer.setSelectionRange(valueLength, valueLength)
+    userInputContainer.scrollTop = userInputContainer.scrollHeight
+  }
+
   return (
     <div className='flex h-52 w-full items-center rounded-lg bg-tertiary p-2 border-border border'>
       <textarea
-        ref={ref}
+        autoFocus={true}
         value={userInput}
         className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
         onChange={handleOnChange}
         onKeyDown={handleEnterKey}
+        onFocus={handleFocus}
       />
       <SendChatMessageButton />
     </div>
   )
-})
-
-UserInputContainer.displayName = 'UserInputContainer'
+}

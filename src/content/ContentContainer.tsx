@@ -9,13 +9,7 @@ import { useTextSelection } from '../shared/hooks/useTextSelection'
 
 import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
-import {
-  dragHTMLElement,
-  getContentRoot,
-  getDialogPositionRelativeToSelection,
-  isOpeningDialog,
-  setInitialFocusToTextArea,
-} from './utils/content'
+import { dragHTMLElement, getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
 import { checkAiApiAvailability } from './utils/ai'
 import { ConversationContainer } from './components/chat/ConversationContainer'
 import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
@@ -25,7 +19,6 @@ import { useShallow } from 'zustand/react/shallow'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
-  const userInputRef = useRef<HTMLTextAreaElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
   const { setAiApiAvailability, reset, setUserInput } = useContentStore(
@@ -51,7 +44,7 @@ export const ContentContainer = () => {
   }
 
   const handleInitialFocus = (e: Event) => {
-    setInitialFocusToTextArea(e, userInputRef)
+    e.preventDefault()
   }
 
   const handleGrab = (e: ReactMouseEvent) => {
@@ -68,7 +61,6 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     window.addEventListener('beforeunload', clearState)
-
     return () => {
       window.removeEventListener('beforeunload', clearState)
     }
@@ -137,7 +129,7 @@ export const ContentContainer = () => {
           </DialogTitle>
           <ConversationContainer />
           <QuickActionContainer />
-          <UserInputContainer ref={userInputRef} />
+          <UserInputContainer />
         </DialogContent>
       </DialogPortal>
     </DialogRoot>

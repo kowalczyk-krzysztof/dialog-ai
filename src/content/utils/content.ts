@@ -1,6 +1,5 @@
 import { type RefObject, type MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
 import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../../constants'
-import { useContentStore } from '../store'
 
 export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {
   const { top, left, width, height } = textBounds
@@ -98,6 +97,7 @@ export const isOpeningDialog = (
       const center = getCenterOfTheScreen()
       setPostion(center)
       setIsDialogOpen(true)
+      setIsSelectionKeyHeldDown(false)
       return
     }
 
@@ -106,16 +106,5 @@ export const isOpeningDialog = (
     setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
   } else {
     setIsSelectionKeyHeldDown(false)
-  }
-}
-
-export const setInitialFocusToTextArea = (e: Event, userInputRef: RefObject<HTMLTextAreaElement> | null) => {
-  e.preventDefault()
-  const userInputContainer = userInputRef?.current
-  if (userInputContainer) {
-    userInputContainer.focus()
-    const valueLength = userInputContainer.value.length
-    userInputContainer.setSelectionRange(valueLength, valueLength)
-    userInputContainer.scrollTop = userInputContainer.scrollHeight
   }
 }
