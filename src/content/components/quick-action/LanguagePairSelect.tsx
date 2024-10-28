@@ -7,6 +7,7 @@ import { LanguagePairLabel } from './LanguagePairLabel'
 import { languageTagToHumanReadable } from '../../utils/ai'
 import { SupportedLanguages } from '../../types'
 import Swap from '../../../shared/icons/swap.svg?react'
+import { nonEnglishLanguages } from '../../api/translation'
 
 export const LanguagePairSelect = () => {
   const { t } = useTranslation()
@@ -38,17 +39,25 @@ export const LanguagePairSelect = () => {
     setTranslationTargetLanguage(storedSourceLanguage)
   }
 
-  const sourceLanguageItems = Object.values(SupportedLanguages).map(language => ({
-    key: language,
-    value: language,
-    label: languageTagToHumanReadable(language),
-  }))
+  const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
+  const isSourceDisabled = isDisabled(sourceLanguage)
+  const isTargetDisabled = isDisabled(targetLanguage)
 
-  const targetLanguageItems = Object.values(SupportedLanguages).map(language => ({
-    key: language,
-    value: language,
-    label: languageTagToHumanReadable(language),
-  }))
+  const sourceLanguageItems = Object.values(isTargetDisabled ? nonEnglishLanguages : SupportedLanguages).map(
+    language => ({
+      key: language,
+      value: language,
+      label: languageTagToHumanReadable(language),
+    })
+  )
+
+  const targetLanguageItems = Object.values(isSourceDisabled ? nonEnglishLanguages : SupportedLanguages).map(
+    language => ({
+      key: language,
+      value: language,
+      label: languageTagToHumanReadable(language),
+    })
+  )
 
   const sourceLanguageItem = {
     key: sourceLanguage,
@@ -65,14 +74,12 @@ export const LanguagePairSelect = () => {
   const sourceId = 'source-language'
   const targetId = 'target-language'
 
-  const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
-
   return (
     <div className='flex bg-tertiary px-2 rounded-lg border border-border pb-1 pt-5'>
       <div className='flex items-end relative'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
-          disabled={isDisabled(sourceLanguage)}
+          disabled={isSourceDisabled}
           items={sourceLanguageItems}
           value={sourceLanguageItem}
           id={sourceId}
@@ -93,7 +100,7 @@ export const LanguagePairSelect = () => {
       <div className='flex items-end relative'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
-          disabled={isDisabled(targetLanguage)}
+          disabled={isTargetDisabled}
           items={targetLanguageItems}
           value={targetLanguageItem}
           id={targetId}

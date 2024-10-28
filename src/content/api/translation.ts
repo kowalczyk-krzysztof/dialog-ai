@@ -3,7 +3,7 @@ import i18n from '../../i118n'
 import { createSystemMessage, createUserMessage } from '../utils/ai'
 import { type TranslationLanguagePair, type TranslationModelSession, AIApiType, SupportedLanguages } from '../types'
 
-const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
+export const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
   language => language !== SupportedLanguages.ENGLISH
 ) as Array<SupportedLanguages>
 
