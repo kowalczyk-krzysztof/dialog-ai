@@ -1,4 +1,8 @@
 {
+  "roles": {
+    "ai": "ai",
+    "user": "User"
+  },
   "loading": "Loading response",
   "buttons": {
     "summarize": "Summarize",

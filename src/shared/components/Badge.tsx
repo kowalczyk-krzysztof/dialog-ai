@@ -5,9 +5,5 @@ interface Props extends PropsWithChildren {
 }
 
 export const Badge = ({ children, className }: Props) => (
-  <span
-    className={`select-none rounded-full bg-text p-1 px-2.5 py-0.5 text-xs uppercase text-neutral-900 ${className}`}
-  >
-    {children}
-  </span>
+  <span className={`select-none rounded-full p-1 px-2.5 py-0.5 text-xs uppercase ${className}`}>{children}</span>
 )
