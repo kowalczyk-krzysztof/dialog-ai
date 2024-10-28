@@ -55,8 +55,9 @@ export const Select = ({ disabled, items, value, id, onChange }: Props) => {
             zIndex: DIALOG_TOOLTIP_Z_INDEX,
           }}
           position='popper'
+          sideOffset={8}
         >
-          <SelectViewport className='bg-secondary rounded-lg'>
+          <SelectViewport className='bg-secondary rounded-lg border-border border'>
             {items.map(({ value, label, key }) => (
               <RadixSelectItem
                 key={key}
