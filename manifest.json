@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dialog AI",
   "version": "0.1.0",
-  "description": "Highlight text and chat with Chrome AI.",
+  "description": "Chat with Chrome AI on any website.",
   "content_scripts": [
     {
       "matches": [

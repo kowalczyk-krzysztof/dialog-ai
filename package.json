@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
-  "description": "Highlight text and chat with Chrome AI.",
+  "description": "Chat with Chrome AI on any website.",
   "author": "Krzysztof Kowalczyk <kowalczykkrzysztof893@gmail.com> (https://github.com/kowalczyk-krzysztof)",
   "engines": {
     "node": ">=20"
