@@ -41,7 +41,7 @@ const getIcon = (status: CopyStatus) => {
     case CopyStatus.FAILURE:
       return <XMark className='size-4 fill-error' />
     default:
-      return <Copy className='size-4 fill-primary' />
+      return <Copy className='size-4 fill-primary group-hover:fill-primary-hover' />
   }
 }
 
