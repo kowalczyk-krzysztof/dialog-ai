@@ -45,6 +45,17 @@ const getIcon = (status: CopyStatus) => {
   }
 }
 
+const getCopyTextKey = (status: CopyStatus) => {
+  switch (status) {
+    case CopyStatus.SUCCESS:
+      return 'buttons.copy.success'
+    case CopyStatus.FAILURE:
+      return 'buttons.copy.failure'
+    default:
+      return 'buttons.copy.default'
+  }
+}
+
 export const MessageHeader = ({ text, isUser, type }: Props) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
@@ -55,7 +66,7 @@ export const MessageHeader = ({ text, isUser, type }: Props) => {
     }))
   )
 
-  const copyText = t('buttons.copy')
+  const copyText = t(getCopyTextKey(copyIcon))
   const userRoleText = t('roles.user')
   const aiRoleText = t('roles.ai')
   const fromLabel = t('from')

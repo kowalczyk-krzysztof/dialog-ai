@@ -7,9 +7,13 @@
   "to": "To",
   "loading": "Loading response",
   "buttons": {
+    "copy": {
+      "default": "Copy content to clipboard",
+      "success": "Copied content to clipboard",
+      "failure": "Could not copy content to clipboard"
+    },
     "summarize": "Summarize",
     "translate": "Translate",
-    "copy": "Copy content",
     "close": "Close dialog",
     "send": "Send message",
     "swapLanguages": "Swap target and source languages"
