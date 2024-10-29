@@ -29,8 +29,8 @@ export const TranslationButton = () => {
   const isDisabled = areControlsDisabled() || !aiApiAvailability.translation.available
 
   return (
-    <div className='flex grow gap-2'>
-      <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
+    <div className='flex bg-tertiary px-2 rounded-lg border border-border py-1.5'>
+      <QuickActionButton disabled={isDisabled} onClick={handleGetResponse} className='mr-2'>
         {translateText}
       </QuickActionButton>
       <LanguagePairSelect />

@@ -75,7 +75,7 @@ export const LanguagePairSelect = () => {
   const targetId = 'target-language'
 
   return (
-    <div className='flex bg-tertiary px-2 rounded-lg border border-border pb-1 pt-5'>
+    <>
       <div className='flex items-end relative'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
@@ -107,6 +107,6 @@ export const LanguagePairSelect = () => {
           onChange={handleSelectTargetLanguage}
         />
       </div>
-    </div>
+    </>
   )
 }
