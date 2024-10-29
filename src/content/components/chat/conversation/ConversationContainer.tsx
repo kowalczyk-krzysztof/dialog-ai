@@ -8,11 +8,10 @@ import { MessageRole } from '../../../types'
 import { Scrollbar } from '../../../../shared/components/Scrollbar'
 
 export const ConversationContainer = () => {
-  const { conversation, isResponseLoading, isStreamingResponse } = useContentStore(
+  const { conversation, isResponseLoading } = useContentStore(
     useShallow(state => ({
       conversation: state.conversation,
       isResponseLoading: state.isResponseLoading,
-      isStreamingResponse: state.isStreamingResponse,
     }))
   )
   const scrollableAreaRef = useRef<HTMLDivElement>(null)
@@ -23,19 +22,17 @@ export const ConversationContainer = () => {
     }
   }, [conversation])
 
-  const showScrollbar = !isStreamingResponse && !isResponseLoading
-
   return (
-    <ScrollAreaRoot className='w-full'>
+    <ScrollAreaRoot className='w-full' scrollHideDelay={0}>
       <ScrollAreaViewport ref={scrollableAreaRef}>
         <div className='flex h-96 flex-col gap-2'>
           {conversation.messages.map(({ role, id, text, isError, type }) => (
             <MessageContainer text={text} isUser={role === MessageRole.USER} key={id} isError={isError} type={type} />
           ))}
-          {showScrollbar ? <LoadingDots /> : null}
+          {isResponseLoading ? <LoadingDots /> : null}
         </div>
       </ScrollAreaViewport>
-      {isStreamingResponse ? null : <Scrollbar />}
+      <Scrollbar />
     </ScrollAreaRoot>
   )
 }

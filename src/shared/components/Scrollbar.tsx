@@ -6,11 +6,8 @@ interface Props {
 
 export const Scrollbar = ({ orientation = 'vertical' }: Props) => (
   <>
-    <ScrollAreaScrollbar
-      orientation={orientation}
-      className='w-2 bg-tertiary rounded-lg transition-colors duration-200'
-    >
-      <ScrollAreaThumb className='bg-primary rounded-lg hover:bg-primary-hover transition-colors duration-200' />
+    <ScrollAreaScrollbar orientation={orientation} className='w-2 bg-tertiary rounded-lg'>
+      <ScrollAreaThumb className='bg-primary rounded-lg hover:bg-primary-hover' />
     </ScrollAreaScrollbar>
     <ScrollAreaCorner />
   </>

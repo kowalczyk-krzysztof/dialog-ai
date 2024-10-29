@@ -39,7 +39,7 @@ export const UserInputContainer = () => {
 
   return (
     <div className='flex w-full items-center rounded-lg bg-tertiary p-2 border-border border h-24'>
-      <ScrollAreaRoot className='size-full'>
+      <ScrollAreaRoot className='size-full' scrollHideDelay={0}>
         <ScrollAreaViewport asChild={true}>
           <textarea
             autoFocus={true}
