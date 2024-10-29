@@ -52,9 +52,8 @@ const getChatResponse = async (chatSession: ChatSession) => {
       return
     }
     const unknownError = i18n.t('errors.ai.unknownError')
-    setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, type: AIApiType.CHAT, isError: true })
-    )
+    const text = e instanceof Error ? e?.message : unknownError
+    setConversation(conversation => createSystemMessage({ conversation, text, type: AIApiType.CHAT, isError: true }))
     setChatSession(undefined)
   } finally {
     setIsStreamingResponse(false)

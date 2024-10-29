@@ -105,10 +105,11 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
       return
     }
     const unknownError = i18n.t('errors.ai.unknownError')
+    const text = e instanceof Error ? e?.message : unknownError
     setConversation(conversation =>
       createSystemMessage({
         conversation,
-        text: unknownError,
+        text,
         id: reponseId,
         type: AIApiType.TRANSLATION,
         isError: true,

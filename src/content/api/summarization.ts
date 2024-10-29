@@ -52,8 +52,9 @@ const getSummarizationResponse = async (summarizer: SummarizationSession) => {
       return
     }
     const unknownError = i18n.t('errors.ai.unknownError')
+    const text = e instanceof Error ? e?.message : unknownError
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: unknownError, type: AIApiType.SUMMARIZATION, isError: true })
+      createSystemMessage({ conversation, text, type: AIApiType.SUMMARIZATION, isError: true })
     )
     setSummarizationSession(undefined)
   } finally {
