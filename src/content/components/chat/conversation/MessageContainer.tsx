@@ -21,7 +21,7 @@ export const MessageContainer = ({ text, isUser, isError, type }: Props) => {
 
   return (
     <div className={`${messageBackground} flex flex-col rounded-lg border-border border rounded-t-none`}>
-      <MessageHeader text={text} isUser={isUser} type={type} />
+      <MessageHeader text={text} isUser={isUser} isError={isError} type={type} />
       <div className='break-words rounded-b-md p-2'>
         <Markdown options={{ disableParsingRawHTML: true }}>{text}</Markdown>
       </div>

@@ -35,6 +35,7 @@ export default {
           translation: '#28A745',
           chat: '#6F42C1',
           summarization: '#FD7E14',
+          error: '#F14C4C',
         },
         error: {
           DEFAULT: '#f14c4c',

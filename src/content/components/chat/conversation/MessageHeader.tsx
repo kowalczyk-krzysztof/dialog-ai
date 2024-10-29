@@ -13,6 +13,7 @@ import XMark from '../../../../shared/icons/xmark.svg?react'
 interface Props {
   text: string
   isUser: boolean
+  isError?: boolean
   type?: AIApiType
 }
 
@@ -58,7 +59,7 @@ const getCopyTextKey = (status: CopyStatus) => {
 
 const ICON_CHANGE_DELAY = 1000
 
-export const MessageHeader = ({ text, isUser, type }: Props) => {
+export const MessageHeader = ({ text, isUser, isError, type }: Props) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
   const { sourceLanguage, targetLanguage } = useContentStore(
@@ -96,6 +97,7 @@ export const MessageHeader = ({ text, isUser, type }: Props) => {
 
   return (
     <div className='flex items-center justify-end gap-2 bg-tertiary py-0.5 pr-2'>
+      {isError ? <Badge className='bg-badge-error'>{t('error')}</Badge> : null}
       {type ? <Badge className={typeBadgeBackground}>{type}</Badge> : null}
       {type === AIApiType.TRANSLATION ? (
         <Badge className='bg-badge-translation'>
