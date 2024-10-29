@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { useShallow } from 'zustand/react/shallow'
-import { useContentStore } from '../../store'
-import { getChatStreamingResponse } from '../../api/chat'
-import Send from '../../../shared/icons/send.svg?react'
+import { useContentStore } from '../../../store'
+import { getChatStreamingResponse } from '../../../api/chat'
+import Send from '../../../../shared/icons/send.svg?react'
 
 export const SendChatMessageButton = () => {
   const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(

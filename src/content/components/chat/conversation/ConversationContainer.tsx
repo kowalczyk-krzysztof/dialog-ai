@@ -7,10 +7,10 @@ import {
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
 import { useShallow } from 'zustand/react/shallow'
-import { useContentStore } from '../../store'
+import { useContentStore } from '../../../store'
 import { MessageContainer } from './MessageContainer'
-import { LoadingDots } from '../../../shared/components/LoadingDots'
-import { MessageRole } from '../../types'
+import { LoadingDots } from '../../../../shared/components/LoadingDots'
+import { MessageRole } from '../../../types'
 
 export const ConversationContainer = () => {
   const { conversation, isResponseLoading } = useContentStore(

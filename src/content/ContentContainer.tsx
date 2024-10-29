@@ -4,15 +4,15 @@ import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { DialogContent, DialogPortal, Root as DialogRoot, DialogTitle, DialogClose } from '@radix-ui/react-dialog'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from './store'
-import { ConversationContainer } from './components/chat/ConversationContainer'
+import { ConversationContainer } from './components/chat/conversation/ConversationContainer'
 import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
-import { UserInputContainer } from './components/chat/UserInputContainer'
+import { UserInputContainer } from './components/chat/user-input/UserInputContainer'
 import { useTextSelection } from '../shared/hooks/useTextSelection'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
 import { dragHTMLElement, getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
 import { checkAiApiAvailability } from './utils/ai'
 import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
-import Close from '../shared/icons/close.svg?react'
+import Close from '../shared/icons/xmark.svg?react'
 
 export const ContentContainer = () => {
   const root = getContentRoot()

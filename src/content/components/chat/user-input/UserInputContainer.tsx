@@ -7,9 +7,9 @@ import {
   ScrollAreaCorner,
 } from '@radix-ui/react-scroll-area'
 import { useShallow } from 'zustand/react/shallow'
-import { useContentStore } from '../../store'
+import { useContentStore } from '../../../store'
 import { SendChatMessageButton } from './SendChatMessageButton'
-import { getChatStreamingResponse } from '../../api/chat'
+import { getChatStreamingResponse } from '../../../api/chat'
 
 export const UserInputContainer = () => {
   const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(

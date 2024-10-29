@@ -36,6 +36,14 @@ export default {
           chat: '#6F42C1',
           summarization: '#FD7E14',
         },
+        error: {
+          DEFAULT: '#f14c4c',
+          hover: '#F47272',
+        },
+        success: {
+          DEFAULT: '#28A745',
+          hover: '#3CB371',
+        },
       },
     },
   },
