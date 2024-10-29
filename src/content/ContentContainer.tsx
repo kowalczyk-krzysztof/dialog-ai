@@ -100,7 +100,7 @@ export const ContentContainer = () => {
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          className='fixed flex flex-col items-center rounded-lg rounded-t-none bg-background p-4 pt-0 text-text border border-border'
+          className='fixed flex flex-col gap-2 items-center rounded-lg rounded-t-none bg-background px-4 text-text border border-border'
           style={{
             top: position.top,
             left: position.left,
