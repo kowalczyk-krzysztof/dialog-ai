@@ -3,16 +3,35 @@ import i18n from '../../i118n'
 import { createSystemMessage, createUserMessage } from '../utils/ai'
 import { type ChatSession, AIApiType } from '../types'
 
+const createChatSession = async (): Promise<ChatSession | undefined> => {
+  const { setConversation } = useContentStore.getState()
+  try {
+    const session = await window.ai.languageModel.create()
+    return session
+  } catch (e) {
+    const couldNotCreateLanguageModelText = i18n.t('errors.ai.couldNotCreateLanguageModel')
+    setConversation(conversation =>
+      createSystemMessage({
+        conversation,
+        text: couldNotCreateLanguageModelText,
+        isError: true,
+        type: AIApiType.CHAT,
+      })
+    )
+  }
+}
+
 const getChatResponse = async (chatSession: ChatSession) => {
   const {
-    setConversation,
     userInput,
+    setConversation,
     setIsStreamingResponse,
     setIsResponseLoading,
     setChatSession,
     setUserInput,
     setChatResponseAbortController,
   } = useContentStore.getState()
+
   try {
     const abortController = new AbortController()
     const storedUserInput = userInput
@@ -43,24 +62,6 @@ const getChatResponse = async (chatSession: ChatSession) => {
   }
 }
 
-const createChatSession = async (): Promise<ChatSession | undefined> => {
-  const { setConversation } = useContentStore.getState()
-  try {
-    const session = await window.ai.languageModel.create()
-    return session
-  } catch (e) {
-    const couldNotCreateLanguageModelText = i18n.t('errors.ai.couldNotCreateLanguageModel')
-    setConversation(conversation =>
-      createSystemMessage({
-        conversation,
-        text: couldNotCreateLanguageModelText,
-        isError: true,
-        type: AIApiType.CHAT,
-      })
-    )
-  }
-}
-
 export const getChatStreamingResponse = async () => {
   const { setConversation, userInput, chatSession } = useContentStore.getState()
   setConversation(conversation => createUserMessage({ conversation, text: userInput }))
@@ -76,7 +77,7 @@ export const getChatStreamingResponse = async () => {
         conversation,
         text: aiNotEnabledText,
         isError: true,
-        type: AIApiType.SUMMARIZATION,
+        type: AIApiType.CHAT,
       })
     )
     return

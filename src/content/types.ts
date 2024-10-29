@@ -84,6 +84,7 @@ export interface LanguageDetectorSession {
 
 export interface SummarizationSession {
   summarize: (text: string, options?: AISessionOptions) => Promise<string>
+  summarizeStreaming: (text: string, options?: AISessionOptions) => Promise<ReadableStream<string>>
   destroy: () => Promise<void>
 }
 

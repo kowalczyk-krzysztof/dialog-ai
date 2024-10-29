@@ -22,21 +22,30 @@ const createSummarizer = async (): Promise<SummarizationSession | undefined> => 
 }
 
 const getSummarizationResponse = async (summarizer: SummarizationSession) => {
-  const { setConversation, userInput, setSummarizationSession, setUserInput, setSummarizationResponseAbortController } =
-    useContentStore.getState()
-  const reponseId = window.crypto.randomUUID()
+  const {
+    userInput,
+    setConversation,
+    setSummarizationSession,
+    setUserInput,
+    setSummarizationResponseAbortController,
+    setIsResponseLoading,
+    setIsStreamingResponse,
+  } = useContentStore.getState()
 
   try {
-    const storedUserInput = userInput
     const abortController = new AbortController()
+    const storedUserInput = userInput
     setUserInput('')
-    const summary = await summarizer.summarize(storedUserInput, { signal: abortController.signal })
+    const stream = await summarizer.summarizeStreaming(storedUserInput, { signal: abortController.signal })
     setSummarizationResponseAbortController(abortController)
-
-    setConversation(conversation =>
-      createSystemMessage({ conversation, id: reponseId, text: summary, type: AIApiType.SUMMARIZATION })
-    )
-
+    const reponseId = window.crypto.randomUUID()
+    for await (const chunk of stream) {
+      setIsResponseLoading(false)
+      setIsStreamingResponse(true)
+      setConversation(conversation =>
+        createSystemMessage({ conversation, text: chunk.trim(), id: reponseId, type: AIApiType.SUMMARIZATION })
+      )
+    }
     setSummarizationSession(summarizer)
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {
@@ -44,16 +53,11 @@ const getSummarizationResponse = async (summarizer: SummarizationSession) => {
     }
     const unknownError = i18n.t('errors.ai.unknownError')
     setConversation(conversation =>
-      createSystemMessage({
-        conversation,
-        text: unknownError,
-        id: reponseId,
-        type: AIApiType.SUMMARIZATION,
-        isError: true,
-      })
+      createSystemMessage({ conversation, text: unknownError, type: AIApiType.SUMMARIZATION, isError: true })
     )
     setSummarizationSession(undefined)
   } finally {
+    setIsStreamingResponse(false)
     setSummarizationResponseAbortController(undefined)
   }
 }
