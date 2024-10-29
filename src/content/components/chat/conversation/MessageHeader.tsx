@@ -56,6 +56,8 @@ const getCopyTextKey = (status: CopyStatus) => {
   }
 }
 
+const ICON_CHANGE_DELAY = 1000
+
 export const MessageHeader = ({ text, isUser, type }: Props) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
@@ -73,19 +75,20 @@ export const MessageHeader = ({ text, isUser, type }: Props) => {
   const toLabel = t('to')
   const typeBadgeBackground = getTypeBackground(type)
 
+  const changeBackIconToDefault = () => {
+    setTimeout(() => {
+      setCopyIcon(CopyStatus.DEFAULT)
+    }, ICON_CHANGE_DELAY)
+  }
+
   const handleCopy = () => {
     try {
       navigator.clipboard.writeText(text)
       setCopyIcon(CopyStatus.SUCCESS)
-      setTimeout(() => {
-        setCopyIcon(CopyStatus.DEFAULT)
-      }, 1000)
+      changeBackIconToDefault()
     } catch (e) {
       setCopyIcon(CopyStatus.FAILURE)
-      setTimeout(() => {
-        setCopyIcon(CopyStatus.DEFAULT)
-      }, 1000)
-      return
+      changeBackIconToDefault()
     }
   }
 
