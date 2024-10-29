@@ -1,15 +1,10 @@
 import type { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
-import {
-  Root as ScrollAreaRoot,
-  ScrollAreaViewport,
-  ScrollAreaScrollbar,
-  ScrollAreaThumb,
-  ScrollAreaCorner,
-} from '@radix-ui/react-scroll-area'
+import { Root as ScrollAreaRoot, ScrollAreaViewport } from '@radix-ui/react-scroll-area'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../store'
 import { SendChatMessageButton } from './SendChatMessageButton'
 import { getChatStreamingResponse } from '../../../api/chat'
+import { Scrollbar } from '../../../../shared/components/Scrollbar'
 
 export const UserInputContainer = () => {
   const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(
@@ -55,10 +50,7 @@ export const UserInputContainer = () => {
             onFocus={handleFocus}
           />
         </ScrollAreaViewport>
-        <ScrollAreaScrollbar orientation='vertical'>
-          <ScrollAreaThumb />
-        </ScrollAreaScrollbar>
-        <ScrollAreaCorner />
+        <Scrollbar />
       </ScrollAreaRoot>
       <SendChatMessageButton />
     </div>
