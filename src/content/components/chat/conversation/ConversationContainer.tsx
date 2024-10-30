@@ -6,6 +6,7 @@ import { MessageContainer } from './MessageContainer'
 import { LoadingDots } from '../../../../shared/components/LoadingDots'
 import { MessageRole } from '../../../types'
 import { Scrollbar } from '../../../../shared/components/Scrollbar'
+import { SCROLLBAR_HIDE_TIMER_MS } from '../../../../../constants'
 
 export const ConversationContainer = () => {
   const { conversation, isResponseLoading } = useContentStore(
@@ -23,7 +24,7 @@ export const ConversationContainer = () => {
   }, [conversation])
 
   return (
-    <ScrollAreaRoot className='w-full' scrollHideDelay={0}>
+    <ScrollAreaRoot className='w-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
       <ScrollAreaViewport ref={scrollableAreaRef}>
         <div className='flex h-96 flex-col gap-2'>
           {conversation.messages.map(({ role, id, text, isError, type }) => (

@@ -18,8 +18,8 @@ declare global {
   interface Window {
     // https://github.com/WICG/translation-api (WIP)
     languageDetector: {
-      capabilities: () => Promise<BaseCapabilities>
       create: (options?: AISessionOptions) => Promise<LanguageDetectorSession>
+      capabilities: () => Promise<BaseCapabilities>
     }
     // https://github.com/WICG/translation-api (WIP)
     translation: {

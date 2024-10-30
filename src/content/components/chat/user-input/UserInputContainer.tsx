@@ -5,6 +5,7 @@ import { useContentStore } from '../../../store'
 import { SendChatMessageButton } from './SendChatMessageButton'
 import { getChatStreamingResponse } from '../../../api/chat'
 import { Scrollbar } from '../../../../shared/components/Scrollbar'
+import { SCROLLBAR_HIDE_TIMER_MS } from '../../../../../constants'
 
 export const UserInputContainer = () => {
   const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(
@@ -39,7 +40,7 @@ export const UserInputContainer = () => {
 
   return (
     <div className='flex w-full items-center rounded-lg bg-tertiary p-2 border-border border h-24'>
-      <ScrollAreaRoot className='size-full' scrollHideDelay={0}>
+      <ScrollAreaRoot className='size-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
         <ScrollAreaViewport asChild={true}>
           <textarea
             autoFocus={true}

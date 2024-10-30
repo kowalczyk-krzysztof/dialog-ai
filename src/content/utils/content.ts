@@ -1,5 +1,11 @@
 import type { RefObject, MouseEvent as ReactMouseEvent, Dispatch, SetStateAction } from 'react'
-import { CONTENT_ROOT_ID, DIALOG_HEIGHT, DIALOG_POSITION_PADDING, DIALOG_WIDTH } from '../../../constants'
+import {
+  CONTENT_ROOT_ID,
+  DIALOG_HEIGHT,
+  DIALOG_POSITION_PADDING,
+  DIALOG_WIDTH,
+  OPEN_DIALOG_COMBINATION_SECOND_KEY,
+} from '../../../constants'
 
 export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {
   const { top, left, width, height } = textBounds
@@ -92,7 +98,7 @@ export const isOpeningDialog = (
 ) => {
   // Only set the selection key state if the target is <body> and the dialog is not open
   if (e.target instanceof HTMLBodyElement && !isDialogOpen) {
-    if (e.shiftKey && e.key === 'D') {
+    if (e.shiftKey && e.key === OPEN_DIALOG_COMBINATION_SECOND_KEY) {
       e.preventDefault() // This prevents D from being typed in the text area
       const center = getCenterOfTheScreen()
       setPostion(center)

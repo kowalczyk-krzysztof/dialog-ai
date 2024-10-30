@@ -117,11 +117,11 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       } as Conversation,
       chatSession: undefined,
       summarizationSession: undefined,
+      aiApiAvailability: aiApiAvailability,
+      userInput: '',
       chatResponseAbortController: undefined,
       summarizationResponseAbortController: undefined,
       translationResponseAbortController: undefined,
-      aiApiAvailability: aiApiAvailability,
-      userInput: '',
       trasnlationSourceLanguage: SupportedLanguages.ENGLISH,
       trasnlationTargetLanguage: SupportedLanguages.SPANISH,
     })

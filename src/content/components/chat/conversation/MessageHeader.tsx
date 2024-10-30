@@ -9,6 +9,7 @@ import { AIApiType } from '../../../types'
 import Copy from '../../../../shared/icons/copy.svg?react'
 import CheckMark from '../../../../shared/icons/checkmark.svg?react'
 import XMark from '../../../../shared/icons/xmark.svg?react'
+import { ICON_CHANGE_DELAY_MS } from '../../../../../constants'
 
 interface Props {
   text: string
@@ -57,8 +58,6 @@ const getCopyTextKey = (status: CopyStatus) => {
   }
 }
 
-const ICON_CHANGE_DELAY = 1000
-
 export const MessageHeader = ({ text, isUser, isError, type }: Props) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
@@ -79,7 +78,7 @@ export const MessageHeader = ({ text, isUser, isError, type }: Props) => {
   const changeBackIconToDefault = () => {
     setTimeout(() => {
       setCopyIcon(CopyStatus.DEFAULT)
-    }, ICON_CHANGE_DELAY)
+    }, ICON_CHANGE_DELAY_MS)
   }
 
   const handleCopy = () => {
