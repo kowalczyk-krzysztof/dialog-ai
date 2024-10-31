@@ -27,8 +27,8 @@ export const ConversationContainer = () => {
     <ScrollAreaRoot className='w-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
       <ScrollAreaViewport ref={scrollableAreaRef}>
         <div className='flex h-96 flex-col gap-2'>
-          {conversation.messages.map(({ role, id, text, isError, type }) => (
-            <MessageContainer text={text} isUser={role === MessageRole.USER} key={id} isError={isError} type={type} />
+          {conversation.messages.map(message => (
+            <MessageContainer {...message} key={message.id} />
           ))}
           {isResponseLoading ? <LoadingDots /> : null}
         </div>

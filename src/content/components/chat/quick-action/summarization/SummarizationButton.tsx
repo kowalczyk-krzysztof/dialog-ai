@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../../store'
-import { QuickActionButton } from '../QuickActionButton'
+import { Button } from '../../../../../shared/components/Button'
 import { getSummary } from '../../../../api/summarization'
 
 export const SummarizationButton = () => {
@@ -25,8 +25,8 @@ export const SummarizationButton = () => {
   const isDisabled = areControlsDisabled() || !aiApiAvailability.summarization.available
 
   return (
-    <QuickActionButton disabled={isDisabled} onClick={handleGetResponse}>
+    <Button disabled={isDisabled} onClick={handleGetResponse}>
       {summarizeText}
-    </QuickActionButton>
+    </Button>
   )
 }

@@ -15,11 +15,13 @@ export const ContentContainer = () => {
   const root = getContentRoot()
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const { setAiApiAvailability, reset, setUserInput } = useContentStore(
+  const { setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
     useShallow(state => ({
+      settings: state.settings,
       setAiApiAvailability: state.setAiApiAvailability,
       reset: state.reset,
       setUserInput: state.setUserInput,
+      fetchSettings: state.fetchSettings,
     }))
   )
 
@@ -63,6 +65,25 @@ export const ContentContainer = () => {
   }, [])
 
   useEffect(() => {
+    const fetchInitialSettings = async () => {
+      await fetchSettings()
+    }
+
+    const getSettings = async (changes: { [key: string]: chrome.storage.StorageChange }) => {
+      if (Object.keys(changes).length) {
+        await fetchSettings()
+      }
+    }
+
+    fetchInitialSettings()
+
+    chrome.storage.onChanged.addListener(getSettings)
+    return () => {
+      chrome.storage.onChanged.removeListener(getSettings)
+    }
+  }, [])
+
+  useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
       isOpeningDialog(e, isDialogOpen, setIsDialogOpen, setIsSelectionKeyHeldDown, setPosition)
     }
@@ -76,7 +97,7 @@ export const ContentContainer = () => {
   }, [isDialogOpen])
 
   useEffect(() => {
-    if (selection && selection.text.length > 0) {
+    if (selection && selection.text.length) {
       setPosition(getDialogPositionRelativeToSelection(selection.bounds))
       setUserInput(selection.text)
       setIsDialogOpen(true)
@@ -91,7 +112,7 @@ export const ContentContainer = () => {
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          className='fixed flex flex-col gap-2 items-center rounded-lg rounded-t-none bg-background px-4 text-text border border-border'
+          className='fixed rounded-lg rounded-t-none bg-background text-text border border-border'
           style={{
             top: position.top,
             left: position.left,
@@ -110,7 +131,8 @@ export const ContentContainer = () => {
             clearState={clearState}
             setIsSettingsViewOpen={setIsSettingsViewOpen}
           />
-          {isSettingsViewOpen ? <SettingsContainer /> : <ChatContainer />}
+          <SettingsContainer isSettingsViewOpen={isSettingsViewOpen} />
+          <ChatContainer isSettingsViewOpen={isSettingsViewOpen} />
         </DialogContent>
       </DialogPortal>
     </DialogRoot>

@@ -7,12 +7,18 @@
   "from": "From",
   "to": "To",
   "loading": "Loading response",
+  "settings": {
+    "title": "Settings",
+    "sourceLanguage": "Source language (from)",
+    "targetLanguage": "Target language (to)"
+  },
   "buttons": {
     "copy": {
       "default": "Copy content to clipboard",
       "success": "Copied content to clipboard",
       "failure": "Could not copy content to clipboard"
     },
+    "saveChanges": "Save changes",
     "goBack": "Go back",
     "openSettings": "Open settings",
     "summarize": "Summarize",

@@ -6,6 +6,7 @@ import {
   MessageRole,
   SupportedLanguages,
 } from '../../content/types'
+import { nonEnglishLanguages } from '../api/translation'
 
 export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,
@@ -25,9 +26,19 @@ interface SystemMessageParams extends UserMessageParams {
   type?: AIApiType
   isError?: boolean
   id?: string
+  sourceLanguage?: SupportedLanguages
+  targetLanguage?: SupportedLanguages
 }
 
-export const createSystemMessage = ({ conversation, text, isError = false, id, type }: SystemMessageParams) => {
+export const createSystemMessage = ({
+  conversation,
+  text,
+  isError = false,
+  id,
+  type,
+  sourceLanguage,
+  targetLanguage,
+}: SystemMessageParams) => {
   if (id) {
     if (!conversation.messages.find(message => message.id === id)) {
       return {
@@ -39,6 +50,8 @@ export const createSystemMessage = ({ conversation, text, isError = false, id, t
             text,
             type,
             role: MessageRole.SYSTEM,
+            sourceLanguage,
+            targetLanguage,
             isError,
           },
         ],
@@ -55,7 +68,15 @@ export const createSystemMessage = ({ conversation, text, isError = false, id, t
     ...conversation,
     messages: [
       ...conversation.messages,
-      { id: window.crypto.randomUUID(), text, isError, role: MessageRole.SYSTEM, type },
+      {
+        id: window.crypto.randomUUID(),
+        text,
+        isError,
+        role: MessageRole.SYSTEM,
+        type,
+        sourceLanguage,
+        targetLanguage,
+      },
     ],
   }
 }
@@ -107,3 +128,12 @@ export const checkAiApiAvailability = async (): Promise<AIApiAvailability> => {
     },
   }
 }
+
+export const mapLanguageToSelectOption = (language: SupportedLanguages) => ({
+  key: language,
+  value: language,
+  label: languageTagToHumanReadable(language),
+})
+
+export const getLanguageItems = (filterOutEnglish?: boolean) =>
+  Object.values(filterOutEnglish ? nonEnglishLanguages : SupportedLanguages).map(mapLanguageToSelectOption)

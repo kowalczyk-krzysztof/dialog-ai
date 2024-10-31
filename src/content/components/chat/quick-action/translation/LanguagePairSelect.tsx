@@ -1,75 +1,58 @@
+import { type Dispatch, type SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../../store'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
-import { languageTagToHumanReadable } from '../../../../utils/ai'
-import { nonEnglishLanguages } from '../../../../api/translation'
-import { SupportedLanguages } from '../../../../types'
+import { getLanguageItems, mapLanguageToSelectOption } from '../../../../utils/ai'
+import { SupportedLanguages, TranslationLanguagePair } from '../../../../types'
 import Swap from '../../../../../shared/icons/swap.svg?react'
 
-export const LanguagePairSelect = () => {
+interface Props {
+  languagePair: TranslationLanguagePair
+  setLanguagePair: Dispatch<SetStateAction<TranslationLanguagePair>>
+}
+
+// TODO: Loading state when fetching settings
+export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => {
   const { t } = useTranslation()
-  const { sourceLanguage, targetLanguage, setTranslationSourceLanguage, setTranslationTargetLanguage } =
-    useContentStore(
-      useShallow(state => ({
-        sourceLanguage: state.trasnlationSourceLanguage,
-        targetLanguage: state.trasnlationTargetLanguage,
-        setTranslationSourceLanguage: state.setTranslationSourceLanguage,
-        setTranslationTargetLanguage: state.setTranslationTargetLanguage,
-      }))
-    )
+
   const swapLanguagesText = t('buttons.swapLanguages')
   const fromLabel = t('from')
   const toLabel = t('to')
 
   const handleSelectSourceLanguage = (value: string) => {
-    setTranslationSourceLanguage(value as SupportedLanguages)
+    setLanguagePair(pair => ({
+      ...pair,
+      sourceLanguage: value as SupportedLanguages,
+    }))
   }
 
   const handleSelectTargetLanguage = (value: string) => {
-    setTranslationTargetLanguage(value as SupportedLanguages)
+    setLanguagePair(pair => ({
+      ...pair,
+      targetLanguage: value as SupportedLanguages,
+    }))
   }
 
   const handleSwapLanguages = () => {
-    const storedTargetLanguage = targetLanguage
-    const storedSourceLanguage = sourceLanguage
-    setTranslationSourceLanguage(storedTargetLanguage)
-    setTranslationTargetLanguage(storedSourceLanguage)
+    setLanguagePair(pair => ({
+      sourceLanguage: pair.targetLanguage,
+      targetLanguage: pair.sourceLanguage,
+    }))
   }
 
   const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
-  const isSourceDisabled = isDisabled(sourceLanguage)
-  const isTargetDisabled = isDisabled(targetLanguage)
+  const isSourceDisabled = isDisabled(languagePair.sourceLanguage)
+  const isTargetDisabled = isDisabled(languagePair.targetLanguage)
 
-  const sourceLanguageItems = Object.values(isTargetDisabled ? nonEnglishLanguages : SupportedLanguages).map(
-    language => ({
-      key: language,
-      value: language,
-      label: languageTagToHumanReadable(language),
-    })
-  )
+  const sourceLanguageItems = getLanguageItems(isTargetDisabled)
 
-  const targetLanguageItems = Object.values(isSourceDisabled ? nonEnglishLanguages : SupportedLanguages).map(
-    language => ({
-      key: language,
-      value: language,
-      label: languageTagToHumanReadable(language),
-    })
-  )
+  const targetLanguageItems = getLanguageItems(isSourceDisabled)
 
-  const sourceLanguageItem = {
-    key: sourceLanguage,
-    value: sourceLanguage,
-    label: languageTagToHumanReadable(sourceLanguage),
-  }
-
-  const targetLanguageItem = {
-    key: targetLanguage,
-    value: targetLanguage,
-    label: languageTagToHumanReadable(targetLanguage),
-  }
+  const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
+  const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
 
   const sourceId = 'source-language'
   const targetId = 'target-language'

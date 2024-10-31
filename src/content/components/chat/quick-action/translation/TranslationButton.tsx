@@ -1,28 +1,32 @@
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../../store'
-import { QuickActionButton } from '../QuickActionButton'
+import { Button } from '../../../../../shared/components/Button'
 import { LanguagePairSelect } from './LanguagePairSelect'
 import { getTranslation } from '../../../../api/translation'
+import { useState } from 'react'
+import type { TranslationLanguagePair } from '../../../../types'
 
 export const TranslationButton = () => {
-  const { aiApiAvailability, sourceLanguage, targetLanguage, setIsResponseLoading, areControlsDisabled } =
-    useContentStore(
-      useShallow(state => ({
-        userInput: state.userInput,
-        aiApiAvailability: state.aiApiAvailability,
-        sourceLanguage: state.trasnlationSourceLanguage,
-        targetLanguage: state.trasnlationTargetLanguage,
-        setIsResponseLoading: state.setIsResponseLoading,
-        areControlsDisabled: state.areControlsDisabled,
-      }))
-    )
+  const { settings, aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
+    useShallow(state => ({
+      userInput: state.userInput,
+      settings: state.settings,
+      aiApiAvailability: state.aiApiAvailability,
+      setIsResponseLoading: state.setIsResponseLoading,
+      areControlsDisabled: state.areControlsDisabled,
+    }))
+  )
+  const [languagePair, setLanguagePair] = useState<TranslationLanguagePair>({
+    sourceLanguage: settings.sourceLanguage,
+    targetLanguage: settings.targetLanguage,
+  })
   const { t } = useTranslation()
   const translateText = t('buttons.translate')
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
-    await getTranslation({ sourceLanguage, targetLanguage })
+    await getTranslation(languagePair)
     setIsResponseLoading(false)
   }
 
@@ -30,10 +34,10 @@ export const TranslationButton = () => {
 
   return (
     <div className='flex bg-tertiary px-2 rounded-lg border border-border py-1.5'>
-      <QuickActionButton disabled={isDisabled} onClick={handleGetResponse} className='mr-2'>
+      <Button disabled={isDisabled} onClick={handleGetResponse} className='mr-2'>
         {translateText}
-      </QuickActionButton>
-      <LanguagePairSelect />
+      </Button>
+      <LanguagePairSelect languagePair={languagePair} setLanguagePair={setLanguagePair} />
     </div>
   )
 }

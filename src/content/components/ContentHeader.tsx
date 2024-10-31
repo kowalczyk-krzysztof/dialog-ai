@@ -24,7 +24,7 @@ export const ContentHeader = ({ dialogRef, isSettingsViewOpen, clearState, setIs
 
   return (
     <DialogTitle
-      className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing border-b border-border'
+      className='flex cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing border-b border-border mb-2'
       onMouseDown={handleGrab}
     >
       <OpenSettingsButton isSettingsViewOpen={isSettingsViewOpen} setIsSettingsViewOpen={setIsSettingsViewOpen} />

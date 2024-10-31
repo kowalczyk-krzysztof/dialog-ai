@@ -20,6 +20,18 @@ const defaultAIApiAvailability: AIApiAvailability = {
   },
 }
 
+const defaultSettings = {
+  sourceLanguage: SupportedLanguages.ENGLISH,
+  targetLanguage: SupportedLanguages.SPANISH,
+  loading: false,
+}
+
+interface Settings {
+  sourceLanguage: SupportedLanguages
+  targetLanguage: SupportedLanguages
+  loading: boolean
+}
+
 interface ContentStore {
   isResponseLoading: boolean
   isStreamingResponse: boolean
@@ -31,8 +43,7 @@ interface ContentStore {
   chatResponseAbortController: AbortController | undefined
   summarizationResponseAbortController: AbortController | undefined
   translationResponseAbortController: AbortController | undefined
-  trasnlationSourceLanguage: SupportedLanguages
-  trasnlationTargetLanguage: SupportedLanguages
+  settings: Settings
   areControlsDisabled: () => boolean
   setIsResponseLoading: (loading: boolean) => void
   setIsStreamingResponse: (streaming: boolean) => void
@@ -44,9 +55,9 @@ interface ContentStore {
   setChatResponseAbortController: (controller: AbortController | undefined) => void
   setSummarizationResponseAbortController: (controller: AbortController | undefined) => void
   setTranslationResponseAbortController: (controller: AbortController | undefined) => void
-  setTranslationSourceLanguage: (language: SupportedLanguages) => void
-  setTranslationTargetLanguage: (language: SupportedLanguages) => void
   reset: () => void
+  fetchSettings: () => Promise<void>
+  setSettings: (updateFn: (settings: Settings) => Settings) => void
 }
 
 export const useContentStore = create<ContentStore>((set, get) => ({
@@ -60,8 +71,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   chatResponseAbortController: undefined,
   summarizationResponseAbortController: undefined,
   translationResponseAbortController: undefined,
-  trasnlationSourceLanguage: SupportedLanguages.ENGLISH,
-  trasnlationTargetLanguage: SupportedLanguages.SPANISH,
+  settings: defaultSettings,
   areControlsDisabled: () => {
     const { isResponseLoading, isStreamingResponse, userInput } = get()
     return isResponseLoading || isStreamingResponse || userInput.trim().length === 0
@@ -76,8 +86,6 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setChatResponseAbortController: controller => set({ chatResponseAbortController: controller }),
   setSummarizationResponseAbortController: controller => set({ summarizationResponseAbortController: controller }),
   setTranslationResponseAbortController: controller => set({ translationResponseAbortController: controller }),
-  setTranslationSourceLanguage: language => set({ trasnlationSourceLanguage: language }),
-  setTranslationTargetLanguage: language => set({ trasnlationTargetLanguage: language }),
   reset: async () => {
     const {
       chatSession,
@@ -122,8 +130,24 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       chatResponseAbortController: undefined,
       summarizationResponseAbortController: undefined,
       translationResponseAbortController: undefined,
-      trasnlationSourceLanguage: SupportedLanguages.ENGLISH,
-      trasnlationTargetLanguage: SupportedLanguages.SPANISH,
     })
   },
+  fetchSettings: async () => {
+    const { setSettings } = get()
+    try {
+      setSettings(settings => ({ ...settings, loading: true }))
+      const response = await chrome.storage.sync.get(['sourceLanguage', 'targetLanguage'])
+      if (response) {
+        setSettings(() => ({
+          sourceLanguage: response.sourceLanguage || SupportedLanguages.ENGLISH,
+          targetLanguage: response.targetLanguage || SupportedLanguages.SPANISH,
+          loading: true,
+        }))
+      }
+    } catch (error) {
+    } finally {
+      setSettings(settings => ({ ...settings, loading: false }))
+    }
+  },
+  setSettings: updateFn => set(state => ({ settings: updateFn(state.settings) })),
 }))

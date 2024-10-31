@@ -104,6 +104,8 @@ export interface Message {
   role: MessageRole
   isError?: boolean
   type?: AIApiType
+  targetLanguage?: SupportedLanguages
+  sourceLanguage?: SupportedLanguages
 }
 
 export interface Conversation {

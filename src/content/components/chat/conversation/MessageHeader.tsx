@@ -1,22 +1,15 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useShallow } from 'zustand/react/shallow'
 import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { useContentStore } from '../../../store'
 import { Badge } from '../../../../shared/components/Badge'
 import { languageTagToHumanReadable } from '../../../utils/ai'
-import { AIApiType } from '../../../types'
+import { ICON_CHANGE_DELAY_MS } from '../../../../../constants'
+import { AIApiType, Message, MessageRole } from '../../../types'
 import Copy from '../../../../shared/icons/copy.svg?react'
 import CheckMark from '../../../../shared/icons/checkmark.svg?react'
 import XMark from '../../../../shared/icons/xmark.svg?react'
-import { ICON_CHANGE_DELAY_MS } from '../../../../../constants'
 
-interface Props {
-  text: string
-  isUser: boolean
-  isError?: boolean
-  type?: AIApiType
-}
+interface Props extends Omit<Message, 'id'> {}
 
 enum CopyStatus {
   SUCCESS = 'success',
@@ -58,16 +51,11 @@ const getCopyTextKey = (status: CopyStatus) => {
   }
 }
 
-export const MessageHeader = ({ text, isUser, isError, type }: Props) => {
+export const MessageHeader = ({ text, role, isError, type, targetLanguage, sourceLanguage }: Props) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
-  const { sourceLanguage, targetLanguage } = useContentStore(
-    useShallow(state => ({
-      sourceLanguage: state.trasnlationSourceLanguage,
-      targetLanguage: state.trasnlationTargetLanguage,
-    }))
-  )
 
+  const isUser = role === MessageRole.USER
   const copyText = t(getCopyTextKey(copyIcon))
   const userRoleText = t('roles.user')
   const aiRoleText = t('roles.ai')
@@ -98,12 +86,12 @@ export const MessageHeader = ({ text, isUser, isError, type }: Props) => {
     <div className='flex items-center justify-end gap-2 bg-tertiary py-0.5 pr-2'>
       {isError ? <Badge className='bg-badge-error'>{t('error')}</Badge> : null}
       {type ? <Badge className={typeBadgeBackground}>{type}</Badge> : null}
-      {type === AIApiType.TRANSLATION ? (
+      {type === AIApiType.TRANSLATION && sourceLanguage ? (
         <Badge className='bg-badge-translation'>
           {fromLabel}: {languageTagToHumanReadable(sourceLanguage)}
         </Badge>
       ) : null}
-      {type === AIApiType.TRANSLATION ? (
+      {type === AIApiType.TRANSLATION && targetLanguage ? (
         <Badge className='bg-badge-translation'>
           {toLabel}: {languageTagToHumanReadable(targetLanguage)}
         </Badge>

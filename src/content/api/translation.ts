@@ -98,7 +98,14 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
     const translation = await translator.translate(storedUserInput, { signal: controller.signal })
     setTranslationResponseAbortController(controller)
     setConversation(conversation =>
-      createSystemMessage({ conversation, text: translation, id: reponseId, type: AIApiType.TRANSLATION })
+      createSystemMessage({
+        conversation,
+        text: translation,
+        id: reponseId,
+        type: AIApiType.TRANSLATION,
+        targetLanguage: languagePair.targetLanguage,
+        sourceLanguage: languagePair.sourceLanguage,
+      })
     )
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {

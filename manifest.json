@@ -18,7 +18,8 @@
     "default_title": "Open Dialog AI"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "web_accessible_resources": [
     {

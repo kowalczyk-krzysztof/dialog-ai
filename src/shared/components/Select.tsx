@@ -20,14 +20,14 @@ interface SelectItem {
 }
 
 interface Props {
-  disabled: boolean
   items: SelectItem[]
   value: SelectItem
   id: string
+  disabled?: boolean
   onChange: (value: string) => void
 }
 
-export const Select = ({ disabled, items, value, id, onChange }: Props) => {
+export const Select = ({ items, value, id, disabled, onChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClickTrigger = () => {
