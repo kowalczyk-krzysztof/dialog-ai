@@ -1,18 +1,15 @@
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { DialogContent, DialogPortal, Root as DialogRoot, DialogTitle, DialogClose } from '@radix-ui/react-dialog'
+import { useEffect, useRef, useState } from 'react'
+import { DialogContent, DialogPortal, Root as DialogRoot } from '@radix-ui/react-dialog'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from './store'
-import { ConversationContainer } from './components/chat/conversation/ConversationContainer'
-import { QuickActionContainer } from './components/quick-action/QuickActionContainer'
-import { UserInputContainer } from './components/chat/user-input/UserInputContainer'
 import { useTextSelection } from '../shared/hooks/useTextSelection'
 import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
-import { dragHTMLElement, getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
+import { getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
+import { ChatContainer } from './components/chat/ChatContainer'
 import { checkAiApiAvailability } from './utils/ai'
 import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
-import Close from '../shared/icons/xmark.svg?react'
+import { ContentHeader } from './components/ContentHeader'
+import { SettingsContainer } from './components/settings/SettingsContainer'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
@@ -26,12 +23,10 @@ export const ContentContainer = () => {
     }))
   )
 
-  const { t } = useTranslation()
-  const closeText = t('buttons.close')
-
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [position, setPosition] = useState({ top: '0px', left: '0px' })
   const [isSelectionKeyHeldDown, setIsSelectionKeyHeldDown] = useState(false)
+  const [isSettingsViewOpen, setIsSettingsViewOpen] = useState(false)
 
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
@@ -42,10 +37,6 @@ export const ContentContainer = () => {
 
   const handleInitialFocus = (e: Event) => {
     e.preventDefault()
-  }
-
-  const handleGrab = (e: ReactMouseEvent) => {
-    dragHTMLElement(e, dialogRef)
   }
 
   const handleClickOutside = (e: PointerDownOutsideEvent) => {
@@ -113,20 +104,13 @@ export const ContentContainer = () => {
           onPointerDownOutside={handleClickOutside}
           onInteractOutside={handleFocusOutside}
         >
-          <DialogTitle
-            className='flex w-[calc(100%+2rem)] cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing border-b border-border'
-            onMouseDown={handleGrab}
-          >
-            <p className='grow'>Dialog AI</p>
-            <DialogClose className='p-2 hover:bg-tertiary-hover group' onClick={clearState}>
-              <AccessibleIcon label={closeText}>
-                <Close className=' size-4 fill-primary group-hover:fill-primary-hover' />
-              </AccessibleIcon>
-            </DialogClose>
-          </DialogTitle>
-          <ConversationContainer />
-          <QuickActionContainer />
-          <UserInputContainer />
+          <ContentHeader
+            dialogRef={dialogRef}
+            isSettingsViewOpen={isSettingsViewOpen}
+            clearState={clearState}
+            setIsSettingsViewOpen={setIsSettingsViewOpen}
+          />
+          {isSettingsViewOpen ? <SettingsContainer /> : <ChatContainer />}
         </DialogContent>
       </DialogPortal>
     </DialogRoot>

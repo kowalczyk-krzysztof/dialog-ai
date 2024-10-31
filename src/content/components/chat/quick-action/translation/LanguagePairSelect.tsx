@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
-import { useContentStore } from '../../../store'
+import { useContentStore } from '../../../../store'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
-import { Select } from '../../../../shared/components/Select'
+import { Select } from '../../../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
-import { languageTagToHumanReadable } from '../../../utils/ai'
-import { nonEnglishLanguages } from '../../../api/translation'
-import { SupportedLanguages } from '../../../types'
-import Swap from '../../../../shared/icons/swap.svg?react'
+import { languageTagToHumanReadable } from '../../../../utils/ai'
+import { nonEnglishLanguages } from '../../../../api/translation'
+import { SupportedLanguages } from '../../../../types'
+import Swap from '../../../../../shared/icons/swap.svg?react'
 
 export const LanguagePairSelect = () => {
   const { t } = useTranslation()

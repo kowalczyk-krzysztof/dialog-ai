@@ -3,6 +3,7 @@
     "ai": "ai",
     "user": "User"
   },
+  "dialogTitle": "Dialog AI",
   "from": "From",
   "to": "To",
   "loading": "Loading response",
@@ -12,6 +13,8 @@
       "success": "Copied content to clipboard",
       "failure": "Could not copy content to clipboard"
     },
+    "goBack": "Go back",
+    "openSettings": "Open settings",
     "summarize": "Summarize",
     "translate": "Translate",
     "close": "Close dialog",
