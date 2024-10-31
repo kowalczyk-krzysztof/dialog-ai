@@ -30,16 +30,16 @@ export default {
           DEFAULT: '#898A8D',
         },
         badge: {
-          user: '#3A8DFF',
+          user: '#0051C2',
           ai: '#5A20CB',
-          translation: '#28A745',
-          chat: '#6F42C1',
-          summarization: '#FD7E14',
-          error: '#F14C4C',
+          translation: '#145222',
+          chat: '#683CB9',
+          summarization: '#8D4002',
+          error: '#8E0B0B',
         },
         error: {
-          DEFAULT: '#f14c4c',
-          hover: '#F47272',
+          DEFAULT: '#B30F0F',
+          hover: '#D91212',
         },
         success: {
           DEFAULT: '#28A745',

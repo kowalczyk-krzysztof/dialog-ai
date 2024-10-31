@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   SelectContent,
   SelectItem as RadixSelectItem,
@@ -8,8 +9,8 @@ import {
   SelectValue,
   SelectViewport,
 } from '@radix-ui/react-select'
+import { getContentRoot } from '../../content/utils/content'
 import { DIALOG_TOOLTIP_Z_INDEX } from '../../../constants'
-import { useState } from 'react'
 import ChevronDown from '../icons/chevron-down.svg?react'
 import ChevronUp from '../icons/chevron-up.svg?react'
 
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export const Select = ({ items, value, id, disabled, onChange }: Props) => {
+  const root = getContentRoot()
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClickTrigger = () => {
@@ -49,7 +51,7 @@ export const Select = ({ items, value, id, disabled, onChange }: Props) => {
           <ChevronDown className='size-3 fill-primary group-hover:fill-primary-hover group-disabled:fill-disabled-text' />
         )}
       </SelectTrigger>
-      <SelectPortal>
+      <SelectPortal container={root}>
         <SelectContent
           style={{
             zIndex: DIALOG_TOOLTIP_Z_INDEX,
