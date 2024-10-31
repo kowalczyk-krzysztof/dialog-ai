@@ -1,13 +1,14 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../../store'
 import { Button } from '../../../../../shared/components/Button'
 import { LanguagePairSelect } from './LanguagePairSelect'
 import { getTranslation } from '../../../../api/translation'
-import { useState } from 'react'
 import type { TranslationLanguagePair } from '../../../../types'
 
 export const TranslationButton = () => {
+  const { t } = useTranslation()
   const { settings, aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
     useShallow(state => ({
       userInput: state.userInput,
@@ -21,7 +22,11 @@ export const TranslationButton = () => {
     sourceLanguage: settings.sourceLanguage,
     targetLanguage: settings.targetLanguage,
   })
-  const { t } = useTranslation()
+
+  useEffect(() => {
+    setLanguagePair({ sourceLanguage: settings.sourceLanguage, targetLanguage: settings.targetLanguage })
+  }, [settings])
+
   const translateText = t('buttons.translate')
 
   const handleGetResponse = async () => {

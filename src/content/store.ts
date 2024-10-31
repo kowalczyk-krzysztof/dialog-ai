@@ -4,6 +4,7 @@ import {
   type ChatSession,
   type Conversation,
   type SummarizationSession,
+  type ExtensionSettings,
   SupportedLanguages,
   AIApiType,
 } from './types'
@@ -26,12 +27,6 @@ const defaultSettings = {
   loading: false,
 }
 
-interface Settings {
-  sourceLanguage: SupportedLanguages
-  targetLanguage: SupportedLanguages
-  loading: boolean
-}
-
 interface ContentStore {
   isResponseLoading: boolean
   isStreamingResponse: boolean
@@ -43,7 +38,7 @@ interface ContentStore {
   chatResponseAbortController: AbortController | undefined
   summarizationResponseAbortController: AbortController | undefined
   translationResponseAbortController: AbortController | undefined
-  settings: Settings
+  settings: ExtensionSettings
   areControlsDisabled: () => boolean
   setIsResponseLoading: (loading: boolean) => void
   setIsStreamingResponse: (streaming: boolean) => void
@@ -57,7 +52,7 @@ interface ContentStore {
   setTranslationResponseAbortController: (controller: AbortController | undefined) => void
   reset: () => void
   fetchSettings: () => Promise<void>
-  setSettings: (updateFn: (settings: Settings) => Settings) => void
+  setSettings: (updateFn: (settings: ExtensionSettings) => ExtensionSettings) => void
 }
 
 export const useContentStore = create<ContentStore>((set, get) => ({
@@ -137,11 +132,12 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     try {
       setSettings(settings => ({ ...settings, loading: true }))
       const response = await chrome.storage.sync.get(['sourceLanguage', 'targetLanguage'])
+
       if (response) {
         setSettings(() => ({
           sourceLanguage: response.sourceLanguage || SupportedLanguages.ENGLISH,
           targetLanguage: response.targetLanguage || SupportedLanguages.SPANISH,
-          loading: true,
+          loading: false,
         }))
       }
     } catch (error) {

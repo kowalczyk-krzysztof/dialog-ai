@@ -1,7 +1,5 @@
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useShallow } from 'zustand/react/shallow'
-import { useContentStore } from '../../../../store'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
@@ -14,7 +12,6 @@ interface Props {
   setLanguagePair: Dispatch<SetStateAction<TranslationLanguagePair>>
 }
 
-// TODO: Loading state when fetching settings
 export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => {
   const { t } = useTranslation()
 

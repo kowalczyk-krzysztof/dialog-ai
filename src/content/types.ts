@@ -1,6 +1,12 @@
 import { DialogContent } from '@radix-ui/react-dialog'
 import { ComponentProps } from 'react'
 
+export interface ExtensionSettings {
+  sourceLanguage: SupportedLanguages
+  targetLanguage: SupportedLanguages
+  loading: boolean
+}
+
 export enum AIApiType {
   CHAT = 'chat',
   TRANSLATION = 'translation',

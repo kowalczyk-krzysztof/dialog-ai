@@ -1,29 +1,31 @@
-import { useShallow } from 'zustand/react/shallow'
-import { Select } from '../../../shared/components/Select'
-import { useContentStore } from '../../store'
-import { SupportedLanguages } from '../../types'
-import { getLanguageItems, mapLanguageToSelectOption } from '../../utils/ai'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useContentStore } from '../../store'
+import { Select } from '../../../shared/components/Select'
 import { Button } from '../../../shared/components/Button'
+import { getLanguageItems, mapLanguageToSelectOption } from '../../utils/ai'
+import { SupportedLanguages } from '../../types'
 
 interface Props {
   isSettingsViewOpen: boolean
 }
 
-// TODO: Loading state when fetching settings
 export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   const { t } = useTranslation()
-  const {
-    settings: { sourceLanguage, targetLanguage, loading },
-  } = useContentStore(
+  const { settings } = useContentStore(
     useShallow(state => ({
       settings: state.settings,
     }))
   )
 
-  const [currentSourceLanguage, setCurrentSourceLanguage] = useState<SupportedLanguages>(sourceLanguage)
-  const [currentTargetLanguage, setCurrentTargetLanguage] = useState<SupportedLanguages>(targetLanguage)
+  const [currentSourceLanguage, setCurrentSourceLanguage] = useState<SupportedLanguages>(settings.sourceLanguage)
+  const [currentTargetLanguage, setCurrentTargetLanguage] = useState<SupportedLanguages>(settings.targetLanguage)
+
+  useEffect(() => {
+    setCurrentSourceLanguage(settings.sourceLanguage)
+    setCurrentTargetLanguage(settings.targetLanguage)
+  }, [settings])
 
   const isEnglish = (value: string) => value === SupportedLanguages.ENGLISH
 

@@ -1,6 +1,6 @@
 import Markdown from 'markdown-to-jsx'
-import { MessageRole, type Message } from '../../../types'
 import { MessageHeader } from './MessageHeader'
+import { MessageRole, type Message } from '../../../types'
 
 interface Props extends Omit<Message, 'id'> {}
 

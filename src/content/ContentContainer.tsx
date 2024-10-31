@@ -3,21 +3,22 @@ import { DialogContent, DialogPortal, Root as DialogRoot } from '@radix-ui/react
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from './store'
 import { useTextSelection } from '../shared/hooks/useTextSelection'
-import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
-import { getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
 import { ChatContainer } from './components/chat/ChatContainer'
-import { checkAiApiAvailability } from './utils/ai'
-import type { FocusOutsideEvent, PointerDownOutsideEvent } from './types'
 import { ContentHeader } from './components/ContentHeader'
 import { SettingsContainer } from './components/settings/SettingsContainer'
+import { getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
+import { checkAiApiAvailability } from './utils/ai'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
+import type { FocusOutsideEvent, PointerDownOutsideEvent, ExtensionSettings } from './types'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const { setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
+  const { settings, setSettings, setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
     useShallow(state => ({
       settings: state.settings,
+      setSettings: state.setSettings,
       setAiApiAvailability: state.setAiApiAvailability,
       reset: state.reset,
       setUserInput: state.setUserInput,
@@ -69,17 +70,31 @@ export const ContentContainer = () => {
       await fetchSettings()
     }
 
-    const getSettings = async (changes: { [key: string]: chrome.storage.StorageChange }) => {
-      if (Object.keys(changes).length) {
-        await fetchSettings()
-      }
+    const watchChanges = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+      setSettings((settings: ExtensionSettings) =>
+        Object.entries(settings).reduce((acc: ExtensionSettings, [key]) => {
+          const typedKey = key as keyof ExtensionSettings
+          if (typedKey === 'loading') {
+            acc[typedKey] = false
+            return acc
+          }
+
+          if (changes[typedKey]) {
+            acc[typedKey] = changes[typedKey].newValue
+            return acc
+          }
+
+          acc[typedKey] = settings[typedKey]
+          return acc
+        }, {} as ExtensionSettings)
+      )
     }
 
     fetchInitialSettings()
 
-    chrome.storage.onChanged.addListener(getSettings)
+    chrome.storage.onChanged.addListener(watchChanges)
     return () => {
-      chrome.storage.onChanged.removeListener(getSettings)
+      chrome.storage.onChanged.removeListener(watchChanges)
     }
   }, [])
 
