@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
-import { getLanguageItems, isEnglish, mapLanguageToSelectOption } from '../../../../utils/ai'
+import { getLanguageItems, mapLanguageToSelectOption } from '../../../../utils/ai'
 import { SupportedLanguages, TranslationLanguagePair } from '../../../../types'
 import Swap from '../../../../../shared/icons/swap.svg?react'
 
@@ -20,22 +20,14 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const toLabel = t('to')
 
   const handleSelectSourceLanguage = (value: string) => {
-    if (isEnglish(value)) {
-      setLanguagePair(pair => ({ sourceLanguage: value as SupportedLanguages, targetLanguage: pair.sourceLanguage }))
-    } else {
-      setLanguagePair(pair => ({
-        ...pair,
-        sourceLanguage: value as SupportedLanguages,
-      }))
-    }
+    setLanguagePair(pair => ({
+      ...pair,
+      sourceLanguage: value as SupportedLanguages,
+    }))
   }
 
   const handleSelectTargetLanguage = (value: string) => {
-    if (isEnglish(value)) {
-      setLanguagePair(pair => ({ targetLanguage: value as SupportedLanguages, sourceLanguage: pair.targetLanguage }))
-    } else {
-      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
-    }
+    setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
   }
 
   const handleSwapLanguages = () => {

@@ -34,7 +34,7 @@
   },
   "errors": {
     "ai": {
-      "invalidLanguagePair": "Invalid language pair.",
+      "invalidLanguagePair": "Invalid language pair. You can only translate from and to English.",
       "translationNotEnabled": "Translation funcionality is not enabled.",
       "translationNotDownloaded": "Translation for this language pair is not downloaded.",
       "couldNotCreateTranslator": "Could not create translator.",

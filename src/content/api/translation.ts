@@ -60,7 +60,7 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
   const isValidPair = isValidTranslationLanguagePair(languagePair)
 
   if (!isValidPair) {
-    const invalidLanguagePairText = i18n.t('errors.ai.translationNotEnabled')
+    const invalidLanguagePairText = i18n.t('errors.ai.invalidLanguagePair')
     setConversation(conversation =>
       createSystemMessage({
         conversation,

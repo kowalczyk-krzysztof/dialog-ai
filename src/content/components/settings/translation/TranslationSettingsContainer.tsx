@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Select } from '../../../../shared/components/Select'
-import { getLanguageItems, isEnglish, mapLanguageToSelectOption } from '../../../utils/ai'
+import { getLanguageItems, mapLanguageToSelectOption } from '../../../utils/ai'
 import type { ExtensionSettings, SupportedLanguages, TranslationLanguagePair } from '../../../types'
 
 interface Props {
@@ -30,19 +30,11 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
 
   const handleSelectSourceLanguage = (value: string) => {
-    if (isEnglish(value)) {
-      setLanguagePair(pair => ({ sourceLanguage: value as SupportedLanguages, targetLanguage: pair.sourceLanguage }))
-    } else {
-      setLanguagePair(pair => ({ ...pair, sourceLanguage: value as SupportedLanguages }))
-    }
+    setLanguagePair(pair => ({ ...pair, sourceLanguage: value as SupportedLanguages }))
   }
 
   const handleSelectTargetLanguage = (value: string) => {
-    if (isEnglish(value)) {
-      setLanguagePair(pair => ({ targetLanguage: value as SupportedLanguages, sourceLanguage: pair.targetLanguage }))
-    } else {
-      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
-    }
+    setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
   }
 
   return (
