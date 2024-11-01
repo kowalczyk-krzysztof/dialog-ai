@@ -7,9 +7,9 @@ interface Props {
 }
 
 export const ChatContainer = ({ isSettingsViewOpen }: Props) => (
-  <div className={isSettingsViewOpen ? 'hidden' : 'flex flex-col items-center gap-2 px-4'}>
+  <section className={isSettingsViewOpen ? 'hidden' : 'flex flex-col items-center gap-2 px-4'}>
     <ConversationContainer />
     <QuickActionContainer />
     <UserInputContainer />
-  </div>
+  </section>
 )
