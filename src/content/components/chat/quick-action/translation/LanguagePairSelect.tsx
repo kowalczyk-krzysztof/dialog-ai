@@ -20,17 +20,22 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const toLabel = t('to')
 
   const handleSelectSourceLanguage = (value: string) => {
-    setLanguagePair(pair => ({
-      ...pair,
-      sourceLanguage: value as SupportedLanguages,
-    }))
+    if (isEnglish(value)) {
+      setLanguagePair(pair => ({ sourceLanguage: value as SupportedLanguages, targetLanguage: pair.sourceLanguage }))
+    } else {
+      setLanguagePair(pair => ({
+        ...pair,
+        sourceLanguage: value as SupportedLanguages,
+      }))
+    }
   }
 
   const handleSelectTargetLanguage = (value: string) => {
-    setLanguagePair(pair => ({
-      ...pair,
-      targetLanguage: value as SupportedLanguages,
-    }))
+    if (isEnglish(value)) {
+      setLanguagePair(pair => ({ targetLanguage: value as SupportedLanguages, sourceLanguage: pair.targetLanguage }))
+    } else {
+      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
+    }
   }
 
   const handleSwapLanguages = () => {
@@ -40,12 +45,9 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
     }))
   }
 
-  const isSourceDisabled = isEnglish(languagePair.sourceLanguage)
-  const isTargetDisabled = isEnglish(languagePair.targetLanguage)
+  const sourceLanguageItems = getLanguageItems()
 
-  const sourceLanguageItems = getLanguageItems(isTargetDisabled)
-
-  const targetLanguageItems = getLanguageItems(isSourceDisabled)
+  const targetLanguageItems = getLanguageItems()
 
   const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
@@ -58,7 +60,6 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       <div className='relative flex items-end'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
-          disabled={isSourceDisabled}
           items={sourceLanguageItems}
           value={sourceLanguageItem}
           id={sourceId}
@@ -77,7 +78,6 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       <div className='relative flex items-end'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
-          disabled={isTargetDisabled}
           items={targetLanguageItems}
           value={targetLanguageItem}
           id={targetId}

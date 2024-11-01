@@ -28,8 +28,6 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
 
   const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
-  const isSourceDisabled = isEnglish(languagePair.sourceLanguage)
-  const isTargetDisabled = isEnglish(languagePair.targetLanguage)
 
   const handleSelectSourceLanguage = (value: string) => {
     if (isEnglish(value)) {
@@ -52,26 +50,24 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
       <h3 className='select-none text-lg'>{translationSectionTitleText}</h3>
       <ul className='flex flex-col gap-2'>
         <li className='flex items-center gap-2'>
-          <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
+          <label className='cursor-pointer text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
             {sourceLanguageText}
           </label>
           <Select
             id={sourceLanguageId}
             items={languageItems}
             value={sourceLanguageItem}
-            disabled={isSourceDisabled}
             onChange={handleSelectSourceLanguage}
           />
         </li>
         <li className='flex items-center gap-2'>
-          <label htmlFor={targetLanguageId} className='text-primary hover:text-primary-hover'>
+          <label className='cursor-pointer text-primary hover:text-primary-hover' htmlFor={targetLanguageId}>
             {targetLanguageText}
           </label>
           <Select
             id={targetLanguageId}
             items={languageItems}
             value={targetLanguageItem}
-            disabled={isTargetDisabled}
             onChange={handleSelectTargetLanguage}
           />
         </li>

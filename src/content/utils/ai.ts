@@ -6,7 +6,6 @@ import {
   MessageRole,
   SupportedLanguages,
 } from '../../content/types'
-import { nonEnglishLanguages } from '../api/translation'
 
 export const languageTagToHumanReadable = (
   languageTag: SupportedLanguages,
@@ -135,7 +134,6 @@ export const mapLanguageToSelectOption = (language: SupportedLanguages) => ({
   label: languageTagToHumanReadable(language),
 })
 
-export const getLanguageItems = (filterOutEnglish?: boolean) =>
-  Object.values(filterOutEnglish ? nonEnglishLanguages : SupportedLanguages).map(mapLanguageToSelectOption)
+export const getLanguageItems = () => Object.values(SupportedLanguages).map(mapLanguageToSelectOption)
 
 export const isEnglish = (value: string) => value === SupportedLanguages.ENGLISH
