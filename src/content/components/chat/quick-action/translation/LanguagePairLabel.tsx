@@ -5,7 +5,7 @@ interface Props {
 
 export const LanguagePairLabel = ({ id, text }: Props) => (
   <label
-    className='absolute top-0 left-1 text-xs flex uppercase select-none opacity-90 text-primary hover:text-primary-hover font-bold'
+    className='absolute left-1 top-0 flex select-none text-xs font-bold uppercase text-primary opacity-90 hover:text-primary-hover'
     htmlFor={id}
   >
     {text}

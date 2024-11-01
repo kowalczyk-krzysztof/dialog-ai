@@ -41,7 +41,7 @@ export const Select = ({ items, value, id, disabled, onChange }: Props) => {
       <SelectTrigger
         id={id}
         aria-label='source language'
-        className='text-sm disabled:text-disabled disabled:cursor-not-allowed px-1 hover:text-text-hover disabled:bg-transparent flex gap-1 items-center group'
+        className='group flex items-center gap-1 px-1 text-sm hover:text-text-hover disabled:cursor-not-allowed disabled:bg-transparent disabled:text-disabled'
         onClick={handleClickTrigger}
       >
         <SelectValue />{' '}
@@ -59,7 +59,7 @@ export const Select = ({ items, value, id, disabled, onChange }: Props) => {
           position='popper'
           sideOffset={8}
         >
-          <SelectViewport className='bg-secondary rounded-lg border-border border'>
+          <SelectViewport className='rounded-lg border border-border bg-secondary'>
             {items.map(({ value, label, key }) => (
               <RadixSelectItem
                 key={key}

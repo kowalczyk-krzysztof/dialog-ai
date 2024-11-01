@@ -19,7 +19,7 @@ export const OpenSettingsButton = ({ isSettingsViewOpen, setIsSettingsViewOpen }
   }
 
   return (
-    <button className='p-2 hover:bg-tertiary-hover group' onClick={handeClick}>
+    <button className='group p-2 hover:bg-tertiary-hover' onClick={handeClick}>
       <AccessibleIcon label={isSettingsViewOpen ? goBackText : openSettingsText}>
         {isSettingsViewOpen ? (
           <Back className='size-4 fill-primary group-hover:fill-primary-hover' />

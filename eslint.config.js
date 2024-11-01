@@ -35,8 +35,7 @@ export default tseslint.config(
     rules: {
       'no-multi-spaces': 'warn',
       'no-useless-escape': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@eslint-js/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
       'no-unused-expressions': 'error',
       'no-duplicate-imports': 'warn',
       'no-useless-return': 'error',
@@ -45,6 +44,7 @@ export default tseslint.config(
       'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
       'react/no-array-index-key': 'warn',
       'react/jsx-no-leaked-render': 'error',
+      'jsx-a11y/no-autofocus': 'off',
       ...hooksPlugin.configs.recommended.rules,
     },
     ignores: ['dist', 'eslint.config.json', 'node_modules'],

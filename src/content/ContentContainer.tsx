@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { DialogContent, DialogPortal, Root as DialogRoot } from '@radix-ui/react-dialog'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from './store'
@@ -15,7 +15,7 @@ export const ContentContainer = () => {
   const root = getContentRoot()
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const { settings, setSettings, setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
+  const { setSettings, setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
     useShallow(state => ({
       settings: state.settings,
       setSettings: state.setSettings,
@@ -33,11 +33,11 @@ export const ContentContainer = () => {
 
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
-  const clearState = () => {
+  const clearState = useCallback(() => {
     reset()
     setIsDialogOpen(false)
     setIsSettingsViewOpen(false)
-  }
+  }, [reset])
 
   const handleInitialFocus = (e: Event) => {
     e.preventDefault()
@@ -56,7 +56,7 @@ export const ContentContainer = () => {
     return () => {
       window.removeEventListener('beforeunload', clearState)
     }
-  }, [])
+  }, [clearState])
 
   useEffect(() => {
     const getAIApiAvailability = async () => {
@@ -64,7 +64,7 @@ export const ContentContainer = () => {
       setAiApiAvailability(response)
     }
     getAIApiAvailability()
-  }, [])
+  }, [setAiApiAvailability])
 
   useEffect(() => {
     const fetchInitialSettings = async () => {
@@ -98,7 +98,7 @@ export const ContentContainer = () => {
     return () => {
       chrome.storage.onChanged.removeListener(watchChanges)
     }
-  }, [])
+  }, [fetchSettings, setSettings])
 
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
@@ -119,7 +119,7 @@ export const ContentContainer = () => {
       setUserInput(selection.text)
       setIsDialogOpen(true)
     }
-  }, [selection])
+  }, [selection, setUserInput])
 
   return (
     <DialogRoot modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -129,7 +129,7 @@ export const ContentContainer = () => {
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          className='fixed rounded-lg rounded-t-none bg-background text-text border border-border'
+          className='fixed rounded-lg rounded-t-none border border-border bg-background text-text'
           style={{
             top: position.top,
             left: position.left,

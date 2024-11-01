@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
-import { Select } from '../../../shared/components/Select'
 import { Button } from '../../../shared/components/Button'
 import type { ChatSessionHyperParameters, TranslationLanguagePair } from '../../types'
 import { TranslationSettingsContainer } from './translation/TranslationSettingsContainer'
@@ -29,7 +28,6 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
     topK: settings.chatTopK,
   })
 
-  const settingsTitleText = t('settings.title')
   const saveChangesText = t('buttons.saveChanges')
 
   const handleSave = async () => {
@@ -42,7 +40,7 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   }
 
   return (
-    <section className={isSettingsViewOpen ? 'flex flex-col gap-2 items-start px-4 h-full' : 'hidden'}>
+    <section className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 px-4' : 'hidden'}>
       <ChatSettingsContainer
         chatSessionHyperparameters={chatSessionHyperparameters}
         settings={settings}

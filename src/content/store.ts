@@ -154,7 +154,8 @@ export const useContentStore = create<ContentStore>((set, get) => ({
           loading: false,
         }))
       }
-    } catch (error) {
+      // eslint-disable-next-line no-empty
+    } catch (e) {
     } finally {
       setSettings(settings => ({ ...settings, loading: false }))
     }

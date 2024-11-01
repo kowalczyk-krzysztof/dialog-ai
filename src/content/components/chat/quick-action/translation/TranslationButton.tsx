@@ -38,7 +38,7 @@ export const TranslationButton = () => {
   const isDisabled = areControlsDisabled() || !aiApiAvailability.translation.available
 
   return (
-    <div className='flex bg-tertiary px-2 rounded-lg border border-border py-1.5'>
+    <div className='flex rounded-lg border border-border bg-tertiary px-2 py-1.5'>
       <Button disabled={isDisabled} onClick={handleGetResponse} className='mr-2'>
         {translateText}
       </Button>

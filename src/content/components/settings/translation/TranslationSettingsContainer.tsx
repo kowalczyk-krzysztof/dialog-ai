@@ -15,7 +15,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
 
   useEffect(() => {
     setLanguagePair({ sourceLanguage: settings.sourceLanguage, targetLanguage: settings.targetLanguage })
-  }, [settings])
+  }, [settings, setLanguagePair])
 
   const sourceLanguageText = t('settings.sourceLanguage')
   const targetLanguageText = t('settings.targetLanguage')
@@ -50,7 +50,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
   return (
     <section className='flex flex-col'>
       <h3 className='select-none text-lg'>{translationSectionTitleText}</h3>
-      <ul className='flex gap-2 flex-col'>
+      <ul className='flex flex-col gap-2'>
         <li className='flex gap-2'>
           <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
             {sourceLanguageText}

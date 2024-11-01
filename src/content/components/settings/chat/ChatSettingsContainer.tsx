@@ -27,7 +27,7 @@ export const ChatSettingsContainer = ({
       temperature: settings.chatTemperature,
       topK: settings.chatTopK,
     })
-  }, [settings])
+  }, [settings, setChatSessionHyperparameters])
 
   const handleChangeTemperature = (event: ChangeEvent<HTMLInputElement>) => {
     setChatSessionHyperparameters({ ...chatSessionHyperparameters, temperature: Number(event.target.value) })
@@ -40,7 +40,7 @@ export const ChatSettingsContainer = ({
   return (
     <section className='flex flex-col'>
       <h3 className='select-none text-lg'>{chatSectionTitleText}</h3>
-      <ul className='flex gap-2 flex-col'>
+      <ul className='flex flex-col gap-2'>
         <li className='flex gap-2'>
           <label className='text-primary hover:text-primary-hover' htmlFor={chatTemperatureId}>
             {chatTemperatureText}

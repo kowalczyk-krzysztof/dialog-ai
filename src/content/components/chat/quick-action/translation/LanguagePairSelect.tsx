@@ -55,7 +55,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
 
   return (
     <>
-      <div className='flex items-end relative'>
+      <div className='relative flex items-end'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
         <Select
           disabled={isSourceDisabled}
@@ -66,7 +66,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
         />
       </div>
       <button
-        className='flex mx-2 group hover:bg-tertiary-hover h-fit p-1 self-end'
+        className='group mx-2 flex h-fit self-end p-1 hover:bg-tertiary-hover'
         onClick={handleSwapLanguages}
         title={swapLanguagesText}
       >
@@ -74,7 +74,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
           <Swap className='size-4 fill-primary group-hover:fill-primary-hover' />
         </AccessibleIcon>
       </button>
-      <div className='flex items-end relative'>
+      <div className='relative flex items-end'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
           disabled={isTargetDisabled}

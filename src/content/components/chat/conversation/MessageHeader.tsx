@@ -9,8 +9,6 @@ import Copy from '../../../../shared/icons/copy.svg?react'
 import CheckMark from '../../../../shared/icons/checkmark.svg?react'
 import XMark from '../../../../shared/icons/xmark.svg?react'
 
-interface Props extends Omit<Message, 'id'> {}
-
 enum CopyStatus {
   SUCCESS = 'success',
   FAILURE = 'failure',
@@ -51,7 +49,7 @@ const getCopyTextKey = (status: CopyStatus) => {
   }
 }
 
-export const MessageHeader = ({ text, role, isError, type, targetLanguage, sourceLanguage }: Props) => {
+export const MessageHeader = ({ text, role, isError, type, targetLanguage, sourceLanguage }: Omit<Message, 'id'>) => {
   const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
 

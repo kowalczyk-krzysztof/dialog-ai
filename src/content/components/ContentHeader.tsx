@@ -24,12 +24,12 @@ export const ContentHeader = ({ dialogRef, isSettingsViewOpen, clearState, setIs
 
   return (
     <DialogTitle
-      className='flex cursor-grab select-none items-center justify-center bg-tertiary p-1 text-center active:cursor-grabbing border-b border-border mb-2'
+      className='mb-2 flex cursor-grab select-none items-center justify-center border-b border-border bg-tertiary p-1 text-center active:cursor-grabbing'
       onMouseDown={handleGrab}
     >
       <OpenSettingsButton isSettingsViewOpen={isSettingsViewOpen} setIsSettingsViewOpen={setIsSettingsViewOpen} />
       <p className='grow'>{titleText}</p>
-      <DialogClose className='p-2 hover:bg-tertiary-hover group' onClick={clearState}>
+      <DialogClose className='group p-2 hover:bg-tertiary-hover' onClick={clearState}>
         <AccessibleIcon label={closeText}>
           <Close className='size-4 fill-primary group-hover:fill-primary-hover' />
         </AccessibleIcon>
