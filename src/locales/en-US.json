@@ -30,7 +30,8 @@
     "translate": "Translate",
     "close": "Close dialog",
     "send": "Send message",
-    "swapLanguages": "Swap target and source languages"
+    "swapLanguages": "Swap target and source languages",
+    "abortOngoingRequests": "Stop"
   },
   "errors": {
     "ai": {

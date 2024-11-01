@@ -4,20 +4,25 @@ import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../../store'
 import { getChatStreamingResponse } from '../../../api/chat'
 import Send from '../../../../shared/icons/send.svg?react'
+import Stop from '../../../../shared/icons/stop.svg?react'
 
 export const SendChatMessageButton = () => {
   const { t } = useTranslation()
-  const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
-    useShallow(state => ({
-      aiApiAvailability: state.aiApiAvailability,
-      setIsResponseLoading: state.setIsResponseLoading,
-      areControlsDisabled: state.areControlsDisabled,
-    }))
-  )
+  const { ongoingRequestExists, aiApiAvailability, setIsResponseLoading, areControlsDisabled, abortOngoingRequests } =
+    useContentStore(
+      useShallow(state => ({
+        aiApiAvailability: state.aiApiAvailability,
+        ongoingRequestExists: state.ongoingRequestExists(),
+        setIsResponseLoading: state.setIsResponseLoading,
+        areControlsDisabled: state.areControlsDisabled,
+        abortOngoingRequests: state.abortOngoingRequests,
+      }))
+    )
 
-  const isDisabled = areControlsDisabled() || !aiApiAvailability.chat
+  const isDisabled = (areControlsDisabled() || !aiApiAvailability.chat) && !ongoingRequestExists
 
   const sendText = t('buttons.send')
+  const abortText = t('buttons.abortOngoingRequests')
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
@@ -25,14 +30,22 @@ export const SendChatMessageButton = () => {
     setIsResponseLoading(false)
   }
 
+  const handleAbort = () => {
+    abortOngoingRequests()
+  }
+
   return (
     <button
       className='group flex rounded-full p-2 hover:bg-tertiary-hover disabled:cursor-not-allowed disabled:bg-tertiary'
       disabled={isDisabled}
-      onClick={handleGetResponse}
+      onClick={ongoingRequestExists ? handleAbort : handleGetResponse}
     >
-      <AccessibleIcon label={sendText}>
-        <Send className='ml-0.5 size-5 fill-primary group-hover:fill-primary-hover group-disabled:fill-disabled' />
+      <AccessibleIcon label={ongoingRequestExists ? abortText : sendText}>
+        {ongoingRequestExists ? (
+          <Stop className='size-4 fill-primary group-hover:fill-primary-hover' />
+        ) : (
+          <Send className='size-4 fill-primary group-hover:fill-primary-hover group-disabled:fill-disabled' />
+        )}
       </AccessibleIcon>
     </button>
   )

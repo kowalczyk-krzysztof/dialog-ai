@@ -36,6 +36,7 @@ interface ContentStore {
   summarizationResponseAbortController: AbortController | undefined
   translationResponseAbortController: AbortController | undefined
   settings: ExtensionSettings
+  ongoingRequestExists: () => boolean
   areControlsDisabled: () => boolean
   setIsResponseLoading: (loading: boolean) => void
   setIsStreamingResponse: (streaming: boolean) => void
@@ -50,6 +51,7 @@ interface ContentStore {
   destroy: () => void
   fetchSettings: () => Promise<void>
   setSettings: (updateFn: (settings: ExtensionSettings) => ExtensionSettings) => void
+  abortOngoingRequests: () => void
 }
 
 export const useContentStore = create<ContentStore>((set, get) => ({
@@ -65,8 +67,8 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   translationResponseAbortController: undefined,
   settings: defaultSettings,
   areControlsDisabled: () => {
-    const { isResponseLoading, isStreamingResponse, userInput } = get()
-    return isResponseLoading || isStreamingResponse || userInput.trim().length === 0
+    const { ongoingRequestExists, userInput } = get()
+    return ongoingRequestExists() || userInput.trim().length === 0
   },
   setIsResponseLoading: loading => set({ isResponseLoading: loading }),
   setIsStreamingResponse: streaming => set({ isStreamingResponse: streaming }),
@@ -155,4 +157,38 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     }
   },
   setSettings: updateFn => set(state => ({ settings: updateFn(state.settings) })),
+  abortOngoingRequests: () => {
+    const {
+      chatResponseAbortController,
+      summarizationResponseAbortController,
+      translationResponseAbortController,
+      setIsResponseLoading,
+      setIsStreamingResponse,
+      setChatResponseAbortController,
+      setSummarizationResponseAbortController,
+      setTranslationResponseAbortController,
+    } = get()
+
+    if (chatResponseAbortController && typeof chatResponseAbortController.abort === 'function') {
+      chatResponseAbortController.abort()
+      setChatResponseAbortController(undefined)
+    }
+
+    if (summarizationResponseAbortController && typeof summarizationResponseAbortController.abort === 'function') {
+      summarizationResponseAbortController.abort()
+      setSummarizationResponseAbortController(undefined)
+    }
+
+    if (translationResponseAbortController && typeof translationResponseAbortController.abort === 'function') {
+      translationResponseAbortController.abort()
+      setTranslationResponseAbortController(undefined)
+    }
+
+    setIsResponseLoading(false)
+    setIsStreamingResponse(false)
+  },
+  ongoingRequestExists: () => {
+    const { isResponseLoading, isStreamingResponse } = get()
+    return isResponseLoading || isStreamingResponse
+  },
 }))
