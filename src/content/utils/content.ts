@@ -5,6 +5,7 @@ import {
   DIALOG_POSITION_PADDING,
   DIALOG_WIDTH,
   OPEN_DIALOG_COMBINATION_SECOND_KEY,
+  OPEN_DIALOG_COMBINATION_MODIFIER_KEY,
 } from '../../../constants'
 
 export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {
@@ -94,21 +95,26 @@ export const isOpeningDialog = (
   isDialogOpen: boolean,
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
   setIsSelectionKeyHeldDown: Dispatch<SetStateAction<boolean>>,
-  setPostion: Dispatch<SetStateAction<{ top: string; left: string }>>
+  setPostion: Dispatch<SetStateAction<{ top: string; left: string }>>,
+  setIsSettingsViewOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   // Only set the selection key state if the target is <body> and the dialog is not open
   if (e.target instanceof HTMLBodyElement && !isDialogOpen) {
-    if (e.shiftKey && e.key === OPEN_DIALOG_COMBINATION_SECOND_KEY) {
-      e.preventDefault() // This prevents D from being typed in the text area
+    if (
+      e[OPEN_DIALOG_COMBINATION_MODIFIER_KEY] &&
+      (e.key === OPEN_DIALOG_COMBINATION_SECOND_KEY || e.key === OPEN_DIALOG_COMBINATION_SECOND_KEY.toLowerCase())
+    ) {
+      e.preventDefault() // This prevents OPEN_DIALOG_COMBINATION_SECOND_KEY from being typed in the text area
       const center = getCenterOfTheScreen()
       setPostion(center)
+      setIsSettingsViewOpen(false)
       setIsDialogOpen(true)
       setIsSelectionKeyHeldDown(false)
       return
     }
 
-    const isReleasingSelectionKey = e.type === 'keyup' && e.shiftKey
-    const isPressingSelectionKey = e.type === 'keydown' && e.shiftKey
+    const isReleasingSelectionKey = e.type === 'keyup' && e[OPEN_DIALOG_COMBINATION_MODIFIER_KEY]
+    const isPressingSelectionKey = e.type === 'keydown' && e[OPEN_DIALOG_COMBINATION_MODIFIER_KEY]
     setIsSelectionKeyHeldDown(isReleasingSelectionKey ? false : isPressingSelectionKey)
   } else {
     setIsSelectionKeyHeldDown(false)

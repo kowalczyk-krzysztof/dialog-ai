@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Root as AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import { Select } from '../../../../../shared/components/Select'
 import { LanguagePairLabel } from './LanguagePairLabel'
-import { getLanguageItems, mapLanguageToSelectOption } from '../../../../utils/ai'
+import { getLanguageItems, isEnglish, mapLanguageToSelectOption } from '../../../../utils/ai'
 import { SupportedLanguages, TranslationLanguagePair } from '../../../../types'
 import Swap from '../../../../../shared/icons/swap.svg?react'
 
@@ -40,9 +40,8 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
     }))
   }
 
-  const isDisabled = (value: SupportedLanguages) => value === SupportedLanguages.ENGLISH
-  const isSourceDisabled = isDisabled(languagePair.sourceLanguage)
-  const isTargetDisabled = isDisabled(languagePair.targetLanguage)
+  const isSourceDisabled = isEnglish(languagePair.sourceLanguage)
+  const isTargetDisabled = isEnglish(languagePair.targetLanguage)
 
   const sourceLanguageItems = getLanguageItems(isTargetDisabled)
 

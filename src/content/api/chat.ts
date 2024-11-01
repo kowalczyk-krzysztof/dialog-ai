@@ -4,9 +4,17 @@ import { createSystemMessage, createUserMessage } from '../utils/ai'
 import { type ChatSession, AIApiType } from '../types'
 
 const createChatSession = async (): Promise<ChatSession | undefined> => {
+  const {
+    settings: { chatTemperature, chatTopK },
+  } = useContentStore.getState()
+
   const { setConversation } = useContentStore.getState()
   try {
-    const session = await window.ai.languageModel.create()
+    const session = await window.ai.languageModel.create({
+      temperature: chatTemperature,
+      topK: chatTopK,
+    })
+
     return session
   } catch (e) {
     const couldNotCreateLanguageModelText = i18n.t('errors.ai.couldNotCreateLanguageModel')

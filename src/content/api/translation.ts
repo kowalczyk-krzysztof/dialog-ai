@@ -1,6 +1,6 @@
 import { useContentStore } from '../store'
 import i18n from '../../i118n'
-import { createSystemMessage, createUserMessage } from '../utils/ai'
+import { createSystemMessage, createUserMessage, isEnglish } from '../utils/ai'
 import { type TranslationLanguagePair, type TranslationModelSession, AIApiType, SupportedLanguages } from '../types'
 
 export const nonEnglishLanguages = Object.values(SupportedLanguages).filter(
@@ -11,10 +11,10 @@ const isValidTranslationLanguagePair = (languagePair: TranslationLanguagePair) =
   const { sourceLanguage, targetLanguage } = languagePair
 
   if (sourceLanguage === targetLanguage) return false
-  if (sourceLanguage === SupportedLanguages.ENGLISH) {
+  if (isEnglish(sourceLanguage)) {
     return nonEnglishLanguages.includes(targetLanguage)
   }
-  if (targetLanguage === SupportedLanguages.ENGLISH) {
+  if (isEnglish(targetLanguage)) {
     return nonEnglishLanguages.includes(sourceLanguage)
   }
 }

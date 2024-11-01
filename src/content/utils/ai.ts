@@ -137,3 +137,5 @@ export const mapLanguageToSelectOption = (language: SupportedLanguages) => ({
 
 export const getLanguageItems = (filterOutEnglish?: boolean) =>
   Object.values(filterOutEnglish ? nonEnglishLanguages : SupportedLanguages).map(mapLanguageToSelectOption)
+
+export const isEnglish = (value: string) => value === SupportedLanguages.ENGLISH

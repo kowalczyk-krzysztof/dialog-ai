@@ -10,7 +10,9 @@
   "settings": {
     "title": "Settings",
     "sourceLanguage": "Source language (from)",
-    "targetLanguage": "Target language (to)"
+    "targetLanguage": "Target language (to)",
+    "chatTopK": "topK",
+    "chatTemperature": "temperature"
   },
   "buttons": {
     "copy": {

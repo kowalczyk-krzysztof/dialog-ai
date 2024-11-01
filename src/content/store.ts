@@ -8,6 +8,7 @@ import {
   SupportedLanguages,
   AIApiType,
 } from './types'
+import { DEFAULT_CHAT_TEMPERATURE, DEFAULT_CHAT_TOPK } from '../../constants'
 
 const defaultAIApiAvailability: AIApiAvailability = {
   [AIApiType.CHAT]: {
@@ -21,9 +22,11 @@ const defaultAIApiAvailability: AIApiAvailability = {
   },
 }
 
-const defaultSettings = {
+const defaultSettings: ExtensionSettings = {
   sourceLanguage: SupportedLanguages.ENGLISH,
   targetLanguage: SupportedLanguages.SPANISH,
+  chatTopK: DEFAULT_CHAT_TOPK,
+  chatTemperature: DEFAULT_CHAT_TEMPERATURE,
   loading: false,
 }
 
@@ -128,15 +131,26 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     })
   },
   fetchSettings: async () => {
-    const { setSettings } = get()
+    const { setSettings, setChatSession } = get()
     try {
       setSettings(settings => ({ ...settings, loading: true }))
-      const response = await chrome.storage.sync.get(['sourceLanguage', 'targetLanguage'])
+      const response = await chrome.storage.sync.get([
+        'sourceLanguage',
+        'targetLanguage',
+        'chatTopK',
+        'chatTemperature',
+      ])
 
       if (response) {
+        if (response.chatTopK || response.chatTemperature) {
+          setChatSession(undefined)
+        }
+
         setSettings(() => ({
-          sourceLanguage: response.sourceLanguage || SupportedLanguages.ENGLISH,
-          targetLanguage: response.targetLanguage || SupportedLanguages.SPANISH,
+          sourceLanguage: response.sourceLanguage || defaultSettings.sourceLanguage,
+          targetLanguage: response.targetLanguage || defaultSettings.targetLanguage,
+          chatTopK: response.chatTopK || defaultSettings.chatTopK,
+          chatTemperature: response.chatTemperature || defaultSettings.chatTemperature,
           loading: false,
         }))
       }

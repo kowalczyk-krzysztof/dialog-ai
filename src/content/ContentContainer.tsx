@@ -36,6 +36,7 @@ export const ContentContainer = () => {
   const clearState = () => {
     reset()
     setIsDialogOpen(false)
+    setIsSettingsViewOpen(false)
   }
 
   const handleInitialFocus = (e: Event) => {
@@ -80,10 +81,11 @@ export const ContentContainer = () => {
           }
 
           if (changes[typedKey]) {
+            // @ts-expect-error FIXME
             acc[typedKey] = changes[typedKey].newValue
             return acc
           }
-
+          // @ts-expect-error FIXME
           acc[typedKey] = settings[typedKey]
           return acc
         }, {} as ExtensionSettings)
@@ -100,7 +102,7 @@ export const ContentContainer = () => {
 
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
-      isOpeningDialog(e, isDialogOpen, setIsDialogOpen, setIsSelectionKeyHeldDown, setPosition)
+      isOpeningDialog(e, isDialogOpen, setIsDialogOpen, setIsSelectionKeyHeldDown, setPosition, setIsSettingsViewOpen)
     }
 
     document.addEventListener('keydown', handleKeyboardEvent)

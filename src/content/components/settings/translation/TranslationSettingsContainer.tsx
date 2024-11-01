@@ -1,0 +1,71 @@
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Select } from '../../../../shared/components/Select'
+import { getLanguageItems, isEnglish, mapLanguageToSelectOption } from '../../../utils/ai'
+import type { ExtensionSettings, SupportedLanguages, TranslationLanguagePair } from '../../../types'
+
+interface Props {
+  settings: ExtensionSettings
+  languagePair: TranslationLanguagePair
+  setLanguagePair: Dispatch<SetStateAction<TranslationLanguagePair>>
+}
+
+export const TranslationSettingsContainer = ({ settings, languagePair, setLanguagePair }: Props) => {
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    setLanguagePair({ sourceLanguage: settings.sourceLanguage, targetLanguage: settings.targetLanguage })
+  }, [settings])
+
+  const sourceLanguageText = t('settings.sourceLanguage')
+  const targetLanguageText = t('settings.targetLanguage')
+
+  const sourceLanguageId = 'source-language'
+  const targetLanguageId = 'target-language'
+
+  const languageItems = getLanguageItems()
+
+  const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
+  const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
+  const isSourceDisabled = isEnglish(languagePair.sourceLanguage)
+  const isTargetDisabled = isEnglish(languagePair.targetLanguage)
+
+  const handleSelectSourceLanguage = (value: string) => {
+    if (isEnglish(value)) {
+      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
+    }
+    setLanguagePair(pair => ({ ...pair, sourceLanguageLanguage: value as SupportedLanguages }))
+  }
+
+  const handleSelectTargetLanguage = (value: string) => {
+    if (isEnglish(value)) {
+      setLanguagePair(pair => ({ ...pair, sourceLanguageLanguage: value as SupportedLanguages }))
+    }
+    setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
+  }
+
+  return (
+    <div>
+      <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
+        {sourceLanguageText}
+      </label>
+      <Select
+        id={sourceLanguageId}
+        items={languageItems}
+        value={sourceLanguageItem}
+        disabled={isSourceDisabled}
+        onChange={handleSelectSourceLanguage}
+      />
+      <label htmlFor={targetLanguageId} className='text-primary hover:text-primary-hover'>
+        {targetLanguageText}
+      </label>
+      <Select
+        id={targetLanguageId}
+        items={languageItems}
+        value={targetLanguageItem}
+        disabled={isTargetDisabled}
+        onChange={handleSelectTargetLanguage}
+      />
+    </div>
+  )
+}

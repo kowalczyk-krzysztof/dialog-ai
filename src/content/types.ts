@@ -4,6 +4,8 @@ import { ComponentProps } from 'react'
 export interface ExtensionSettings {
   sourceLanguage: SupportedLanguages
   targetLanguage: SupportedLanguages
+  chatTemperature: number
+  chatTopK: number
   loading: boolean
 }
 
@@ -44,12 +46,15 @@ export interface InitialChatPrompt {
 }
 
 export interface AISessionOptions {
-  signal: AbortSignal
+  signal?: AbortSignal
 }
 
-export interface ChatSessionOptions extends AISessionOptions {
+export interface ChatSessionHyperParameters {
   temperature?: number
   topK?: number
+}
+
+export interface ChatSessionOptions extends AISessionOptions, ChatSessionHyperParameters {
   systemPrompt?: string
   initialPrompts?: InitialChatPrompt[]
 }
