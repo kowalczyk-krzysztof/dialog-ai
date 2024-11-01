@@ -42,7 +42,7 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
 
   return (
     <section
-      className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 overflow-hidden px-4 py-2' : 'hidden'}
+      className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 overflow-hidden px-4 pt-2' : 'hidden'}
     >
       <ChatSettingsContainer
         chatSessionHyperparameters={chatSessionHyperparameters}

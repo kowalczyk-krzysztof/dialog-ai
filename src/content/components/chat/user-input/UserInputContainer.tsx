@@ -40,7 +40,7 @@ export const UserInputContainer = () => {
   }
 
   return (
-    <div className='flex h-24 w-full items-center gap-2 rounded-lg border border-border bg-tertiary p-2' role='form'>
+    <div className='flex h-28 w-full items-center gap-2 rounded-lg border border-border bg-tertiary p-2' role='form'>
       <ScrollAreaRoot className='size-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
         <ScrollAreaViewport asChild={true}>
           <textarea
