@@ -12,6 +12,7 @@ interface Props {
 
 export const OpenSettingsButton = ({ isSettingsViewOpen, setIsSettingsViewOpen, preventBeingDraggable }: Props) => {
   const { t } = useTranslation()
+
   const goBackText = t('buttons.goBack')
   const openSettingsText = t('buttons.openSettings')
 

@@ -50,18 +50,20 @@ const getCopyTextKey = (status: CopyStatus) => {
 }
 
 export const MessageHeader = ({ text, role, isError, type, targetLanguage, sourceLanguage }: Omit<Message, 'id'>) => {
-  const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
   const { t } = useTranslation()
+  const [copyIcon, setCopyIcon] = useState<CopyStatus>(CopyStatus.DEFAULT)
 
   const isUser = role === MessageRole.USER
+  const isDefaultIcon = copyIcon === CopyStatus.DEFAULT
+  const typeBadgeBackground = getTypeBackground(type)
+
   const copyText = t(getCopyTextKey(copyIcon))
   const userRoleText = t('roles.user')
   const aiRoleText = t('roles.ai')
   const fromLabel = t('from')
   const toLabel = t('to')
-  const typeBadgeBackground = getTypeBackground(type)
 
-  const changeBackIconToDefault = () => {
+  const changeIconBackToDefault = () => {
     setTimeout(() => {
       setCopyIcon(CopyStatus.DEFAULT)
     }, ICON_CHANGE_DELAY_MS)
@@ -71,14 +73,12 @@ export const MessageHeader = ({ text, role, isError, type, targetLanguage, sourc
     try {
       navigator.clipboard.writeText(text)
       setCopyIcon(CopyStatus.SUCCESS)
-      changeBackIconToDefault()
+      changeIconBackToDefault()
     } catch (e) {
       setCopyIcon(CopyStatus.FAILURE)
-      changeBackIconToDefault()
+      changeIconBackToDefault()
     }
   }
-
-  const isDefaultIcon = copyIcon === CopyStatus.DEFAULT
 
   return (
     <div className='flex items-center justify-end gap-2 bg-tertiary py-0.5 pr-2'>

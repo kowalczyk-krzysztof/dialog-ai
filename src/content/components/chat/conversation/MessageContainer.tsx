@@ -20,7 +20,7 @@ export const MessageContainer = ({
   const messageBackground = getMessageBackground(role, isError)
 
   return (
-    <div role='status' className={`${messageBackground} flex flex-col rounded-lg rounded-t-none border border-border`}>
+    <div className={`${messageBackground} flex flex-col rounded-lg rounded-t-none border border-border`} role='status'>
       <MessageHeader
         text={text}
         role={role}

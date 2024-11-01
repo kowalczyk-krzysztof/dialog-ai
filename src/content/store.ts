@@ -11,15 +11,9 @@ import {
 import { DEFAULT_CHAT_TEMPERATURE, DEFAULT_CHAT_TOPK } from '../../constants'
 
 const defaultAIApiAvailability: AIApiAvailability = {
-  [AIApiType.CHAT]: {
-    available: false,
-  },
-  [AIApiType.SUMMARIZATION]: {
-    available: false,
-  },
-  [AIApiType.TRANSLATION]: {
-    available: false,
-  },
+  [AIApiType.CHAT]: false,
+  [AIApiType.SUMMARIZATION]: false,
+  [AIApiType.TRANSLATION]: false,
 }
 
 const defaultSettings: ExtensionSettings = {
@@ -53,7 +47,7 @@ interface ContentStore {
   setChatResponseAbortController: (controller: AbortController | undefined) => void
   setSummarizationResponseAbortController: (controller: AbortController | undefined) => void
   setTranslationResponseAbortController: (controller: AbortController | undefined) => void
-  reset: () => void
+  destroy: () => void
   fetchSettings: () => Promise<void>
   setSettings: (updateFn: (settings: ExtensionSettings) => ExtensionSettings) => void
 }
@@ -84,7 +78,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   setChatResponseAbortController: controller => set({ chatResponseAbortController: controller }),
   setSummarizationResponseAbortController: controller => set({ summarizationResponseAbortController: controller }),
   setTranslationResponseAbortController: controller => set({ translationResponseAbortController: controller }),
-  reset: async () => {
+  destroy: async () => {
     const {
       chatSession,
       summarizationSession,
@@ -94,15 +88,15 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       translationResponseAbortController,
     } = get()
 
-    if (chatResponseAbortController) {
+    if (chatResponseAbortController && typeof chatResponseAbortController.abort === 'function') {
       chatResponseAbortController.abort()
     }
 
-    if (summarizationResponseAbortController) {
+    if (summarizationResponseAbortController && typeof summarizationResponseAbortController.abort === 'function') {
       summarizationResponseAbortController.abort()
     }
 
-    if (translationResponseAbortController) {
+    if (translationResponseAbortController && typeof translationResponseAbortController.abort === 'function') {
       translationResponseAbortController.abort()
     }
 

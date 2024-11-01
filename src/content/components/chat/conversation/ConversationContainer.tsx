@@ -8,13 +8,14 @@ import { Scrollbar } from '../../../../shared/components/Scrollbar'
 import { SCROLLBAR_HIDE_TIMER_MS } from '../../../../../constants'
 
 export const ConversationContainer = () => {
+  const scrollableAreaRef = useRef<HTMLDivElement>(null)
+
   const { conversation, isResponseLoading } = useContentStore(
     useShallow(state => ({
       conversation: state.conversation,
       isResponseLoading: state.isResponseLoading,
     }))
   )
-  const scrollableAreaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (scrollableAreaRef.current) {
@@ -25,7 +26,7 @@ export const ConversationContainer = () => {
   return (
     <ScrollAreaRoot className='w-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
       <ScrollAreaViewport ref={scrollableAreaRef}>
-        <section aria-relevant='additions text' aria-live='polite' role='log' className='flex h-96 flex-col gap-2'>
+        <section className='flex h-96 flex-col gap-2' aria-relevant='additions text' aria-live='polite' role='log'>
           {conversation.messages.map(message => (
             <MessageContainer {...message} key={message.id} />
           ))}

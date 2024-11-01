@@ -116,15 +116,9 @@ export const checkAiApiAvailability = async (): Promise<AIApiAvailability> => {
   const translation = isTranslationAvailable()
 
   return {
-    chat: {
-      available: chat,
-    },
-    summarization: {
-      available: summarization,
-    },
-    translation: {
-      available: translation,
-    },
+    chat,
+    summarization,
+    translation,
   }
 }
 

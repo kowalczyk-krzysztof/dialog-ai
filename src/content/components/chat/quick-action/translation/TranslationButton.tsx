@@ -29,17 +29,17 @@ export const TranslationButton = () => {
 
   const translateText = t('buttons.translate')
 
+  const isDisabled = areControlsDisabled() || !aiApiAvailability.translation
+
   const handleGetResponse = async () => {
     setIsResponseLoading(true)
     await getTranslation(languagePair)
     setIsResponseLoading(false)
   }
 
-  const isDisabled = areControlsDisabled() || !aiApiAvailability.translation.available
-
   return (
     <div className='flex rounded-lg border border-border bg-tertiary px-2 py-1.5'>
-      <Button disabled={isDisabled} onClick={handleGetResponse} className='mr-2'>
+      <Button className='mr-2' disabled={isDisabled} onClick={handleGetResponse}>
         {translateText}
       </Button>
       <LanguagePairSelect languagePair={languagePair} setLanguagePair={setLanguagePair} />

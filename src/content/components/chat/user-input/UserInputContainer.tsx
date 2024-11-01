@@ -17,8 +17,9 @@ export const UserInputContainer = () => {
       areControlsDisabled: state.areControlsDisabled,
     }))
   )
+
   const handleEnterKey = async (e: KeyboardEvent) => {
-    const controlsDisabled = areControlsDisabled() || !aiApiAvailability.chat.available
+    const controlsDisabled = areControlsDisabled() || !aiApiAvailability.chat
     if (e.key === 'Enter' && !e.shiftKey && !controlsDisabled) {
       e.preventDefault()
       setIsResponseLoading(true)
@@ -39,13 +40,13 @@ export const UserInputContainer = () => {
   }
 
   return (
-    <div role='form' className='flex h-24 w-full items-center gap-2 rounded-lg border border-border bg-tertiary p-2'>
+    <div className='flex h-24 w-full items-center gap-2 rounded-lg border border-border bg-tertiary p-2' role='form'>
       <ScrollAreaRoot className='size-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
         <ScrollAreaViewport asChild={true}>
           <textarea
+            className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
             autoFocus={true}
             value={userInput}
-            className='size-full resize-none rounded-lg bg-secondary p-2 text-sm'
             onChange={handleOnChange}
             onKeyDown={handleEnterKey}
             onFocus={handleFocus}

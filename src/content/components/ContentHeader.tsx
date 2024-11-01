@@ -15,6 +15,7 @@ interface Props {
 
 export const ContentHeader = ({ dialogRef, isSettingsViewOpen, clearState, setIsSettingsViewOpen }: Props) => {
   const { t } = useTranslation()
+
   const closeText = t('buttons.close')
   const titleText = t('dialogTitle')
 

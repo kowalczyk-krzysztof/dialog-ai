@@ -8,19 +8,18 @@ import { ContentHeader } from './components/ContentHeader'
 import { SettingsContainer } from './components/settings/SettingsContainer'
 import { getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
 import { checkAiApiAvailability } from './utils/ai'
-import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_Z_INDEX } from '../../constants'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_ZINDEX } from '../../constants'
 import type { FocusOutsideEvent, PointerDownOutsideEvent, ExtensionSettings } from './types'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const { setSettings, setAiApiAvailability, reset, setUserInput, fetchSettings } = useContentStore(
+  const { setSettings, setAiApiAvailability, destroy, setUserInput, fetchSettings } = useContentStore(
     useShallow(state => ({
-      settings: state.settings,
       setSettings: state.setSettings,
       setAiApiAvailability: state.setAiApiAvailability,
-      reset: state.reset,
+      destroy: state.destroy,
       setUserInput: state.setUserInput,
       fetchSettings: state.fetchSettings,
     }))
@@ -34,10 +33,10 @@ export const ContentContainer = () => {
   const selection = useTextSelection(isSelectionKeyHeldDown)
 
   const clearState = useCallback(() => {
-    reset()
+    destroy()
     setIsDialogOpen(false)
     setIsSettingsViewOpen(false)
-  }, [reset])
+  }, [destroy])
 
   const handleInitialFocus = (e: Event) => {
     e.preventDefault()
@@ -126,14 +125,14 @@ export const ContentContainer = () => {
       {/* The container needs to be set to shadow DOM container */}
       <DialogPortal container={root}>
         <DialogContent
+          className='fixed rounded-lg rounded-t-none border border-border bg-background text-text'
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
-          className='fixed rounded-lg rounded-t-none border border-border bg-background text-text'
           style={{
             top: position.top,
             left: position.left,
-            zIndex: DIALOG_Z_INDEX,
+            zIndex: DIALOG_ZINDEX,
             width: DIALOG_WIDTH,
             height: DIALOG_HEIGHT,
           }}

@@ -19,6 +19,9 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const fromLabel = t('from')
   const toLabel = t('to')
 
+  const sourceId = 'quick-action-source-language'
+  const targetId = 'quick-action-target-language'
+
   const handleSelectSourceLanguage = (value: string) => {
     setLanguagePair(pair => ({
       ...pair,
@@ -37,31 +40,21 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
     }))
   }
 
-  const sourceLanguageItems = getLanguageItems()
-
-  const targetLanguageItems = getLanguageItems()
+  const languageItems = getLanguageItems()
 
   const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
-
-  const sourceId = 'quick-action-source-language'
-  const targetId = 'quick-action-target-language'
 
   return (
     <>
       <div className='relative flex items-end'>
         <LanguagePairLabel id={sourceId} text={fromLabel} />
-        <Select
-          items={sourceLanguageItems}
-          value={sourceLanguageItem}
-          id={sourceId}
-          onChange={handleSelectSourceLanguage}
-        />
+        <Select items={languageItems} value={sourceLanguageItem} id={sourceId} onChange={handleSelectSourceLanguage} />
       </div>
       <button
         className='group mx-2 flex h-fit self-end p-1 hover:bg-tertiary-hover'
-        onClick={handleSwapLanguages}
         title={swapLanguagesText}
+        onClick={handleSwapLanguages}
       >
         <AccessibleIcon label={swapLanguagesText}>
           <Swap className='size-4 fill-primary group-hover:fill-primary-hover' />
@@ -69,12 +62,7 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
       </button>
       <div className='relative flex items-end'>
         <LanguagePairLabel id={targetId} text={toLabel} />
-        <Select
-          items={targetLanguageItems}
-          value={targetLanguageItem}
-          id={targetId}
-          onChange={handleSelectTargetLanguage}
-        />
+        <Select items={languageItems} value={targetLanguageItem} id={targetId} onChange={handleSelectTargetLanguage} />
       </div>
     </>
   )

@@ -13,6 +13,7 @@ interface Props {
 
 export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   const { t } = useTranslation()
+
   const { settings } = useContentStore(
     useShallow(state => ({
       settings: state.settings,

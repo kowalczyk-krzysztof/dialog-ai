@@ -22,18 +22,9 @@ export enum AIApiAvailabilityString {
 }
 
 export interface AIApiAvailability {
-  [AIApiType.CHAT]: {
-    available: boolean
-    error?: string
-  }
-  [AIApiType.SUMMARIZATION]: {
-    available: boolean
-    error?: string
-  }
-  [AIApiType.TRANSLATION]: {
-    available: boolean
-    error?: string
-  }
+  [AIApiType.CHAT]: boolean
+  [AIApiType.SUMMARIZATION]: boolean
+  [AIApiType.TRANSLATION]: boolean
 }
 
 export enum InitialChatRole {

@@ -10,7 +10,7 @@ import {
   SelectViewport,
 } from '@radix-ui/react-select'
 import { getContentRoot } from '../../content/utils/content'
-import { DIALOG_TOOLTIP_Z_INDEX } from '../../../constants'
+import { DIALOG_LAYER_ABOVE_ZINDEX } from '../../../constants'
 import ChevronDown from '../icons/chevron-down.svg?react'
 import ChevronUp from '../icons/chevron-up.svg?react'
 
@@ -54,7 +54,7 @@ export const Select = ({ items, value, id, disabled, onChange }: Props) => {
       <SelectPortal container={root}>
         <SelectContent
           style={{
-            zIndex: DIALOG_TOOLTIP_Z_INDEX,
+            zIndex: DIALOG_LAYER_ABOVE_ZINDEX,
           }}
           position='popper'
           sideOffset={8}

@@ -5,6 +5,7 @@ import { Button } from '../../../../../shared/components/Button'
 import { getSummary } from '../../../../api/summarization'
 
 export const SummarizationButton = () => {
+  const { t } = useTranslation()
   const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
     useShallow(state => ({
       userInput: state.userInput,
@@ -13,7 +14,9 @@ export const SummarizationButton = () => {
       areControlsDisabled: state.areControlsDisabled,
     }))
   )
-  const { t } = useTranslation()
+
+  const isDisabled = areControlsDisabled() || !aiApiAvailability.summarization
+
   const summarizeText = t('buttons.summarize')
 
   const handleGetResponse = async () => {
@@ -21,8 +24,6 @@ export const SummarizationButton = () => {
     await getSummary()
     setIsResponseLoading(false)
   }
-
-  const isDisabled = areControlsDisabled() || !aiApiAvailability.summarization.available
 
   return (
     <Button disabled={isDisabled} onClick={handleGetResponse}>

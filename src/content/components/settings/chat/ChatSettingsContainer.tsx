@@ -16,18 +16,18 @@ export const ChatSettingsContainer = ({
 }: Props) => {
   const { t } = useTranslation()
 
-  const chatTemperatureText = t('settings.chatTemperature')
-  const chatTopKText = t('settings.chatTopK')
-  const chatSectionTitleText = t('settings.sections.chat')
-  const chatTemperatureId = 'chat-temperature'
-  const chatTopKId = 'chat-topk'
-
   useEffect(() => {
     setChatSessionHyperparameters({
       temperature: settings.chatTemperature,
       topK: settings.chatTopK,
     })
   }, [settings, setChatSessionHyperparameters])
+
+  const chatTemperatureText = t('settings.chatTemperature')
+  const chatTopKText = t('settings.chatTopK')
+  const chatSectionTitleText = t('settings.sections.chat')
+  const chatTemperatureId = 'chat-temperature'
+  const chatTopKId = 'chat-topk'
 
   const handleChangeTemperature = (event: ChangeEvent<HTMLInputElement>) => {
     setChatSessionHyperparameters({ ...chatSessionHyperparameters, temperature: Number(event.target.value) })
@@ -46,9 +46,9 @@ export const ChatSettingsContainer = ({
             {chatTemperatureText}
           </label>
           <input
+            className='bg-secondary'
             id={chatTemperatureId}
             value={chatSessionHyperparameters.temperature}
-            className='bg-secondary'
             step='.01'
             type='number'
             min='0'
@@ -61,9 +61,9 @@ export const ChatSettingsContainer = ({
             {chatTopKText}
           </label>
           <input
+            className='bg-secondary'
             id={chatTopKId}
             value={chatSessionHyperparameters.topK}
-            className='bg-secondary'
             type='number'
             min='0'
             max={MAX_CHAT_TOPK}
