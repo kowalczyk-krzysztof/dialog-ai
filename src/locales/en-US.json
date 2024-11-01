@@ -23,7 +23,7 @@
       "success": "Copied content to clipboard",
       "failure": "Could not copy content to clipboard"
     },
-    "saveChanges": "Save changes",
+    "saveSettings": "Save settings",
     "goBack": "Go back",
     "openSettings": "Open settings",
     "summarize": "Summarize",

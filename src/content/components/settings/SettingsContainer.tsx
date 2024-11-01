@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
 import { Button } from '../../../shared/components/Button'
-import type { ChatSessionHyperParameters, TranslationLanguagePair } from '../../types'
 import { TranslationSettingsContainer } from './translation/TranslationSettingsContainer'
 import { ChatSettingsContainer } from './chat/ChatSettingsContainer'
+import type { ChatSessionHyperParameters, TranslationLanguagePair } from '../../types'
 
 interface Props {
   isSettingsViewOpen: boolean
@@ -29,7 +29,7 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
     topK: settings.chatTopK,
   })
 
-  const saveChangesText = t('buttons.saveChanges')
+  const saveSettingsText = t('buttons.saveSettings')
 
   const handleSave = async () => {
     await chrome.storage.sync.set({
@@ -41,15 +41,17 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   }
 
   return (
-    <section className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 px-4' : 'hidden'}>
+    <section
+      className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 overflow-hidden px-4 py-2' : 'hidden'}
+    >
       <ChatSettingsContainer
         chatSessionHyperparameters={chatSessionHyperparameters}
         settings={settings}
         setChatSessionHyperparameters={setChatSessionHyperparameters}
       />
       <TranslationSettingsContainer settings={settings} languagePair={languagePair} setLanguagePair={setLanguagePair} />
-      <Button className='self-center' onClick={handleSave}>
-        {saveChangesText}
+      <Button className='mb-2 mt-auto self-center' onClick={handleSave}>
+        {saveSettingsText}
       </Button>
     </section>
   )

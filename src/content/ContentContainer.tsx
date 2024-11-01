@@ -125,7 +125,7 @@ export const ContentContainer = () => {
       {/* The container needs to be set to shadow DOM container */}
       <DialogPortal container={root}>
         <DialogContent
-          className='fixed rounded-lg rounded-t-none border border-border bg-background text-text'
+          className='fixed flex flex-col rounded-lg rounded-t-none border border-border bg-background text-text'
           ref={dialogRef}
           forceMount
           aria-describedby={undefined}
