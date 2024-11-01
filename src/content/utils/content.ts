@@ -21,7 +21,7 @@ export const getDialogPositionRelativeToSelection = (textBounds: DOMRect) => {
 
 export const dragHTMLElement = (e: ReactMouseEvent, containerRef: RefObject<HTMLElement>) => {
   e.preventDefault()
-  // Initial cursor positions
+  // Initial cursor position
   let initialClientX = e.clientX
   let initialClientY = e.clientY
 
@@ -34,10 +34,12 @@ export const dragHTMLElement = (e: ReactMouseEvent, containerRef: RefObject<HTML
     // Update initial positions for the next movement
     initialClientX = e.clientX
     initialClientY = e.clientY
+    const element = containerRef.current
+    const willChangeClass = 'will-change-[top,left]'
 
     // Update the element's position
-    if (containerRef.current) {
-      const element = containerRef.current
+    if (element) {
+      element.classList.add(willChangeClass)
       const newTop = element.offsetTop - deltaY
       const newLeft = element.offsetLeft - deltaX
 
@@ -58,6 +60,7 @@ export const dragHTMLElement = (e: ReactMouseEvent, containerRef: RefObject<HTML
 
       element.style.top = `${constrainedTop}px`
       element.style.left = `${constrainedLeft}px`
+      element.classList.remove(willChangeClass)
     }
   }
 
