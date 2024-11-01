@@ -22,14 +22,26 @@ export const ContentHeader = ({ dialogRef, isSettingsViewOpen, clearState, setIs
     dragHTMLElement(e, dialogRef)
   }
 
+  const preventBeingDraggable = (e: ReactMouseEvent) => {
+    e.stopPropagation()
+  }
+
   return (
     <DialogTitle
       className='mb-2 flex cursor-grab select-none items-center justify-center border-b border-border bg-tertiary p-1 text-center active:cursor-grabbing'
       onMouseDown={handleGrab}
     >
-      <OpenSettingsButton isSettingsViewOpen={isSettingsViewOpen} setIsSettingsViewOpen={setIsSettingsViewOpen} />
+      <OpenSettingsButton
+        isSettingsViewOpen={isSettingsViewOpen}
+        setIsSettingsViewOpen={setIsSettingsViewOpen}
+        preventBeingDraggable={preventBeingDraggable}
+      />
       <p className='grow'>{titleText}</p>
-      <DialogClose className='group p-2 hover:bg-tertiary-hover' onClick={clearState}>
+      <DialogClose
+        className='group p-2 hover:bg-tertiary-hover'
+        onClick={clearState}
+        onMouseDown={preventBeingDraggable}
+      >
         <AccessibleIcon label={closeText}>
           <Close className='size-4 fill-primary group-hover:fill-primary-hover' />
         </AccessibleIcon>
