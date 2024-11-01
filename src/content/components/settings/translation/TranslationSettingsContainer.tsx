@@ -51,7 +51,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
     <section className='flex flex-col'>
       <h3 className='select-none text-lg'>{translationSectionTitleText}</h3>
       <ul className='flex flex-col gap-2'>
-        <li className='flex gap-2'>
+        <li className='flex items-center gap-2'>
           <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
             {sourceLanguageText}
           </label>
@@ -63,7 +63,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
             onChange={handleSelectSourceLanguage}
           />
         </li>
-        <li className='flex gap-2'>
+        <li className='flex items-center gap-2'>
           <label htmlFor={targetLanguageId} className='text-primary hover:text-primary-hover'>
             {targetLanguageText}
           </label>
