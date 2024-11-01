@@ -8,11 +8,14 @@
   "to": "To",
   "loading": "Loading response",
   "settings": {
-    "title": "Settings",
+    "sections": {
+      "chat": "Chat",
+      "translation": "Translation"
+    },
     "sourceLanguage": "Source language (from)",
     "targetLanguage": "Target language (to)",
     "chatTopK": "topK",
-    "chatTemperature": "temperature"
+    "chatTemperature": "Temperature"
   },
   "buttons": {
     "copy": {

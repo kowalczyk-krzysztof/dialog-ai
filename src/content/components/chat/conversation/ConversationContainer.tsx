@@ -25,12 +25,12 @@ export const ConversationContainer = () => {
   return (
     <ScrollAreaRoot className='w-full' scrollHideDelay={SCROLLBAR_HIDE_TIMER_MS}>
       <ScrollAreaViewport ref={scrollableAreaRef}>
-        <div className='flex h-96 flex-col gap-2'>
+        <section aria-relevant='additions text' aria-live='polite' role='log' className='flex h-96 flex-col gap-2'>
           {conversation.messages.map(message => (
             <MessageContainer {...message} key={message.id} />
           ))}
           {isResponseLoading ? <LoadingDots /> : null}
-        </div>
+        </section>
       </ScrollAreaViewport>
       <Scrollbar />
     </ScrollAreaRoot>

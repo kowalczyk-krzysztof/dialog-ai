@@ -6,6 +6,7 @@ import { getChatStreamingResponse } from '../../../api/chat'
 import Send from '../../../../shared/icons/send.svg?react'
 
 export const SendChatMessageButton = () => {
+  const { t } = useTranslation()
   const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
     useShallow(state => ({
       aiApiAvailability: state.aiApiAvailability,
@@ -13,7 +14,7 @@ export const SendChatMessageButton = () => {
       areControlsDisabled: state.areControlsDisabled,
     }))
   )
-  const { t } = useTranslation()
+
   const sendText = t('buttons.send')
 
   const handleGetResponse = async () => {
@@ -27,7 +28,7 @@ export const SendChatMessageButton = () => {
   return (
     <button
       disabled={isDisabled}
-      className='group flex cursor-pointer justify-center items-center rounded-full p-2 disabled:cursor-not-allowed hover:bg-tertiary-hover ml-2 disabled:bg-tertiary'
+      className='group flex rounded-full p-2 disabled:cursor-not-allowed hover:bg-tertiary-hover disabled:bg-tertiary'
       onClick={handleGetResponse}
     >
       <AccessibleIcon label={sendText}>

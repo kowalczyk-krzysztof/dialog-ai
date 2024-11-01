@@ -19,6 +19,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
 
   const sourceLanguageText = t('settings.sourceLanguage')
   const targetLanguageText = t('settings.targetLanguage')
+  const translationSectionTitleText = t('settings.sections.translation')
 
   const sourceLanguageId = 'source-language'
   const targetLanguageId = 'target-language'
@@ -47,27 +48,34 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
   }
 
   return (
-    <div>
-      <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
-        {sourceLanguageText}
-      </label>
-      <Select
-        id={sourceLanguageId}
-        items={languageItems}
-        value={sourceLanguageItem}
-        disabled={isSourceDisabled}
-        onChange={handleSelectSourceLanguage}
-      />
-      <label htmlFor={targetLanguageId} className='text-primary hover:text-primary-hover'>
-        {targetLanguageText}
-      </label>
-      <Select
-        id={targetLanguageId}
-        items={languageItems}
-        value={targetLanguageItem}
-        disabled={isTargetDisabled}
-        onChange={handleSelectTargetLanguage}
-      />
-    </div>
+    <section className='flex flex-col'>
+      <h3 className='select-none text-lg'>{translationSectionTitleText}</h3>
+      <ul className='flex gap-2 flex-col'>
+        <li className='flex gap-2'>
+          <label className='text-primary hover:text-primary-hover' htmlFor={sourceLanguageId}>
+            {sourceLanguageText}
+          </label>
+          <Select
+            id={sourceLanguageId}
+            items={languageItems}
+            value={sourceLanguageItem}
+            disabled={isSourceDisabled}
+            onChange={handleSelectSourceLanguage}
+          />
+        </li>
+        <li className='flex gap-2'>
+          <label htmlFor={targetLanguageId} className='text-primary hover:text-primary-hover'>
+            {targetLanguageText}
+          </label>
+          <Select
+            id={targetLanguageId}
+            items={languageItems}
+            value={targetLanguageItem}
+            disabled={isTargetDisabled}
+            onChange={handleSelectTargetLanguage}
+          />
+        </li>
+      </ul>
+    </section>
   )
 }

@@ -15,7 +15,7 @@ export const MessageContainer = ({ text, role, isError, type, sourceLanguage, ta
   const messageBackground = getMessageBackground(role, isError)
 
   return (
-    <div className={`${messageBackground} flex flex-col rounded-lg border-border border rounded-t-none`}>
+    <div role='status' className={`${messageBackground} flex flex-col rounded-lg border-border border rounded-t-none`}>
       <MessageHeader
         text={text}
         role={role}

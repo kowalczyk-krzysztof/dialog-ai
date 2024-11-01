@@ -18,6 +18,9 @@ export const ChatSettingsContainer = ({
 
   const chatTemperatureText = t('settings.chatTemperature')
   const chatTopKText = t('settings.chatTopK')
+  const chatSectionTitleText = t('settings.sections.chat')
+  const chatTemperatureId = 'chat-temperature'
+  const chatTopKId = 'chat-topk'
 
   useEffect(() => {
     setChatSessionHyperparameters({
@@ -35,30 +38,39 @@ export const ChatSettingsContainer = ({
   }
 
   return (
-    <li>
-      <ul>
-        {chatTemperatureText}
-        <input
-          value={chatSessionHyperparameters.temperature}
-          className='bg-secondary'
-          step='.01'
-          type='number'
-          min='0'
-          max={MAX_CHAT_TEMPERATURE}
-          onChange={handleChangeTemperature}
-        />
+    <section className='flex flex-col'>
+      <h3 className='select-none text-lg'>{chatSectionTitleText}</h3>
+      <ul className='flex gap-2 flex-col'>
+        <li className='flex gap-2'>
+          <label className='text-primary hover:text-primary-hover' htmlFor={chatTemperatureId}>
+            {chatTemperatureText}
+          </label>
+          <input
+            id={chatTemperatureId}
+            value={chatSessionHyperparameters.temperature}
+            className='bg-secondary'
+            step='.01'
+            type='number'
+            min='0'
+            max={MAX_CHAT_TEMPERATURE}
+            onChange={handleChangeTemperature}
+          />
+        </li>
+        <li className='flex gap-2'>
+          <label className='text-primary hover:text-primary-hover' htmlFor={chatTopKId}>
+            {chatTopKText}
+          </label>
+          <input
+            id={chatTopKId}
+            value={chatSessionHyperparameters.topK}
+            className='bg-secondary'
+            type='number'
+            min='0'
+            max={MAX_CHAT_TOPK}
+            onChange={handleChangeTopK}
+          />
+        </li>
       </ul>
-      <ul>
-        {chatTopKText}
-        <input
-          value={chatSessionHyperparameters.topK}
-          className='bg-secondary'
-          type='number'
-          min='0'
-          max={MAX_CHAT_TOPK}
-          onChange={handleChangeTopK}
-        />
-      </ul>
-    </li>
+    </section>
   )
 }

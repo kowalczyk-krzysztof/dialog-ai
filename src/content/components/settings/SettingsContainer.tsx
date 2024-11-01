@@ -42,17 +42,16 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   }
 
   return (
-    <div className={`${isSettingsViewOpen ? 'flex flex-col' : 'hidden'} gap-2 items-center`}>
-      <h3 className='select-none'>{settingsTitleText}</h3>
+    <section className={isSettingsViewOpen ? 'flex flex-col gap-2 items-start px-4 h-full' : 'hidden'}>
       <ChatSettingsContainer
-        settings={settings}
         chatSessionHyperparameters={chatSessionHyperparameters}
+        settings={settings}
         setChatSessionHyperparameters={setChatSessionHyperparameters}
       />
       <TranslationSettingsContainer settings={settings} languagePair={languagePair} setLanguagePair={setLanguagePair} />
-      <Button className='mt-4' onClick={handleSave}>
+      <Button className='self-center' onClick={handleSave}>
         {saveChangesText}
       </Button>
-    </div>
+    </section>
   )
 }

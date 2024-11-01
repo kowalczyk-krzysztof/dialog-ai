@@ -65,17 +65,11 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
           onChange={handleSelectSourceLanguage}
         />
       </div>
-      <div className='flex items-end'>
-        <button
-          className='flex justify-center items-end mx-2 group'
-          onClick={handleSwapLanguages}
-          title={swapLanguagesText}
-        >
-          <AccessibleIcon label={swapLanguagesText}>
-            <Swap className='size-4 fill-primary group-hover:fill-primary-hover' />
-          </AccessibleIcon>
-        </button>
-      </div>
+      <button className='flex mx-2 group items-end' onClick={handleSwapLanguages} title={swapLanguagesText}>
+        <AccessibleIcon label={swapLanguagesText}>
+          <Swap className='size-4 fill-primary group-hover:fill-primary-hover' />
+        </AccessibleIcon>
+      </button>
       <div className='flex items-end relative'>
         <LanguagePairLabel id={targetId} text={toLabel} />
         <Select
