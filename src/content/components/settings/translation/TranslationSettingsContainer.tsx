@@ -21,8 +21,8 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
   const targetLanguageText = t('settings.targetLanguage')
   const translationSectionTitleText = t('settings.sections.translation')
 
-  const sourceLanguageId = 'source-language'
-  const targetLanguageId = 'target-language'
+  const sourceLanguageId = 'translation-settings-source-language'
+  const targetLanguageId = 'translation-settings-target-language'
 
   const languageItems = getLanguageItems()
 

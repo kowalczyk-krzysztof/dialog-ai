@@ -44,8 +44,8 @@ export const LanguagePairSelect = ({ languagePair, setLanguagePair }: Props) => 
   const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
 
-  const sourceId = 'source-language'
-  const targetId = 'target-language'
+  const sourceId = 'quick-action-source-language'
+  const targetId = 'quick-action-target-language'
 
   return (
     <>
