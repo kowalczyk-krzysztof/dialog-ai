@@ -121,7 +121,7 @@ export const ContentContainer = () => {
   }, [selection, setUserInput])
 
   return (
-    <DialogRoot modal={false} open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <DialogRoot open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       {/* The container needs to be set to shadow DOM container */}
       <DialogPortal container={root}>
         <DialogContent
