@@ -32,16 +32,18 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
 
   const handleSelectSourceLanguage = (value: string) => {
     if (isEnglish(value)) {
-      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
+      setLanguagePair(pair => ({ sourceLanguage: value as SupportedLanguages, targetLanguage: pair.sourceLanguage }))
+    } else {
+      setLanguagePair(pair => ({ ...pair, sourceLanguage: value as SupportedLanguages }))
     }
-    setLanguagePair(pair => ({ ...pair, sourceLanguageLanguage: value as SupportedLanguages }))
   }
 
   const handleSelectTargetLanguage = (value: string) => {
     if (isEnglish(value)) {
-      setLanguagePair(pair => ({ ...pair, sourceLanguageLanguage: value as SupportedLanguages }))
+      setLanguagePair(pair => ({ targetLanguage: value as SupportedLanguages, sourceLanguage: pair.targetLanguage }))
+    } else {
+      setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
     }
-    setLanguagePair(pair => ({ ...pair, targetLanguage: value as SupportedLanguages }))
   }
 
   return (
