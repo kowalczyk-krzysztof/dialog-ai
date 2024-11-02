@@ -6,11 +6,11 @@
 Dialog AI is a Chrome extension built for [Google Chrome Built-in AI Challenge](https://googlechromeai.devpost.com). The extension allows you to leverage new AI APIs in Chrome. Once installed, you can use it on any website by holding <kbd>Shift</kbd> and selecting text or by pressing the <kbd>Shift</kbd> + <kbd>D</kbd> key combination or by clicking the extension icon while you have a website open. Doing so will open a dialog in which you can translate and summarize text and chat with Chrome built-in AI.
 
 ## How to use
-The APIs used in this extension are still experimental and to use them, you need to download [Chrome Canary version](https://www.google.com/chrome/canary).
+The APIs used in this extension are still experimental and to use them, you need to download and install [Chrome Canary version](https://www.google.com/chrome/canary).
 
-Once Chrome Canary is installed, you need to enable the experimental APIs.
+Once `Chrome Canary` is installed, you need to enable the experimental APIs.
 
-1. Open Chrome Canary
+1. Open `Chrome Canary`
 2. Go to (by entering the following in Chrome address bar) `chrome://flags/#optimization-guide-on-device-model` and select `Enabled BypassPerfRequirement`
 3. Go to `chrome://flags/#prompt-api-for-gemini-nano` and select `Enabled`
 4. Open developer console by pressing <kbd>Option</kbd> + <kbd>⌘</kbd> + <kbd>J</kbd> (on macOS), or <kbd>Shift</kbd> + <kbd>CTRL</kbd> + <kbd>J</kbd> (on Windows/Linux) and paste the following code snippet:
@@ -29,11 +29,11 @@ await ai.summarizer.create()
 
 After you have all the APIs enabled and the model has finished downloading, you need to install the extension. 
 1. Go to [releases](https://github.com/kowalczyk-krzysztof/dialog-ai/releases) and find the latest release.
-2. Download the `dist.zip` file attached to the release and unzip it.
-3. Open Chrome Canary and go to `chrome://extensions`.
+2. Download `dist.zip` attached to the release and unzip it.
+3. Open `Chrome Canary` and go to `chrome://extensions`.
 4. Enable developer mode (top right of page).
 5. Click `Load unpacked extension` (top left page).
-6. Select `dist` directory
+6. Select the directory you unzipped earlier (by default, the name of the directory will be `dist`)
 
 
 Alternatively, if you want to build the extension yourself, you can do that using the steps below (you need to have [Node.js](https://nodejs.org/en) with version `>=20` installed):
@@ -43,7 +43,7 @@ Alternatively, if you want to build the extension yourself, you can do that usin
 npm install
 npm run build
 ```
-3. Open Chrome Canary and go to `chrome://extensions`.
+3. Open `Chrome Canary` and go to `chrome://extensions`.
 4. Enable developer mode (top right of page).
 5. Click `Load unpacked extension` (top left page).
-6. Select `dist` directory.
+6. Select `dist` directory located in the root of the repository
