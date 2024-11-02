@@ -6,10 +6,15 @@ import { useTextSelection } from '../shared/hooks/useTextSelection'
 import { ChatContainer } from './components/chat/ChatContainer'
 import { ContentHeader } from './components/ContentHeader'
 import { SettingsContainer } from './components/settings/SettingsContainer'
-import { getContentRoot, getDialogPositionRelativeToSelection, isOpeningDialog } from './utils/content'
+import {
+  getCenterOfTheScreen,
+  getContentRoot,
+  getDialogPositionRelativeToSelection,
+  isOpeningDialog,
+} from './utils/content'
 import { checkAiApiAvailability } from './utils/ai'
-import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_ZINDEX } from '../../constants'
-import type { FocusOutsideEvent, PointerDownOutsideEvent, ExtensionSettings } from './types'
+import { DIALOG_HEIGHT, DIALOG_WIDTH, DIALOG_ZINDEX, OPEN_DIALOG_ACTION } from '../../constants'
+import type { FocusOutsideEvent, PointerDownOutsideEvent, ExtensionSettings, ChromeMessage } from './types'
 
 export const ContentContainer = () => {
   const root = getContentRoot()
@@ -56,6 +61,21 @@ export const ContentContainer = () => {
       window.removeEventListener('beforeunload', clearState)
     }
   }, [clearState])
+
+  useEffect(() => {
+    const openDialogOnMessage = (message: ChromeMessage) => {
+      if (message.action === OPEN_DIALOG_ACTION && !isDialogOpen) {
+        const center = getCenterOfTheScreen()
+        setPosition(center)
+        setIsDialogOpen(true)
+      }
+    }
+    chrome.runtime.onMessage.addListener(openDialogOnMessage)
+
+    return () => {
+      chrome.runtime.onMessage.removeListener(openDialogOnMessage)
+    }
+  }, [isDialogOpen])
 
   useEffect(() => {
     const getAIApiAvailability = async () => {

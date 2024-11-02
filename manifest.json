@@ -18,8 +18,10 @@
       ]
     }
   ],
+  "background": {
+    "service_worker": "src/background.ts"
+  },
   "action": {
-    "default_popup": "index.html",
     "default_title": "Open Dialog AI"
   },
   "permissions": [

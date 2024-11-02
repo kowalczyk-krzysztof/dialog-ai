@@ -147,3 +147,8 @@ export type PointerDownOutsideEvent = Parameters<
 >[0]
 
 export type FocusOutsideEvent = Parameters<NonNullable<ComponentProps<typeof DialogContent>['onFocusOutside']>>[0]
+
+export interface ChromeMessage {
+  action: string
+  [key: string]: unknown
+}

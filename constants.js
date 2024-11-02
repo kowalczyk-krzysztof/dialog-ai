@@ -14,3 +14,4 @@ export const MAX_CHAT_TOPK = 8
 export const MAX_CHAT_TEMPERATURE = 1
 export const DEFAULT_CHAT_TEMPERATURE = 1
 export const DEFAULT_CHAT_TOPK = 3
+export const OPEN_DIALOG_ACTION = 'openDialog'

@@ -86,7 +86,7 @@ export const suppressInvalidRadixUiTitleError = () => {
   }
 }
 
-const getCenterOfTheScreen = () => ({
+export const getCenterOfTheScreen = () => ({
   top: `${window.innerHeight / 2 - DIALOG_HEIGHT / 2}px`,
   left: `${window.innerWidth / 2 - DIALOG_WIDTH / 2}px`,
 })
@@ -98,7 +98,7 @@ export const isOpeningDialog = (
   isDialogOpen: boolean,
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>,
   setIsSelectionKeyHeldDown: Dispatch<SetStateAction<boolean>>,
-  setPostion: Dispatch<SetStateAction<{ top: string; left: string }>>,
+  setPosition: Dispatch<SetStateAction<{ top: string; left: string }>>,
   setIsSettingsViewOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   // Only set the selection key state if the target is <body> and the dialog is not open
@@ -109,7 +109,7 @@ export const isOpeningDialog = (
     ) {
       e.preventDefault() // This prevents OPEN_DIALOG_COMBINATION_SECOND_KEY from being typed in the text area
       const center = getCenterOfTheScreen()
-      setPostion(center)
+      setPosition(center)
       setIsSettingsViewOpen(false)
       setIsDialogOpen(true)
       setIsSelectionKeyHeldDown(false)
