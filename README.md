@@ -3,7 +3,7 @@
 ## About
 ![preview](https://github.com/user-attachments/assets/3de2c831-25d3-4906-b530-259e2c10b9d1)
 
-Dialog AI is a Chrome extension built for [Google Chrome Built-in AI Challenge](https://googlechromeai.devpost.com). The extension allows you to leverage new AI APIs in Chrome. Once installed, you can use it on any website by holding <kbd>Shift</kbd> and selecting text or by pressing the <kbd>Shift</kbd> + <kbd>D</kbd> key combination. Doing so will open a dialog in which you can translate and summarize text and chat with Chrome built-in AI.
+Dialog AI is a Chrome extension built for [Google Chrome Built-in AI Challenge](https://googlechromeai.devpost.com). The extension allows you to leverage new AI APIs in Chrome. Once installed, you can use it on any website by holding <kbd>Shift</kbd> and selecting text or by pressing the <kbd>Shift</kbd> + <kbd>D</kbd> key combination or by clicking the extension icon while you have a website open. Doing so will open a dialog in which you can translate and summarize text and chat with Chrome built-in AI.
 
 ## How to use
 The APIs used in this extension are still experimental and to use them, you need to download [Chrome Canary version](https://www.google.com/chrome/canary).
