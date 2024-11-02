@@ -27,8 +27,16 @@ await ai.summarizer.create()
 9. **(Optional)** Install language packs you want to use - `chrome://on-device-translation-internals`. The extension will automatically download the required pack when you select a language pair for the first time, so this step is not necessary.
 
 
-After you have all the APIs enabled and the model has finished downloading, you need to build and install the extension. To do this step, you need to have [Node.js](https://nodejs.org/en) with version `>=20` installed.
+After you have all the APIs enabled and the model has finished downloading, you need to install the extension. 
+1. Go to [releases](https://github.com/kowalczyk-krzysztof/dialog-ai/releases) and find the latest release.
+2. Download the `dist.zip` file attached to the release and unzip it.
+3. Open Chrome Canary and go to `chrome://extensions`.
+4. Enable developer mode (top right of page).
+5. Click `Load unpacked extension` (top left page).
+6. Select `dist` directory
 
+
+Alternatively, if you want to build the extension yourself, you can do that using the steps below (you need to have [Node.js](https://nodejs.org/en) with version `>=20` installed):
 1. Clone this repository
 2. Run the following commands (in order) in a terminal, while in the root directory of the repository:
 ```
@@ -37,5 +45,5 @@ npm run build
 ```
 3. Open Chrome Canary and go to `chrome://extensions`.
 4. Enable developer mode (top right of page).
-5. Click "Load unpacked extension" (top left page).
+5. Click `Load unpacked extension` (top left page).
 6. Select `dist` directory.
