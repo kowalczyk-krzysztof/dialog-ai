@@ -3,6 +3,11 @@
   "name": "Dialog AI",
   "version": "0.1.0",
   "description": "Chat with Chrome AI on any website.",
+  "icons": {
+    "16": "icon16x16.png",
+    "48": "icon48x48.png",
+    "128": "icon128x128.png"
+  },
   "content_scripts": [
     {
       "matches": [
