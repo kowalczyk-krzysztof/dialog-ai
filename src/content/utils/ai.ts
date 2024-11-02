@@ -3,6 +3,7 @@ import {
   type Conversation,
   AIApiAvailabilityString,
   AIApiType,
+  Message,
   MessageRole,
   SupportedLanguages,
 } from '../../content/types'
@@ -19,6 +20,16 @@ interface SystemMessageParams extends UserMessageParams {
   targetLanguage?: SupportedLanguages
 }
 
+const addNewSystemMessage = (conversation: Conversation, message: Message) => ({
+  ...conversation,
+  messages: [...conversation.messages, message],
+})
+
+const updateExistingSystemMessage = (conversation: Conversation, id: string, text: string, isError: boolean) => ({
+  ...conversation,
+  messages: conversation.messages.map(message => (message.id === id ? { ...message, text, isError } : message)),
+})
+
 export const createSystemMessage = ({
   conversation,
   text,
@@ -30,44 +41,29 @@ export const createSystemMessage = ({
 }: SystemMessageParams) => {
   if (id) {
     if (!conversation.messages.find(message => message.id === id)) {
-      return {
-        ...conversation,
-        messages: [
-          ...conversation.messages,
-          {
-            id,
-            text,
-            type,
-            role: MessageRole.SYSTEM,
-            sourceLanguage,
-            targetLanguage,
-            isError,
-          },
-        ],
-      }
-    }
-
-    return {
-      ...conversation,
-      messages: conversation.messages.map(message => (message.id === id ? { ...message, text, isError } : message)),
-    }
-  }
-
-  return {
-    ...conversation,
-    messages: [
-      ...conversation.messages,
-      {
-        id: window.crypto.randomUUID(),
+      return addNewSystemMessage(conversation, {
+        id,
         text,
-        isError,
-        role: MessageRole.SYSTEM,
         type,
+        role: MessageRole.SYSTEM,
         sourceLanguage,
         targetLanguage,
-      },
-    ],
+        isError,
+      })
+    }
+
+    return updateExistingSystemMessage(conversation, id, text, isError)
   }
+
+  return addNewSystemMessage(conversation, {
+    id: window.crypto.randomUUID(),
+    text,
+    isError,
+    role: MessageRole.SYSTEM,
+    type,
+    sourceLanguage,
+    targetLanguage,
+  })
 }
 
 export const createUserMessage = ({ conversation, text }: UserMessageParams) => ({
