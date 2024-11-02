@@ -9,27 +9,27 @@ import type { TranslationLanguagePair } from '../../../../types'
 
 export const TranslationButton = () => {
   const { t } = useTranslation()
-  const { settings, aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
+  const {
+    settings: { sourceLanguage, targetLanguage },
+    isDisabled,
+    setIsResponseLoading,
+  } = useContentStore(
     useShallow(state => ({
-      userInput: state.userInput,
       settings: state.settings,
-      aiApiAvailability: state.aiApiAvailability,
+      isDisabled: state.areControlsDisabled() || !state.aiApiAvailability.translation,
       setIsResponseLoading: state.setIsResponseLoading,
-      areControlsDisabled: state.areControlsDisabled,
     }))
   )
   const [languagePair, setLanguagePair] = useState<TranslationLanguagePair>({
-    sourceLanguage: settings.sourceLanguage,
-    targetLanguage: settings.targetLanguage,
+    sourceLanguage,
+    targetLanguage,
   })
 
   useEffect(() => {
-    setLanguagePair({ sourceLanguage: settings.sourceLanguage, targetLanguage: settings.targetLanguage })
-  }, [settings])
+    setLanguagePair({ sourceLanguage, targetLanguage })
+  }, [sourceLanguage, targetLanguage])
 
   const translateText = t('buttons.translate')
-
-  const isDisabled = areControlsDisabled() || !aiApiAvailability.translation
 
   const handleGetResponse = async () => {
     setIsResponseLoading(true)

@@ -8,19 +8,17 @@ import { Scrollbar } from '../../../../shared/components/Scrollbar'
 import { SCROLLBAR_HIDE_TIMER_MS } from '../../../../../constants'
 
 export const UserInputContainer = () => {
-  const { userInput, aiApiAvailability, setUserInput, setIsResponseLoading, areControlsDisabled } = useContentStore(
+  const { userInput, isDisabled, setUserInput, setIsResponseLoading } = useContentStore(
     useShallow(state => ({
       userInput: state.userInput,
-      aiApiAvailability: state.aiApiAvailability,
+      isDisabled: state.areControlsDisabled() || !state.aiApiAvailability.chat,
       setUserInput: state.setUserInput,
       setIsResponseLoading: state.setIsResponseLoading,
-      areControlsDisabled: state.areControlsDisabled,
     }))
   )
 
   const handleEnterKey = async (e: KeyboardEvent) => {
-    const controlsDisabled = areControlsDisabled() || !aiApiAvailability.chat
-    if (e.key === 'Enter' && !e.shiftKey && !controlsDisabled) {
+    if (e.key === 'Enter' && !e.shiftKey && !isDisabled) {
       e.preventDefault()
       setIsResponseLoading(true)
       await getChatStreamingResponse()

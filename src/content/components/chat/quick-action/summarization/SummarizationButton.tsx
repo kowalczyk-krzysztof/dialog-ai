@@ -6,16 +6,12 @@ import { getSummary } from '../../../../api/summarization'
 
 export const SummarizationButton = () => {
   const { t } = useTranslation()
-  const { aiApiAvailability, setIsResponseLoading, areControlsDisabled } = useContentStore(
+  const { isDisabled, setIsResponseLoading } = useContentStore(
     useShallow(state => ({
-      userInput: state.userInput,
-      aiApiAvailability: state.aiApiAvailability,
+      isDisabled: state.areControlsDisabled() || !state.aiApiAvailability.summarization,
       setIsResponseLoading: state.setIsResponseLoading,
-      areControlsDisabled: state.areControlsDisabled,
     }))
   )
-
-  const isDisabled = areControlsDisabled() || !aiApiAvailability.summarization
 
   const summarizeText = t('buttons.summarize')
 

@@ -8,18 +8,14 @@ import Stop from '../../../../shared/icons/stop.svg?react'
 
 export const SendChatMessageButton = () => {
   const { t } = useTranslation()
-  const { ongoingRequestExists, aiApiAvailability, setIsResponseLoading, areControlsDisabled, abortOngoingRequests } =
-    useContentStore(
-      useShallow(state => ({
-        aiApiAvailability: state.aiApiAvailability,
-        ongoingRequestExists: state.ongoingRequestExists(),
-        setIsResponseLoading: state.setIsResponseLoading,
-        areControlsDisabled: state.areControlsDisabled,
-        abortOngoingRequests: state.abortOngoingRequests,
-      }))
-    )
-
-  const isDisabled = (areControlsDisabled() || !aiApiAvailability.chat) && !ongoingRequestExists
+  const { isDisabled, ongoingRequestExists, setIsResponseLoading, abortOngoingRequests } = useContentStore(
+    useShallow(state => ({
+      isDisabled: (state.areControlsDisabled() || !state.aiApiAvailability.chat) && !state.ongoingRequestExists(),
+      ongoingRequestExists: state.ongoingRequestExists(),
+      setIsResponseLoading: state.setIsResponseLoading,
+      abortOngoingRequests: state.abortOngoingRequests,
+    }))
+  )
 
   const sendText = t('buttons.send')
   const abortText = t('buttons.abortOngoingRequests')
