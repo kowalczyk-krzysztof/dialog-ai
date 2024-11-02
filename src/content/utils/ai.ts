@@ -7,16 +7,6 @@ import {
   SupportedLanguages,
 } from '../../content/types'
 
-export const languageTagToHumanReadable = (
-  languageTag: SupportedLanguages,
-  targetLanguage: SupportedLanguages = SupportedLanguages.ENGLISH
-) => {
-  const displayNames = new Intl.DisplayNames([targetLanguage], {
-    type: 'language',
-  })
-  return displayNames.of(languageTag) ?? languageTag
-}
-
 interface UserMessageParams {
   conversation: Conversation
   text: string
@@ -121,13 +111,3 @@ export const checkAiApiAvailability = async (): Promise<AIApiAvailability> => {
     translation,
   }
 }
-
-export const mapLanguageToSelectOption = (language: SupportedLanguages) => ({
-  key: language,
-  value: language,
-  label: languageTagToHumanReadable(language),
-})
-
-export const getLanguageItems = () => Object.values(SupportedLanguages).map(mapLanguageToSelectOption)
-
-export const isEnglish = (value: string) => value === SupportedLanguages.ENGLISH

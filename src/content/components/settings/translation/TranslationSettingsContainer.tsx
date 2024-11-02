@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Select } from '../../../../shared/components/Select'
-import { getLanguageItems, mapLanguageToSelectOption } from '../../../utils/ai'
+import { getLanguageItems, mapLanguageToSelectOption } from '../../../utils/translation'
 import type { ExtensionSettings, SupportedLanguages, TranslationLanguagePair } from '../../../types'
 
 interface Props {
@@ -24,7 +24,14 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
   const sourceLanguageId = 'translation-settings-source-language'
   const targetLanguageId = 'translation-settings-target-language'
 
-  const languageItems = getLanguageItems()
+  const sourceLanguageItems = getLanguageItems().map(item => ({
+    ...item,
+    disabled: item.value === languagePair.targetLanguage,
+  }))
+  const targetLanguageItems = getLanguageItems().map(item => ({
+    ...item,
+    disabled: item.value === languagePair.sourceLanguage,
+  }))
 
   const sourceLanguageItem = mapLanguageToSelectOption(languagePair.sourceLanguage)
   const targetLanguageItem = mapLanguageToSelectOption(languagePair.targetLanguage)
@@ -47,7 +54,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
           </label>
           <Select
             id={sourceLanguageId}
-            items={languageItems}
+            items={sourceLanguageItems}
             value={sourceLanguageItem}
             onChange={handleSelectSourceLanguage}
           />
@@ -58,7 +65,7 @@ export const TranslationSettingsContainer = ({ settings, languagePair, setLangua
           </label>
           <Select
             id={targetLanguageId}
-            items={languageItems}
+            items={targetLanguageItems}
             value={targetLanguageItem}
             onChange={handleSelectTargetLanguage}
           />

@@ -14,10 +14,11 @@ import { DIALOG_LAYER_ABOVE_ZINDEX } from '../../../constants'
 import ChevronDown from '../icons/chevron-down.svg?react'
 import ChevronUp from '../icons/chevron-up.svg?react'
 
-interface SelectItem {
+export interface SelectItem {
   key: string
   value: string
   label: string
+  disabled?: boolean
 }
 
 interface Props {
@@ -60,11 +61,12 @@ export const Select = ({ items, value, id, disabled, onChange }: Props) => {
           sideOffset={8}
         >
           <SelectViewport className='rounded-lg border border-border bg-secondary'>
-            {items.map(({ value, label, key }) => (
+            {items.map(({ value, label, key, disabled }) => (
               <RadixSelectItem
                 key={key}
                 value={value}
-                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-primary [&:not(:focus):not(:hover)]:data-[state=checked]:bg-primary-hover [&:not(:focus):not(:hover)]:data-[state=checked]:text-text-hover'
+                disabled={disabled}
+                className='relative flex h-[25px] select-none items-center rounded-[3px] py-0 pl-[25px] pr-[35px] text-[13px] leading-none text-text focus:bg-primary data-[disabled]:bg-disabled data-[disabled]:text-disabled-text [&:not(:focus):not(:hover)]:data-[state=checked]:bg-primary-hover [&:not(:focus):not(:hover)]:data-[state=checked]:text-text-hover'
               >
                 <SelectItemText>{label}</SelectItemText>
               </RadixSelectItem>
