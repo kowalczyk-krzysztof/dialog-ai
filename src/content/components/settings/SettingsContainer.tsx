@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useShallow } from 'zustand/react/shallow'
 import { useContentStore } from '../../store'
@@ -12,6 +12,8 @@ interface Props {
 }
 
 export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(false)
   const { t } = useTranslation()
 
   const { settings } = useContentStore(
@@ -30,19 +32,48 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
   })
 
   const saveSettingsText = t('buttons.saveSettings')
+  const saveSuccessText = t('settings.saveSuccess')
+  const saveErrorText = t('settings.saveError')
+
+  useEffect(() => {
+    if (!isSettingsViewOpen) {
+      setError(false)
+      setSuccess(false)
+    }
+  }, [isSettingsViewOpen])
 
   const handleSave = async () => {
-    await chrome.storage.sync.set({
-      sourceLanguage: languagePair.sourceLanguage,
-      targetLanguage: languagePair.targetLanguage,
-      chatTemperature: chatSessionHyperparameters.temperature,
-      chatTopK: chatSessionHyperparameters.topK,
-    })
+    try {
+      setError(false)
+      setSuccess(false)
+      await chrome.storage.sync.set({
+        sourceLanguage: languagePair.sourceLanguage,
+        targetLanguage: languagePair.targetLanguage,
+        chatTemperature: chatSessionHyperparameters.temperature,
+        chatTopK: chatSessionHyperparameters.topK,
+      })
+      setSuccess(true)
+    } catch (e) {
+      setSuccess(false)
+      setError(true)
+    }
+  }
+
+  const getStatusText = () => {
+    if (success) {
+      return saveSuccessText
+    }
+
+    if (error) {
+      return saveErrorText
+    }
+
+    return ''
   }
 
   return (
     <section
-      className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-2 overflow-hidden px-4 pt-2' : 'hidden'}
+      className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-4 overflow-hidden px-4 pt-2' : 'hidden'}
     >
       <ChatSettingsContainer
         chatSessionHyperparameters={chatSessionHyperparameters}
@@ -50,9 +81,10 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
         setChatSessionHyperparameters={setChatSessionHyperparameters}
       />
       <TranslationSettingsContainer settings={settings} languagePair={languagePair} setLanguagePair={setLanguagePair} />
-      <Button className='mb-2 mt-auto self-center' onClick={handleSave}>
-        {saveSettingsText}
-      </Button>
+      <div className='mb-10 mt-auto flex flex-col items-center justify-center self-center'>
+        <Button onClick={handleSave}>{saveSettingsText}</Button>
+        <p className='h-5 text-success'>{getStatusText()}</p>
+      </div>
     </section>
   )
 }

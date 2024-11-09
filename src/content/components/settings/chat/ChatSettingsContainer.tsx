@@ -38,15 +38,15 @@ export const ChatSettingsContainer = ({
   }
 
   return (
-    <section className='flex flex-col'>
-      <h3 className='select-none text-lg'>{chatSectionTitleText}</h3>
+    <section className='flex w-full flex-col rounded-lg border border-border bg-tertiary p-2'>
+      <h3 className='mb-4 select-none self-center text-lg'>{chatSectionTitleText}</h3>
       <ul className='flex flex-col gap-2'>
         <li className='flex items-center gap-2'>
           <label className='text-primary hover:text-primary-hover' htmlFor={chatTemperatureId}>
             {chatTemperatureText}
           </label>
           <input
-            className='bg-secondary'
+            className='w-10 bg-secondary'
             id={chatTemperatureId}
             value={chatSessionHyperparameters.temperature}
             step='.01'
@@ -61,7 +61,7 @@ export const ChatSettingsContainer = ({
             {chatTopKText}
           </label>
           <input
-            className='bg-secondary'
+            className='w-10 bg-secondary'
             id={chatTopKId}
             value={chatSessionHyperparameters.topK}
             type='number'

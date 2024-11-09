@@ -14,8 +14,10 @@
     },
     "sourceLanguage": "Source language (from)",
     "targetLanguage": "Target language (to)",
-    "chatTopK": "topK",
-    "chatTemperature": "Temperature"
+    "chatTopK": "TopK",
+    "chatTemperature": "Temperature",
+    "saveSuccess": "Settings saved successfully",
+    "saveError": "Could not save settings"
   },
   "buttons": {
     "copy": {
