@@ -1,41 +1,55 @@
-import { ChangeEvent, useEffect, type Dispatch, type SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useForm, Controller } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { MAX_CHAT_TEMPERATURE, MAX_CHAT_TOPK } from '../../../../../constants'
 import { ChatSessionHyperParameters, ExtensionSettings } from '../../../types'
 
 interface Props {
   settings: ExtensionSettings
-  chatSessionHyperparameters: ChatSessionHyperParameters
   setChatSessionHyperparameters: Dispatch<SetStateAction<ChatSessionHyperParameters>>
 }
 
-export const ChatSettingsContainer = ({
-  settings,
-  chatSessionHyperparameters,
-  setChatSessionHyperparameters,
-}: Props) => {
+const schema = z.object({
+  temperature: z.number().min(0).max(MAX_CHAT_TEMPERATURE).multipleOf(0.01),
+  topK: z.number().min(1).max(MAX_CHAT_TOPK),
+})
+
+type FormValues = z.infer<typeof schema>
+
+export const ChatSettingsContainer = ({ settings, setChatSessionHyperparameters }: Props) => {
   const { t } = useTranslation()
 
+  const { control, watch, setValue } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      temperature: settings.chatTemperature,
+      topK: settings.chatTopK,
+    },
+  })
+
+  const watchedTemperature = watch('temperature')
+  const watchedTopK = watch('topK')
+
   useEffect(() => {
+    setValue('temperature', settings.chatTemperature)
+    setValue('topK', settings.chatTopK)
     setChatSessionHyperparameters({
       temperature: settings.chatTemperature,
       topK: settings.chatTopK,
     })
-  }, [settings, setChatSessionHyperparameters])
+  }, [settings, setValue, setChatSessionHyperparameters])
+
+  useEffect(() => {
+    setChatSessionHyperparameters({ temperature: watchedTemperature, topK: watchedTopK })
+  }, [watchedTemperature, watchedTopK, setChatSessionHyperparameters])
 
   const chatTemperatureText = t('settings.chatTemperature')
   const chatTopKText = t('settings.chatTopK')
   const chatSectionTitleText = t('settings.sections.chat')
   const chatTemperatureId = 'chat-temperature'
   const chatTopKId = 'chat-topk'
-
-  const handleChangeTemperature = (event: ChangeEvent<HTMLInputElement>) => {
-    setChatSessionHyperparameters({ ...chatSessionHyperparameters, temperature: Number(event.target.value) })
-  }
-
-  const handleChangeTopK = (event: ChangeEvent<HTMLInputElement>) => {
-    setChatSessionHyperparameters({ ...chatSessionHyperparameters, topK: Number(event.target.value) })
-  }
 
   return (
     <section className='flex w-full flex-col rounded-lg border border-border bg-tertiary p-2'>
@@ -45,29 +59,41 @@ export const ChatSettingsContainer = ({
           <label className='text-primary hover:text-primary-hover' htmlFor={chatTemperatureId}>
             {chatTemperatureText}
           </label>
-          <input
-            className='w-10 bg-secondary'
-            id={chatTemperatureId}
-            value={chatSessionHyperparameters.temperature}
-            step='.01'
-            type='number'
-            min='0'
-            max={MAX_CHAT_TEMPERATURE}
-            onChange={handleChangeTemperature}
+          <Controller
+            name='temperature'
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                id={chatTemperatureId}
+                type='number'
+                inputMode='decimal'
+                step='.01'
+                min='0'
+                max={MAX_CHAT_TEMPERATURE}
+                className='w-14 border border-border bg-secondary'
+              />
+            )}
           />
         </li>
         <li className='flex items-center gap-2'>
           <label className='text-primary hover:text-primary-hover' htmlFor={chatTopKId}>
             {chatTopKText}
           </label>
-          <input
-            className='w-10 bg-secondary'
-            id={chatTopKId}
-            value={chatSessionHyperparameters.topK}
-            type='number'
-            min='0'
-            max={MAX_CHAT_TOPK}
-            onChange={handleChangeTopK}
+          <Controller
+            name='topK'
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                id={chatTopKId}
+                type='number'
+                inputMode='numeric'
+                min='1'
+                max={MAX_CHAT_TOPK}
+                className='w-14 border border-border bg-secondary'
+              />
+            )}
           />
         </li>
       </ul>

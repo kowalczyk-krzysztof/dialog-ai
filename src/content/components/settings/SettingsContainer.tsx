@@ -75,11 +75,7 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
     <section
       className={isSettingsViewOpen ? 'flex h-full flex-col items-start gap-4 overflow-hidden px-4 pt-2' : 'hidden'}
     >
-      <ChatSettingsContainer
-        chatSessionHyperparameters={chatSessionHyperparameters}
-        settings={settings}
-        setChatSessionHyperparameters={setChatSessionHyperparameters}
-      />
+      <ChatSettingsContainer settings={settings} setChatSessionHyperparameters={setChatSessionHyperparameters} />
       <TranslationSettingsContainer settings={settings} languagePair={languagePair} setLanguagePair={setLanguagePair} />
       <div className='mb-10 mt-auto flex flex-col items-center justify-center self-center'>
         <Button onClick={handleSave}>{saveSettingsText}</Button>
