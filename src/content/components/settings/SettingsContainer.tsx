@@ -67,8 +67,6 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
     if (error) {
       return saveErrorText
     }
-
-    return ''
   }
 
   return (
@@ -79,7 +77,7 @@ export const SettingsContainer = ({ isSettingsViewOpen }: Props) => {
       <TranslationSettingsContainer settings={settings} languagePair={languagePair} setLanguagePair={setLanguagePair} />
       <div className='mb-10 mt-auto flex flex-col items-center justify-center self-center'>
         <Button onClick={handleSave}>{saveSettingsText}</Button>
-        <p className='h-5 text-success'>{getStatusText()}</p>
+        <p className={`h-5 ${error ? 'text-error' : 'text-success'}`}>{getStatusText()}</p>
       </div>
     </section>
   )
