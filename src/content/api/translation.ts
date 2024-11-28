@@ -25,7 +25,7 @@ const createTranslator = async (
 ): Promise<TranslationModelSession | undefined> => {
   const { setConversation } = useContentStore.getState()
   try {
-    const translator = await window.translation.createTranslator(languagePair)
+    const translator = await window?.ai?.translator?.create(languagePair)
     return translator
   } catch (e) {
     const couldNotCreateTranslatorText = i18n.t('errors.ai.couldNotCreateTranslator')
@@ -45,7 +45,7 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
   const storedUserInput = userInput
   setUserInput('')
   setConversation(conversation => createUserMessage({ conversation, text: storedUserInput }))
-  if (!window.translation) {
+  if (!window?.ai?.translator) {
     const translationNotEnabledText = i18n.t('errors.ai.translationNotEnabled')
     setConversation(conversation =>
       createSystemMessage({
@@ -73,7 +73,12 @@ export const getTranslation = async (languagePair: TranslationLanguagePair) => {
     return
   }
 
-  const isTranslationDownloadedForLanguagePair = await window.translation.canTranslate(languagePair)
+  const canTranslate = async () => {
+    if (window?.ai?.translator?.canTranslate) return await window?.ai?.translator?.canTranslate(languagePair)
+    return await window?.translation?.canTranslate(languagePair)
+  }
+
+  const isTranslationDownloadedForLanguagePair = await canTranslate()
 
   if (!isTranslationDownloadedForLanguagePair) {
     const translationNotDownloadedText = i18n.t('errors.ai.translationNotDownloaded')

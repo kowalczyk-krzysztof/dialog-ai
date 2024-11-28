@@ -86,7 +86,7 @@ const isChatAvailable = async () => {
   return false
 }
 
-const isTranslationAvailable = () => Boolean(window?.translation)
+const isTranslationAvailable = () => Boolean(window?.ai?.translator)
 
 const isSummarizationAvailable = async () => {
   if (window?.ai?.summarizer) {

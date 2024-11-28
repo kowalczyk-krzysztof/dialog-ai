@@ -16,14 +16,7 @@ declare global {
     [Symbol.asyncIterator](): AsyncIterableIterator<R>
   }
   interface Window {
-    // https://github.com/WICG/translation-api (WIP)
-    languageDetector: {
-      create: (options?: AISessionOptions) => Promise<LanguageDetectorSession>
-      capabilities: () => Promise<BaseCapabilities>
-    }
-    // https://github.com/WICG/translation-api (WIP)
     translation: {
-      createTranslator: (languagePair: TranslationLanguagePair) => Promise<TranslationModelSession>
       canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIApiAvailabilityString>
     }
     // https://github.com/explainers-by-googlers/prompt-api (WIP)
@@ -35,6 +28,16 @@ declare global {
       summarizer: {
         create: (options?: AISessionOptions) => Promise<SummarizationSession>
         capabilities: () => Promise<BaseCapabilities>
+      }
+      // https://github.com/WICG/translation-api (WIP)
+      languageDetector: {
+        create: (options?: AISessionOptions) => Promise<LanguageDetectorSession>
+        capabilities: () => Promise<BaseCapabilities>
+      }
+      // https://github.com/WICG/translation-api (WIP)
+      translator: {
+        create: (languagePair: TranslationLanguagePair) => Promise<TranslationModelSession>
+        canTranslate: (languagePair: TranslationLanguagePair) => Promise<AIApiAvailabilityString>
       }
     }
   }
